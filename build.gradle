@@ -3,7 +3,7 @@ buildscript {
     ext {
         retrofit_version = '2.9.0'
         okhttp3_version = '4.9.2'
-        mochi_version = '1.14.0'
+        moshi_version = '1.14.0'
         nav_version = "2.5.3"
         lifecycle_version ="2.6.0"
     }
