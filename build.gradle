@@ -5,7 +5,7 @@ buildscript {
         okhttp3_version = '4.9.2'
         moshi_version = '1.14.0'
         nav_version = "2.5.3"
-        lifecycle_version ="2.6.0"
+        lifecycle_version ="2.6.1"
         room_version = "2.5.0"
     }
 
