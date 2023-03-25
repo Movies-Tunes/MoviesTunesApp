@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 
-@Entity("movies_tb")
+@Entity(tableName = "top_rated_tb")
 data class TopRatedResultItem(
     @PrimaryKey
     val id: Int,

@@ -5,6 +5,9 @@ plugins {
     id 'kotlin-android'
 
 }
+Properties properties = new Properties()
+properties.load(project.rootProject.file("api-key.properties").newDataInputStream())
+def apiKey = properties.getProperty("TMDB_KEY")
 
 android {
     namespace 'com.myapplication'
@@ -28,6 +31,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "API_KEY", apiKey)
+        }
+        debug{
+            buildConfigField("String", "API_KEY", apiKey)
         }
     }
     compileOptions {
@@ -44,6 +51,9 @@ android {
 }
 
 dependencies {
+
+    debugImplementation "com.github.chuckerteam.chucker:library:$chucker_version"
+    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:$chucker_version"
 
     // Kotlin
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
