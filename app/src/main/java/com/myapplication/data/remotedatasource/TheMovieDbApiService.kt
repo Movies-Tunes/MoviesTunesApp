@@ -9,11 +9,13 @@ import retrofit2.http.Query
 interface TheMovieDbApiService {
     @GET("movie/top_rated")
     suspend fun getTopRatedMovies(
-        @Query("api_key") apiKey: String, @Query("page") page: Int
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int,
     ): TopRatedResult
 
     @GET("movie/{movieId}")
     suspend fun getMovieDetails(
-        @Query("api_key") apiKey: String, @Path("movieId") movieId: Int
+        @Path("movieId") movieId: Int,
+        @Query("api_key") apiKey: String,
     ): MovieDetail
 }
