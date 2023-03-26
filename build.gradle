@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
+        chucker_version = "3.5.2"
         retrofit_version = '2.9.0'
         okhttp3_version = '4.9.2'
         moshi_version = '1.14.0'
