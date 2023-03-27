@@ -1,9 +1,10 @@
-package com.myapplication
+package com.myapplication.ui.activities
 
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.myapplication.MoviesTunesApplication
 import com.myapplication.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.IO) {
                 val topRatedMovies = dataSource.getAllMovies(1)
                 Log.e("Movies", topRatedMovies.toString())
-                dataSource.getMovieDetails(topRatedMovies[0].id).apply{
+                dataSource.getMovieDetails(topRatedMovies[0].id).apply {
                     Log.e("Detail", this.toString())
                     runOnUiThread {
                         binding.tvHelloWorld.text = this.toString()
