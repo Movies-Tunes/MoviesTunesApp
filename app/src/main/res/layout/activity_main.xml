@@ -6,8 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".MainActivity">
+    tools:context=".ui.activities.MainActivity">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.myapplication.ui.fragments.SplashFragment" />
     <TextView
         android:id="@+id/tv_hello_world"
         android:layout_width="wrap_content"

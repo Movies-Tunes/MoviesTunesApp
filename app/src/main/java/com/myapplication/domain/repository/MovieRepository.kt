@@ -23,8 +23,6 @@ class MovieDataSource(
     private val moviesDao: MoviesDao,
 ) : MovieRepository {
 
-    private val _moviesDetails: MutableLiveData<MovieDetail> = MutableLiveData()
-    val moviesDetails: LiveData<MovieDetail> get() = _moviesDetails
 
     override suspend fun addMovie(movie: MovieDetail) {
         moviesDao.insertMovieDetails(movie)
@@ -54,7 +52,6 @@ class MovieDataSource(
     override suspend fun getMovieDetails(movieId: Int): MovieDetail {
         return try {
             val movieDetail = service.getMovieDetails(movieId, Constants.API_KEY)
-            _moviesDetails.postValue(movieDetail)
             Log.e("Detail", movieDetail.toString())
             kotlin.runCatching {
                 moviesDao.insertMovieDetails(movieDetail)
