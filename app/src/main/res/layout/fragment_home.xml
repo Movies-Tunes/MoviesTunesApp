@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    style="@style/AppScreenTheme"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_greeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/WhiteTextAppearanceHead"
+        android:text="@string/text_welcome_to_movie_tunes"
+        style="@style/AppFontStyle"
+        android:textFontWeight="500"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/iv_logo_brand" />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_logo_brand"
+        android:layout_width="wrap_content"
+        app:srcCompat="@drawable/ic_logo_brand"
+        android:layout_height="wrap_content"
+        android:maxHeight="200dp"
+        android:maxWidth="200dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_start"
+        android:layout_width="@dimen/btn_start_width_home"
+        android:layout_height="@dimen/btn_start_height_home"
+        android:layout_margin="@dimen/space_20dp"
+        android:background="@drawable/ripple_btn_bg_start"
+        android:text="@string/text_button_start"
+        android:textAppearance="@style/WhiteTextAppearanceButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_logo_brand"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

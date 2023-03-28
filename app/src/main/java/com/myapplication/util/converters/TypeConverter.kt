@@ -1,4 +1,4 @@
-package com.myapplication.util
+package com.myapplication.util.converters
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter

@@ -19,18 +19,5 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val dataSource = (application as MoviesTunesApplication).movieDatasource
-
-        binding.btnRefresh.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                val topRatedMovies = dataSource.getAllMovies(1)
-                Log.e("Movies", topRatedMovies.toString())
-                dataSource.getMovieDetails(topRatedMovies[0].id).apply {
-                    Log.e("Detail", this.toString())
-                    runOnUiThread {
-                        binding.tvHelloWorld.text = this.toString()
-                    }
-                }
-            }
-        }
     }
 }

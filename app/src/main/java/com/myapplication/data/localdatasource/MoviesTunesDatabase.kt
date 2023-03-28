@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.myapplication.data.entities.GenreItem
 import com.myapplication.data.entities.MovieDetail
 import com.myapplication.data.entities.TopRatedResultItem
-import com.myapplication.util.TypeConverter
+import com.myapplication.util.converters.TypeConverter
 
 @Database([TopRatedResultItem::class, MovieDetail::class, GenreItem::class], version = 1)
 @TypeConverters(TypeConverter::class)
