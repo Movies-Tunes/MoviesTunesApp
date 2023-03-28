@@ -1,5 +1,6 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
     <style name="Theme.MovieTunes" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/color_primary_brand</item>
@@ -12,26 +13,27 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:windowSplashScreenBackground">@color/color_primary_brand</item>
     </style>
     <style name="AppScreenTheme">
         <item name="android:background">@color/color_primary_brand</item>
     </style>
     <style name="AppFontStyle">
         <item name="android:fontFamily">@font/poppins_family</item>
-        <item name="fontWeight">400</item>
-        <item name="android:textColor">@color/white</item>
     </style>
     <style name="WhiteTextAppearanceBody" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/text_regular12sp</item>
+        <item name="android:fontWeight">400</item>
     </style>
     <style name="WhiteTextAppearanceHead" parent="TextAppearance.AppCompat.Headline">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/text_heading</item>
+        <item name="android:fontWeight">700</item>
     </style>
     <style name="WhiteTextAppearanceButton" parent="TextAppearance.AppCompat.Button">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/text_buttons</item>
-        <item name="fontWeight">700</item>
+        <item name="android:fontWeight">700</item>
     </style>
 </resources>
