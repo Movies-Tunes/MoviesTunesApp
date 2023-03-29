@@ -20,7 +20,9 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         binding.btnStart.setOnClickListener {
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToListMoviesFragment())
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToListMoviesFragment(),
+            )
         }
         return binding.root
     }
