@@ -78,7 +78,6 @@ class ListMoviesFragment : Fragment() {
                     title = "The Godfather Part II",
                 ),
             ),
-
         ) { topRated ->
             val action =
                 ListMoviesFragmentDirections.actionListMoviesFragmentToMovieDetailFragment(topRated)
