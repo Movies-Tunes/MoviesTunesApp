@@ -21,11 +21,10 @@ class ListMoviesFragment : Fragment() {
     private var _binding: FragmentListMoviesBinding? = null
     private val binding get() = _binding!!
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentListMoviesBinding.inflate(layoutInflater)
         return binding.root
@@ -40,7 +39,9 @@ class ListMoviesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         LinearLayoutManager(
-            requireContext(), RecyclerView.VERTICAL, false
+            requireContext(),
+            RecyclerView.VERTICAL,
+            false,
         ).also { binding.moviesListRv.layoutManager = it }
 
         ListMoviesAdapter(
@@ -48,29 +49,34 @@ class ListMoviesFragment : Fragment() {
                 TopRatedResultItem(
                     id = 238,
                     posterPath = "https://image.tmdb.org/t/p/w342/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
-                    title = "The Godfather"
-                ), TopRatedResultItem(
+                    title = "The Godfather",
+                ),
+                TopRatedResultItem(
                     id = 278,
                     posterPath = "https://image.tmdb.org/t/p/w342/6gIJuFHh5Lj4dNaPG3TzIMl7L68.jpg",
-                    title = "Cuando Sea Joven"
-                ), TopRatedResultItem(
+                    title = "Cuando Sea Joven",
+                ),
+                TopRatedResultItem(
                     id = 240,
                     posterPath = "https://image.tmdb.org/t/p/w342/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
-                    title = "The Godfather Part II"
-                ), TopRatedResultItem(
+                    title = "The Godfather Part II",
+                ),
+                TopRatedResultItem(
                     id = 240,
                     posterPath = "https://image.tmdb.org/t/p/w342/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
-                    title = "The Godfather Part II"
-                ), TopRatedResultItem(
+                    title = "The Godfather Part II",
+                ),
+                TopRatedResultItem(
                     id = 240,
                     posterPath = "https://image.tmdb.org/t/p/w342/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
-                    title = "The Godfather Part II"
-                ), TopRatedResultItem(
+                    title = "The Godfather Part II",
+                ),
+                TopRatedResultItem(
                     id = 240,
                     posterPath = "https://image.tmdb.org/t/p/w342/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
-                    title = "The Godfather Part II"
-                )
-            )
+                    title = "The Godfather Part II",
+                ),
+            ),
 
         ).also { binding.moviesListRv.adapter = it }
         LinearSnapHelper().attachToRecyclerView(binding.moviesListRv)
@@ -79,17 +85,19 @@ class ListMoviesFragment : Fragment() {
             TileDrawable(
                 ContextCompat.getDrawable(
                     requireContext(),
-                    R.drawable.film_roll_piece
-                )!!, Shader.TileMode.REPEAT
-            )
+                    R.drawable.film_roll_piece,
+                )!!,
+                Shader.TileMode.REPEAT,
+            ),
         )
         binding.filmRollRight.setImageDrawable(
             TileDrawable(
                 ContextCompat.getDrawable(
                     requireContext(),
-                    R.drawable.film_roll_piece
-                )!!, Shader.TileMode.REPEAT
-            )
+                    R.drawable.film_roll_piece,
+                )!!,
+                Shader.TileMode.REPEAT,
+            ),
         )
     }
 }

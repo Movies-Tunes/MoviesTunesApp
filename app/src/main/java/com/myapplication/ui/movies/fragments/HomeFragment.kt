@@ -22,11 +22,7 @@ class HomeFragment : Fragment() {
         binding.btnStart.setOnClickListener {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToListMoviesFragment())
         }
-
-
-
         return binding.root
-
     }
 
     override fun onDestroy() {

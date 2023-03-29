@@ -11,24 +11,25 @@ import com.squareup.picasso.Picasso
 
 class ListMoviesAdapter(private val moviesList: MutableList<TopRatedResultItem>) :
     RecyclerView.Adapter<ListMoviesAdapter.ListMovieViewHolder>() {
-
-
     class ListMovieViewHolder(
-        private val binding: MovieItemBinding
+        private val binding: MovieItemBinding,
 
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movie: TopRatedResultItem) {
             binding.movieTitle.text = binding.root.context.getString(R.string.movie_title, movie.title)
-            Picasso.get().load(movie.posterPath).into(binding.movieIv, object : Callback {
-                override fun onSuccess() {
-                    println("sucess Picasso")
-                }
+            Picasso.get().load(movie.posterPath).into(
+                binding.movieIv,
+                object : Callback {
+                    override fun onSuccess() {
+                        println("sucess Picasso")
+                    }
 
-                override fun onError(e: Exception?) {
-                    println("erro Picasso: $e")
-                }
-            })
+                    override fun onError(e: Exception?) {
+                        println("erro Picasso: $e")
+                    }
+                },
+            )
         }
     }
 
@@ -43,6 +44,4 @@ class ListMoviesAdapter(private val moviesList: MutableList<TopRatedResultItem>)
     }
 
     override fun getItemCount(): Int = moviesList.size
-
-
 }
