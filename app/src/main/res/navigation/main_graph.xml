@@ -11,12 +11,30 @@
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_listMoviesFragment"
-            app:destination="@id/listMoviesFragment" />
+            app:destination="@id/listMoviesFragment"
+            app:restoreState="false"
+            />
     </fragment>
     <fragment
         android:id="@+id/listMoviesFragment"
         android:name="com.myapplication.ui.movies.fragments.ListMoviesFragment"
         tools:layout="@layout/fragment_list_movies"
         android:label="ListMovieFragment"
-        />
+        >
+        <action
+            android:id="@+id/action_listMoviesFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="com.myapplication.ui.moviesdetails.fragments.MovieDetailFragment"
+        android:label="fragment_movie_detail"
+        tools:layout="@layout/fragment_movie_detail"
+        >
+        <argument
+            android:name="topRated"
+            app:argType="com.myapplication.data.entities.TopRatedResultItem"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>
