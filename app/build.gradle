@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'kotlin-android'
+    id("androidx.navigation.safeargs")
 
 }
 Properties properties = new Properties()
@@ -75,6 +76,9 @@ dependencies {
     // moshi
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
+
+    // picasso
+    implementation "com.squareup.picasso:picasso:$picasso_version"
 
     // room
     implementation "androidx.room:room-runtime:$room_version"
