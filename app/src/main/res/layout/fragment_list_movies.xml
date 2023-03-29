@@ -1,58 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/AppScreenTheme"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
+        android:background="@color/color_primary_brand"
+        app:elevation="0dp"
         android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/list_movies_tv"
-        style="@style/AppFontStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_screens_text"
-        android:text="@string/text_what_do_you_want_to_watch"
-        android:textAppearance="@style/WhiteTextAppearanceHead"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/list_movies_tv"
+            style="@style/AppFontStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_screens_text"
+            android:gravity="center"
+            android:text="@string/text_what_do_you_want_to_watch"
+            android:textAppearance="@style/WhiteTextAppearanceHead"
+            android:textStyle="bold"
+            app:layout_scrollFlags="scroll|enterAlways" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/movies_list_rv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:nestedScrollingEnabled="false"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/list_movies_tv" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <ImageView
-            android:id="@+id/film_roll_left"
-            android:layout_width="24dp"
-            android:layout_height="0dp"
-            app:srcCompat="@drawable/film_roll_piece"
-            app:layout_constraintEnd_toStartOf="@id/movies_list_rv"
-            app:layout_constraintTop_toTopOf="@id/movies_list_rv"
-            app:layout_constraintBottom_toBottomOf="@id/movies_list_rv"
-            />
-        <ImageView
-            android:id="@+id/film_roll_right"
-            android:layout_width="24dp"
-            android:layout_height="0dp"
-            app:srcCompat="@drawable/film_roll_piece"
-            app:layout_constraintStart_toEndOf="@id/movies_list_rv"
-            app:layout_constraintTop_toTopOf="@id/movies_list_rv"
-            app:layout_constraintBottom_toBottomOf="@id/movies_list_rv"
-            />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/movies_list_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/film_roll_left"
+                android:layout_width="24dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/movies_list_rv"
+                app:layout_constraintEnd_toStartOf="@id/movies_list_rv"
+                app:layout_constraintTop_toTopOf="@id/movies_list_rv"
+                app:srcCompat="@drawable/film_roll_piece" />
+
+            <ImageView
+                android:id="@+id/film_roll_right"
+                android:layout_width="24dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/movies_list_rv"
+                app:layout_constraintStart_toEndOf="@id/movies_list_rv"
+                app:layout_constraintTop_toTopOf="@id/movies_list_rv"
+                app:srcCompat="@drawable/film_roll_piece" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
 
-</androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
