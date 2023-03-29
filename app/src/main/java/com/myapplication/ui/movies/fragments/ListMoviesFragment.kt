@@ -1,16 +1,20 @@
 package com.myapplication.ui.movies.fragments
 
+import android.graphics.Shader
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.myapplication.R
 import com.myapplication.data.entities.TopRatedResultItem
 import com.myapplication.databinding.FragmentListMoviesBinding
 import com.myapplication.ui.movies.adapter.ListMoviesAdapter
+import com.myapplication.ui.util.TileDrawable
 
 class ListMoviesFragment : Fragment() {
 
@@ -53,15 +57,15 @@ class ListMoviesFragment : Fragment() {
                     id = 240,
                     posterPath = "https://image.tmdb.org/t/p/w342/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
                     title = "The Godfather Part II"
-                ),TopRatedResultItem(
+                ), TopRatedResultItem(
                     id = 240,
                     posterPath = "https://image.tmdb.org/t/p/w342/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
                     title = "The Godfather Part II"
-                ),TopRatedResultItem(
+                ), TopRatedResultItem(
                     id = 240,
                     posterPath = "https://image.tmdb.org/t/p/w342/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
                     title = "The Godfather Part II"
-                ),TopRatedResultItem(
+                ), TopRatedResultItem(
                     id = 240,
                     posterPath = "https://image.tmdb.org/t/p/w342/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
                     title = "The Godfather Part II"
@@ -70,5 +74,22 @@ class ListMoviesFragment : Fragment() {
 
         ).also { binding.moviesListRv.adapter = it }
         LinearSnapHelper().attachToRecyclerView(binding.moviesListRv)
+
+        binding.filmRollLeft.setImageDrawable(
+            TileDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.film_roll_piece
+                )!!, Shader.TileMode.REPEAT
+            )
+        )
+        binding.filmRollRight.setImageDrawable(
+            TileDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.film_roll_piece
+                )!!, Shader.TileMode.REPEAT
+            )
+        )
     }
 }
