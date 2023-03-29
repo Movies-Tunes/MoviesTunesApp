@@ -2,7 +2,6 @@ package com.myapplication.data.localdatasource
 
 import androidx.room.*
 import com.myapplication.data.entities.MovieDetail
-import com.myapplication.data.entities.TopRatedResult
 import com.myapplication.data.entities.TopRatedResultItem
 import kotlinx.coroutines.flow.Flow
 

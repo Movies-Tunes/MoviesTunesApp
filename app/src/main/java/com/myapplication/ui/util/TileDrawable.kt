@@ -39,13 +39,13 @@ class TileDrawable(drawable: Drawable, tileMode: Shader.TileMode) : Drawable() {
             return drawable.bitmap
         }
         val bmp = Bitmap.createBitmap(
-            drawable.intrinsicWidth, drawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
+            drawable.intrinsicWidth,
+            drawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888,
         )
         val c = Canvas(bmp)
         drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
         drawable.draw(c)
         return bmp
     }
-
 }
