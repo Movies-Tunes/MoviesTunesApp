@@ -10,4 +10,5 @@
     <!--Details About Movie Screen-->
     <string name="text_detail_movie">Detail</string>
     <string name="text_sinopse_movie">Sinopse</string>
+    <string name="movie_title">\"%s\"</string>
 </resources>
