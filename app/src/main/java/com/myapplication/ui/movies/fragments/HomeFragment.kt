@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
+import com.myapplication.R
 import com.myapplication.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -17,7 +20,15 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        binding.btnStart.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToListMoviesFragment())
+        }
+
+
+
         return binding.root
+
     }
 
     override fun onDestroy() {

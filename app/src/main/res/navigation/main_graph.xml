@@ -8,5 +8,15 @@
         android:id="@+id/homeFragment"
         android:name="com.myapplication.ui.movies.fragments.HomeFragment"
         tools:layout="@layout/fragment_home"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_listMoviesFragment"
+            app:destination="@id/listMoviesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listMoviesFragment"
+        android:name="com.myapplication.ui.movies.fragments.ListMoviesFragment"
+        tools:layout="@layout/fragment_list_movies"
+        android:label="ListMovieFragment"
+        />
 </navigation>

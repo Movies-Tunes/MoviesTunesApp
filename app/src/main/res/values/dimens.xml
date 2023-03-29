@@ -22,4 +22,5 @@
     <dimen name="btn_start_height_home">32dp</dimen>
     <dimen name="btn_start_width_home">95dp</dimen>
     <dimen name="corner_radius_btn_start">8dp</dimen>
+    <dimen name="margin_screens_text">35dp</dimen>
 </resources>
