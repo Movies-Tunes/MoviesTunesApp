@@ -53,6 +53,18 @@ class ListMoviesFragment : Fragment() {
                     id = 240,
                     posterPath = "https://image.tmdb.org/t/p/w342/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
                     title = "The Godfather Part II"
+                ),TopRatedResultItem(
+                    id = 240,
+                    posterPath = "https://image.tmdb.org/t/p/w342/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
+                    title = "The Godfather Part II"
+                ),TopRatedResultItem(
+                    id = 240,
+                    posterPath = "https://image.tmdb.org/t/p/w342/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
+                    title = "The Godfather Part II"
+                ),TopRatedResultItem(
+                    id = 240,
+                    posterPath = "https://image.tmdb.org/t/p/w342/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
+                    title = "The Godfather Part II"
                 )
             )
 
