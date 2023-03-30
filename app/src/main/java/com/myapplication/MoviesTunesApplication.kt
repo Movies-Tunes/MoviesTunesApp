@@ -7,10 +7,10 @@ import com.myapplication.data.remotedatasource.TheMovieDbApiService
 import com.myapplication.domain.repository.MovieDataSource
 
 class MoviesTunesApplication : Application() {
-    val moviesTunesDatabase: MoviesTunesDatabase by lazy {
+    private val moviesTunesDatabase: MoviesTunesDatabase by lazy {
         MoviesTunesDatabase.getInstance(applicationContext)
     }
-    val moviesService: TheMovieDbApiService by lazy {
+    private val moviesService: TheMovieDbApiService by lazy {
         RetrofitImpl.getMovieService(applicationContext)
     }
 
