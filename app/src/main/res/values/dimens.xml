@@ -16,10 +16,10 @@
     <dimen name="text_regular14sp">14sp</dimen>
     <dimen name="text_regular12sp">12sp</dimen>
     <dimen name="text_minicaps">10sp</dimen>
-    <dimen name="text_buttons">14sp</dimen>
+    <dimen name="text_buttons">16sp</dimen>
 
     <!--Home Fragment-->
-    <dimen name="btn_start_height_home">32dp</dimen>
+    <dimen name="btn_start_height_home">38dp</dimen>
     <dimen name="btn_start_width_home">95dp</dimen>
     <dimen name="corner_radius_btn_start">8dp</dimen>
     <dimen name="margin_screens_text">5dp</dimen>

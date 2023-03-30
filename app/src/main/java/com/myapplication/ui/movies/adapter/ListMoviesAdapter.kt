@@ -9,9 +9,11 @@ import com.myapplication.databinding.MovieItemBinding
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-class ListMoviesAdapter(private val moviesList: MutableList<TopRatedResultItem>) :
-    RecyclerView.Adapter<ListMoviesAdapter.ListMovieViewHolder>() {
-    class ListMovieViewHolder(
+class ListMoviesAdapter(
+    private val moviesList: MutableList<TopRatedResultItem>,
+    private val onClickItem: (TopRatedResultItem) -> Unit
+) : RecyclerView.Adapter<ListMoviesAdapter.ListMovieViewHolder>() {
+    inner class ListMovieViewHolder(
         private val binding: MovieItemBinding,
 
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -24,12 +26,18 @@ class ListMoviesAdapter(private val moviesList: MutableList<TopRatedResultItem>)
                     override fun onSuccess() {
                         println("sucess Picasso")
                     }
-
                     override fun onError(e: Exception?) {
                         println("erro Picasso: $e")
                     }
                 },
             )
+            setListeners(movie)
+        }
+
+        private fun setListeners(movie: TopRatedResultItem) {
+            binding.root.setOnClickListener {
+                onClickItem(movie)
+            }
         }
     }
 

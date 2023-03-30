@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -77,10 +78,16 @@ class ListMoviesFragment : Fragment() {
                     title = "The Godfather Part II",
                 ),
             ),
-
-        ).also { binding.moviesListRv.adapter = it }
+        ) { topRated ->
+            val action =
+                ListMoviesFragmentDirections.actionListMoviesFragmentToMovieDetailFragment(topRated)
+            findNavController().navigate(action)
+        }.also { binding.moviesListRv.adapter = it }
         LinearSnapHelper().attachToRecyclerView(binding.moviesListRv)
+        setBackgroundRecyclerView()
+    }
 
+    private fun setBackgroundRecyclerView() {
         binding.filmRollLeft.setImageDrawable(
             TileDrawable(
                 ContextCompat.getDrawable(
