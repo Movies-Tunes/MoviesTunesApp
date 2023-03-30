@@ -12,7 +12,13 @@
         <action
             android:id="@+id/action_homeFragment_to_listMoviesFragment"
             app:destination="@id/listMoviesFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"
             app:restoreState="false"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
             />
     </fragment>
     <fragment
@@ -23,7 +29,12 @@
         >
         <action
             android:id="@+id/action_listMoviesFragment_to_movieDetailFragment"
-            app:destination="@id/movieDetailFragment" />
+            app:destination="@id/movieDetailFragment"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            />
     </fragment>
     <fragment
         android:id="@+id/movieDetailFragment"
