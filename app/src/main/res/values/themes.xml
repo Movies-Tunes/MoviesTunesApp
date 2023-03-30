@@ -21,9 +21,18 @@
         <item name="fontWeight">400</item>
         <item name="android:textColor">@color/white</item>
     </style>
-    <style name="WhiteTextAppearanceBody" parent="TextAppearance.AppCompat.Body1">
+    <style name="WhiteTextAppearanceBody1" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_medium14sp</item>
+    </style>
+    <style name="WhiteTextAppearanceBody2" parent="TextAppearance.AppCompat.Body2">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/text_regular12sp</item>
+    </style>
+
+    <style name="WhiteTextAppearanceSubhead" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_title</item>
     </style>
     <style name="WhiteTextAppearanceHead" parent="TextAppearance.AppCompat.Headline">
         <item name="android:textColor">@color/white</item>

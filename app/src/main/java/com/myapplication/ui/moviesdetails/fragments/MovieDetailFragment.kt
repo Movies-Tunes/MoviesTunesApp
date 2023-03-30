@@ -5,8 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.myapplication.R
+import com.myapplication.core.Constants
 import com.myapplication.databinding.FragmentMovieDetailBinding
+import com.myapplication.util.extension.concatParam
+import com.squareup.picasso.Picasso
 
 /**
  * A simple [Fragment] subclass.
@@ -31,13 +36,37 @@ class MovieDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setMovieDetailInView()
+        setInitialVisibleStates()
+        setNavigationToolbar()
+    }
+
+    private fun setMovieDetailInView() {
         args.let { safeArguments ->
             val rated = safeArguments.topRated
             val id = rated?.id
             val posterPath = rated?.posterPath
             val title = rated?.title
             val result = "$id $title $posterPath"
-            _binding.tvTest.text = result
+            posterPath?.let { safePath ->
+                Picasso.get()
+                    .load(Constants.BASE_POSTER_PATH.concatParam(safePath))
+                    .into(_binding.ivPoster)
+            }
+            _binding.detailToolbar.title = title
+            /*TODO binding other fields*/
+        }
+    }
+
+    private fun setInitialVisibleStates() {
+        _binding.tvDescriptionSinopse.visibility = View.GONE
+        _binding.pbLoadingDetails.visibility = View.VISIBLE
+    }
+
+    private fun setNavigationToolbar() {
+        _binding.detailToolbar.setNavigationIcon(R.drawable.ic_back)
+        _binding.detailToolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
         }
     }
 }
