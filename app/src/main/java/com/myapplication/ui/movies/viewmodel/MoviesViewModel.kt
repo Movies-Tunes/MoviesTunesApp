@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.myapplication.core.Response
 import com.myapplication.data.entities.MovieDetail
 import com.myapplication.data.entities.TopRatedResultItem
 import com.myapplication.domain.repository.MovieRepository
@@ -13,11 +14,11 @@ class MoviesViewModel(
     private val movieRepository: MovieRepository
 ) : ViewModel() {
 
-    private val _topRatedMovies: MutableLiveData<List<TopRatedResultItem>> = MutableLiveData()
-    val topRatedMovies: LiveData<List<TopRatedResultItem>> get() = _topRatedMovies
+    private val _topRatedMovies: MutableLiveData<Response<List<TopRatedResultItem>>> = MutableLiveData(Response.Loading())
+    val topRatedMovies: LiveData<Response<List<TopRatedResultItem>>> get() = _topRatedMovies
 
-    private val _moviesDetails: MutableLiveData<MovieDetail> = MutableLiveData()
-    val moviesDetails: LiveData<MovieDetail> get() = _moviesDetails
+    private val _moviesDetails: MutableLiveData<Response<MovieDetail>> = MutableLiveData(Response.Loading())
+    val moviesDetails: LiveData<Response<MovieDetail>> get() = _moviesDetails
 
     fun getTopRatedMovies(page: Int) {
         viewModelScope.launch {
