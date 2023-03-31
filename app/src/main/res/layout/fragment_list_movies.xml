@@ -84,25 +84,62 @@
         android:visibility="gone"
         tools:visibility="visible"
         android:layout_height="wrap_content"/>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_turn_to_top"
+
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:tint="@color/white"
-        android:src="@drawable/ic_arrow_top"
-        android:layout_margin="@dimen/space_20dp"
+        android:orientation="vertical"
         android:layout_gravity="bottom|end"
-        />
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_login"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:tint="@color/white"
-        android:foreground="?android:attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_login"
-        android:layout_margin="@dimen/space_20dp"
+        >
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_turn_to_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:tint="@color/white"
+            android:src="@drawable/ic_arrow_top"
+            android:layout_margin="@dimen/space_20dp"
+            />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_pick_your_favorites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_20dp"
+            android:src="@drawable/ic_favorite_films"
+            android:tint="@color/white"
+            android:visibility="gone"
+            app:layout_anchorGravity="top|center"
+            tools:visibility="visible" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_gravity="bottom|start"
-        />
+        >
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_sign_out"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:tint="@color/white"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:srcCompat="@drawable/ic_sign_out"
+            android:layout_margin="@dimen/space_20dp"
+            />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_login"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:tint="@color/white"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/ic_login"
+            android:layout_margin="@dimen/space_20dp"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

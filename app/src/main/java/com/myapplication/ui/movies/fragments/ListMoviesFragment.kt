@@ -19,7 +19,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.myapplication.MoviesTunesApplication
-import com.myapplication.R
 import com.myapplication.databinding.FragmentListMoviesBinding
 import com.myapplication.ui.movies.adapter.MoviesListAdapter
 import com.myapplication.ui.movies.viewmodel.MoviesViewModel
@@ -67,8 +66,15 @@ class ListMoviesFragment : Fragment() {
 
     private fun verifyAuth() {
         auth.currentUser?.let {
-            _binding.ivLogin.isVisible = false
+            setViewUserAuth()
         }
+    }
+
+    private fun setViewUserAuth() {
+        _binding.ivLogin.isVisible = false
+        _binding.fabPickYourFavorites.isVisible = true
+        _binding.ivSignOut.isVisible = true
+        _binding.ivSignOut.isVisible = true
     }
 
     private fun setRecyclerView() {
@@ -124,7 +130,15 @@ class ListMoviesFragment : Fragment() {
             _binding.moviesListRv.smoothScrollToPosition(0)
         }
         _binding.ivLogin.setOnClickListener {
-            findNavController().navigate(R.id.loginFragment)
+            val action =
+                ListMoviesFragmentDirections.actionListMoviesFragmentToLoginFragment()
+            findNavController().navigate(action)
+        }
+        _binding.ivSignOut.setOnClickListener {
+            auth.signOut()
+            val action =
+                ListMoviesFragmentDirections.actionListMoviesFragmentToLoginFragment()
+            findNavController().navigate(action)
         }
     }
 }
