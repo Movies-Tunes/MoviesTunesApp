@@ -1,4 +1,4 @@
-package com.myapplication.data.remotedatasource
+package com.myapplication.data.remotedatasource.data.api
 
 import com.myapplication.data.entities.MovieDetail
 import com.myapplication.data.entities.TopRatedResult

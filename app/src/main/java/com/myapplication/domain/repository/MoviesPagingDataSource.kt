@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.myapplication.core.Constants.API_KEY
 import com.myapplication.core.Constants.NETWORK_PAGE_SIZE
 import com.myapplication.data.entities.TopRatedResultItem
-import com.myapplication.data.remotedatasource.TheMovieDbApiService
+import com.myapplication.data.remotedatasource.data.api.TheMovieDbApiService
 import okio.IOException
 import retrofit2.HttpException
 
