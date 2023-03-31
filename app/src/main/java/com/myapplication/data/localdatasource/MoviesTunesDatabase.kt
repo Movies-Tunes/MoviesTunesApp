@@ -10,7 +10,7 @@ import com.myapplication.data.entities.MovieDetail
 import com.myapplication.data.entities.TopRatedResultItem
 import com.myapplication.util.converters.TypeConverter
 
-@Database([TopRatedResultItem::class, MovieDetail::class, GenreItem::class], version = 1)
+@Database([TopRatedResultItem::class, MovieDetail::class, GenreItem::class], version = 2)
 @TypeConverters(TypeConverter::class)
 abstract class MoviesTunesDatabase : RoomDatabase() {
     abstract fun movieDao(): MoviesDao
@@ -24,6 +24,7 @@ abstract class MoviesTunesDatabase : RoomDatabase() {
                     MoviesTunesDatabase::class.java,
                     "movies_db",
                 ).addTypeConverter(TypeConverter())
+                    .fallbackToDestructiveMigrationOnDowngrade()
                     .build()
             }
             return instance as MoviesTunesDatabase

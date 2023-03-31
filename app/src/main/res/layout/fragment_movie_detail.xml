@@ -89,7 +89,10 @@
                 android:layout_height="wrap_content"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_genre"
+                android:lines="1"
+                android:ellipsize="end"
                 android:layout_width="wrap_content"
+                android:maxWidth="@dimen/width_text_genre_detail"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="5dp"
                 android:textAppearance="@style/WhiteTextAppearanceBody1"

@@ -23,4 +23,7 @@
     <dimen name="btn_start_width_home">95dp</dimen>
     <dimen name="corner_radius_btn_start">8dp</dimen>
     <dimen name="margin_screens_text">5dp</dimen>
+    <dimen name="paddin_item_movie">5dp</dimen>
+    <dimen name="text_item_movie_width">110dp</dimen>
+    <dimen name="width_text_genre_detail">80dp</dimen>
 </resources>

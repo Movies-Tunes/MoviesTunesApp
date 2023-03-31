@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/AppScreenTheme"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -24,45 +25,74 @@
             app:layout_scrollFlags="scroll|enterAlways" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/movies_list_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/movies_list_rv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <ImageView
+           <!-- <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/film_roll_left"
                 android:layout_width="24dp"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="@id/movies_list_rv"
                 app:layout_constraintEnd_toStartOf="@id/movies_list_rv"
                 app:layout_constraintTop_toTopOf="@id/movies_list_rv"
-                app:srcCompat="@drawable/film_roll_piece" />
+                app:srcCompat="@drawable/film_roll_piece" />-->
 
-            <ImageView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/movies_list_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+
+           <!-- <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/film_roll_right"
                 android:layout_width="24dp"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="@id/movies_list_rv"
                 app:layout_constraintStart_toEndOf="@id/movies_list_rv"
                 app:layout_constraintTop_toTopOf="@id/movies_list_rv"
-                app:srcCompat="@drawable/film_roll_piece" />
+                app:srcCompat="@drawable/film_roll_piece" />-->
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="wrap_content"
 
-
+        android:layout_height="wrap_content"/>
+    <ProgressBar
+        android:layout_gravity="center"
+        android:id="@+id/pb_loading_list"
+        tools:visibility="visible"
+        android:visibility="gone"
+        android:indeterminateTint="@color/white"
+        android:layout_width="60dp"
+        android:layout_height="60dp"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_error_loading"
+        android:text="@string/text_error_occurred_home"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textAppearance="@style/WhiteTextAppearanceHead"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_height="wrap_content"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_turn_to_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:tint="@color/white"
+        android:src="@drawable/ic_arrow_top"
+        android:layout_margin="@dimen/space_20dp"
+        android:layout_gravity="bottom|end"
+        />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
