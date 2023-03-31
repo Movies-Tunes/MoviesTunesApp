@@ -95,4 +95,14 @@
         android:layout_margin="@dimen/space_20dp"
         android:layout_gravity="bottom|end"
         />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_login"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:tint="@color/white"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        app:srcCompat="@drawable/ic_login"
+        android:layout_margin="@dimen/space_20dp"
+        android:layout_gravity="bottom|start"
+        />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

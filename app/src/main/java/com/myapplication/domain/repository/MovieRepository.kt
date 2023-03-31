@@ -14,7 +14,7 @@ import com.myapplication.data.entities.MovieDetail
 import com.myapplication.data.entities.TopRatedResult
 import com.myapplication.data.entities.TopRatedResultItem
 import com.myapplication.data.localdatasource.MoviesDao
-import com.myapplication.data.remotedatasource.TheMovieDbApiService
+import com.myapplication.data.remotedatasource.data.api.TheMovieDbApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

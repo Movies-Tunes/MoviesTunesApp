@@ -9,7 +9,7 @@ import com.myapplication.core.Constants
 import com.myapplication.data.entities.TopRatedResult
 import com.myapplication.data.entities.TopRatedResultItem
 import com.myapplication.data.localdatasource.MoviesTunesDatabase
-import com.myapplication.data.remotedatasource.TheMovieDbApiService
+import com.myapplication.data.remotedatasource.data.api.TheMovieDbApiService
 import retrofit2.HttpException
 import java.io.IOException
 

@@ -15,7 +15,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.myapplication.MoviesTunesApplication
+import com.myapplication.R
 import com.myapplication.databinding.FragmentListMoviesBinding
 import com.myapplication.ui.movies.adapter.MoviesListAdapter
 import com.myapplication.ui.movies.viewmodel.MoviesViewModel
@@ -27,6 +31,10 @@ class ListMoviesFragment : Fragment() {
 
     private lateinit var _binding: FragmentListMoviesBinding
     private val binding get() = _binding
+    private val auth: FirebaseAuth by lazy {
+        Firebase.auth
+    }
+
     private val movieViewModel: MoviesViewModel by viewModels {
         object : AbstractSavedStateViewModelFactory() {
             override fun <T : ViewModel> create(
@@ -51,9 +59,16 @@ class ListMoviesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        verifyAuth()
         setRecyclerView()
         initObserversOfView()
         setListeners()
+    }
+
+    private fun verifyAuth() {
+        auth.currentUser?.let {
+            _binding.ivLogin.isVisible = false
+        }
     }
 
     private fun setRecyclerView() {
@@ -68,6 +83,7 @@ class ListMoviesFragment : Fragment() {
                 ListMoviesFragmentDirections.actionListMoviesFragmentToMovieDetailFragment(topRated)
             findNavController().navigate(action)
         }.also { binding.moviesListRv.adapter = it }
+
         binding.moviesListRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 binding.fabTurnToTop.isVisible = newState != 0
@@ -106,6 +122,9 @@ class ListMoviesFragment : Fragment() {
         }
         _binding.fabTurnToTop.setOnClickListener {
             _binding.moviesListRv.smoothScrollToPosition(0)
+        }
+        _binding.ivLogin.setOnClickListener {
+            findNavController().navigate(R.id.loginFragment)
         }
     }
 }
