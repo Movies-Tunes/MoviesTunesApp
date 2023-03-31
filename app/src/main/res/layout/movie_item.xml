@@ -1,27 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/black"
-    android:orientation="vertical"
-    android:paddingVertical="@dimen/paddin_item_movie">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/movie_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:scaleType="center" />
-
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/film_roll_left"
+        android:layout_width="24dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/movie_iv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/film_roll_piece" />
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/movie_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:background="@color/black"
         android:maxWidth="@dimen/text_item_movie_width"
         android:padding="@dimen/margin_screens_text"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/movie_iv"
+        app:layout_constraintStart_toEndOf="@id/film_roll_left"
+        app:layout_constraintEnd_toStartOf="@id/film_roll_right"
         android:textColor="@color/white"
         android:textAppearance="@style/WhiteTextAppearanceBody2"
         android:textStyle="bold"
         />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/film_roll_right"
+        android:layout_width="24dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/movie_iv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/film_roll_piece" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

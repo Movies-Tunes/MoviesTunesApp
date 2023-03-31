@@ -1,12 +1,6 @@
 package com.myapplication.data.localdatasource
 
-import androidx.paging.PagingSource
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Update
-import androidx.room.Delete
+import androidx.room.*
 import com.myapplication.data.entities.MovieDetail
 import com.myapplication.data.entities.TopRatedResultItem
 import kotlinx.coroutines.flow.Flow
@@ -15,6 +9,9 @@ import kotlinx.coroutines.flow.Flow
 interface MoviesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovie(movie: TopRatedResultItem)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(result: List<TopRatedResultItem>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovieDetails(movie: MovieDetail)

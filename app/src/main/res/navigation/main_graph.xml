@@ -33,6 +33,7 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"
             app:enterAnim="@android:anim/slide_in_left"
+            app:popUpToSaveState="true"
             app:exitAnim="@android:anim/slide_out_right"
             />
     </fragment>

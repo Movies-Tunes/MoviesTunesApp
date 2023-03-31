@@ -4,7 +4,9 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.myapplication.MoviesTunesApplication
 import com.myapplication.core.Constants
+import com.myapplication.core.Constants.DEFAULT_QUERY
 import com.myapplication.core.Constants.NETWORK_PAGE_SIZE
 import com.myapplication.core.Response
 import com.myapplication.core.error.CacheNotFoundException
@@ -16,17 +18,18 @@ import com.myapplication.data.remotedatasource.TheMovieDbApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
 
 interface MovieRepository {
     suspend fun addMovie(movie: MovieDetail)
-    suspend fun getAllMovies(page: Int): Response<List<TopRatedResultItem>>
+    suspend fun getAllMovies(page: Int, query: String): Response<List<TopRatedResultItem>>
     suspend fun getMovieDetails(movieId: Int): Response<MovieDetail>
     suspend fun updateMovie(movie: TopRatedResult): Int
     suspend fun deleteMovie(movie: TopRatedResult): Int
 
-    fun getAllMovies(): Flow<PagingData<TopRatedResultItem>>
+    fun getAllMovies(query: String): Flow<PagingData<TopRatedResultItem>>
 }
 
 class MovieDataSource(
@@ -35,14 +38,18 @@ class MovieDataSource(
 ) : MovieRepository {
 
     private var topRatedMovies: List<TopRatedResultItem>? = null
+    private var movieDetailDb: MovieDetail? = null
 
     override suspend fun addMovie(movie: MovieDetail) {
         moviesDao.insertMovieDetails(movie)
     }
 
-    override suspend fun getAllMovies(page: Int): Response<List<TopRatedResultItem>> {
+    override suspend fun getAllMovies(
+        page: Int,
+        query: String,
+    ): Response<List<TopRatedResultItem>> {
         return try {
-            val movies = service.getTopRatedMovies(Constants.API_KEY, page)
+            val movies = service.getTopRatedMovies(Constants.API_KEY, page, query)
             CoroutineScope(Dispatchers.IO).launch {
                 movies.results.map { it }.onEach { topRatedResultItem ->
                     saveTopRatedMoviesInCache(topRatedResultItem)
@@ -68,16 +75,15 @@ class MovieDataSource(
     }
 
     @OptIn(ExperimentalPagingApi::class)
-    override fun getAllMovies(): Flow<PagingData<TopRatedResultItem>> {
+    override fun getAllMovies(query: String): Flow<PagingData<TopRatedResultItem>> {
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
-                prefetchDistance = 10,
-                initialLoadSize = NETWORK_PAGE_SIZE,
             ),
             initialKey = 1,
+            remoteMediator = MoviesTunesApplication.instanceMediatorPaging,
         ) {
-            MoviesPagingDataSource(service)
+            MoviesPagingDataSource(query, service)
         }.flow
     }
 
@@ -87,15 +93,20 @@ class MovieDataSource(
 
     override suspend fun getMovieDetails(movieId: Int): Response<MovieDetail> {
         return try {
-            val movieDetail = service.getMovieDetails(movieId, Constants.API_KEY)
+            val movieDetail = service.getMovieDetails(movieId, Constants.API_KEY, DEFAULT_QUERY)
             CoroutineScope(Dispatchers.IO).launch {
                 addMovie(movieDetail)
+                moviesDao.getMovieDetail(movieId).collectLatest {
+                    movieDetailDb = it
+                }
             }
             Response.Success(movieDetail)
         } catch (e: Exception) {
             try {
-                val movieDetail = moviesDao.getMovieDetail(movieId).single()
-                Response.Success(movieDetail!!)
+                moviesDao.getMovieDetail(movieId).collectLatest {
+                    movieDetailDb = it
+                }
+                Response.Success(movieDetailDb!!)
             } catch (e: Exception) {
                 Response.Error(CacheNotFoundException())
             }

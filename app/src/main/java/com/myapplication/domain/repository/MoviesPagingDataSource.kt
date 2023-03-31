@@ -3,12 +3,14 @@ package com.myapplication.domain.repository
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.myapplication.core.Constants.API_KEY
+import com.myapplication.core.Constants.NETWORK_PAGE_SIZE
 import com.myapplication.data.entities.TopRatedResultItem
 import com.myapplication.data.remotedatasource.TheMovieDbApiService
 import okio.IOException
 import retrofit2.HttpException
 
 class MoviesPagingDataSource(
+    private val query: String,
     private val tmdbService: TheMovieDbApiService,
 ) : PagingSource<Int, TopRatedResultItem>() {
 
@@ -19,16 +21,22 @@ class MoviesPagingDataSource(
         }
     }
 
-/*    override val jumpingSupported: Boolean
-        get() = true*/
-
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TopRatedResultItem> {
         return try {
             val pageIndex = params.key ?: 1
             val response = tmdbService.getTopRatedMovies(
                 apiKey = API_KEY,
                 page = pageIndex,
+                query,
             )
+
+            val nextKey = if (response.results.isEmpty()) {
+                null
+            } else {
+                // initial load size = 3 * NETWORK_PAGE_SIZE
+                // ensure we're not requesting duplicating items, at the 2nd request
+                pageIndex + (params.loadSize / NETWORK_PAGE_SIZE)
+            }
 
             LoadResult.Page(
                 data = response.results,
