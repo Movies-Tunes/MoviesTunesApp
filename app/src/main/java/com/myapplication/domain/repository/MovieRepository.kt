@@ -1,11 +1,9 @@
 package com.myapplication.domain.repository
 
-import android.util.Log
-import androidx.lifecycle.LiveData
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.myapplication.core.Constants
 import com.myapplication.core.Constants.NETWORK_PAGE_SIZE
 import com.myapplication.core.Response
@@ -15,6 +13,11 @@ import com.myapplication.data.entities.TopRatedResult
 import com.myapplication.data.entities.TopRatedResultItem
 import com.myapplication.data.localdatasource.MoviesDao
 import com.myapplication.data.remotedatasource.TheMovieDbApiService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.launch
 
 interface MovieRepository {
     suspend fun addMovie(movie: MovieDetail)
@@ -23,7 +26,7 @@ interface MovieRepository {
     suspend fun updateMovie(movie: TopRatedResult): Int
     suspend fun deleteMovie(movie: TopRatedResult): Int
 
-    fun getAllMovies(): LiveData<PagingData<TopRatedResultItem>>
+    fun getAllMovies(): Flow<PagingData<TopRatedResultItem>>
 }
 
 class MovieDataSource(
@@ -31,69 +34,71 @@ class MovieDataSource(
     private val moviesDao: MoviesDao,
 ) : MovieRepository {
 
+    private var topRatedMovies: List<TopRatedResultItem>? = null
+
     override suspend fun addMovie(movie: MovieDetail) {
         moviesDao.insertMovieDetails(movie)
     }
 
     override suspend fun getAllMovies(page: Int): Response<List<TopRatedResultItem>> {
         return try {
-            val topRatedMovies = service.getTopRatedMovies(Constants.API_KEY, page)
-            topRatedMovies.let {
-                it.results.forEach { safeMovie ->
-                    moviesDao.insertMovie(safeMovie)
+            val movies = service.getTopRatedMovies(Constants.API_KEY, page)
+            CoroutineScope(Dispatchers.IO).launch {
+                movies.results.map { it }.onEach { topRatedResultItem ->
+                    saveTopRatedMoviesInCache(topRatedResultItem)
+                }
+                moviesDao.getAllMovies().collect { moviesCache ->
+                    moviesCache?.let {
+                        topRatedMovies = it
+                    }
                 }
             }
-            Response.Success(topRatedMovies.results)
-
+            Response.Success(topRatedMovies ?: movies.results.sortedBy { it.id })
         } catch (e: Exception) {
             try {
                 var movies: List<TopRatedResultItem>? = null
                 moviesDao.getAllMovies().collect {
                     movies = it
                 }
-                Response.Success(movies!!)
-
+                Response.Success(movies ?: mutableListOf())
             } catch (e: Exception) {
                 Response.Error(CacheNotFoundException())
             }
-
         }
     }
 
-    override fun getAllMovies(): LiveData<PagingData<TopRatedResultItem>> {
+    @OptIn(ExperimentalPagingApi::class)
+    override fun getAllMovies(): Flow<PagingData<TopRatedResultItem>> {
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
-                enablePlaceholders = false,
-                initialLoadSize = 2
+                prefetchDistance = 10,
+                initialLoadSize = NETWORK_PAGE_SIZE,
             ),
-            pagingSourceFactory = {
-                MoviesPagingDataSource(service)
-            }, initialKey = 1
-        ).liveData
+            initialKey = 1,
+        ) {
+            MoviesPagingDataSource(service)
+        }.flow
+    }
 
+    private suspend fun saveTopRatedMoviesInCache(topRatedMovies: TopRatedResultItem) {
+        moviesDao.insertMovie(topRatedMovies)
     }
 
     override suspend fun getMovieDetails(movieId: Int): Response<MovieDetail> {
         return try {
             val movieDetail = service.getMovieDetails(movieId, Constants.API_KEY)
-            Log.e("Detail", movieDetail.toString())
-            kotlin.runCatching {
-                moviesDao.insertMovieDetails(movieDetail)
+            CoroutineScope(Dispatchers.IO).launch {
+                addMovie(movieDetail)
             }
             Response.Success(movieDetail)
         } catch (e: Exception) {
             try {
-                var movies: MovieDetail? = null
-                moviesDao.getMovieDetail(movieId).collect {
-                    movies = it
-                }
-                Response.Success(movies!!)
-
+                val movieDetail = moviesDao.getMovieDetail(movieId).single()
+                Response.Success(movieDetail!!)
             } catch (e: Exception) {
                 Response.Error(CacheNotFoundException())
             }
-
         }
     }
 

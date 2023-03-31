@@ -9,24 +9,24 @@ import com.myapplication.core.Constants.BASE_POSTER_PATH
 import com.myapplication.data.entities.TopRatedResultItem
 import com.myapplication.databinding.MovieItemBinding
 import com.myapplication.util.MoviesListDiffCallback
+import com.myapplication.util.extension.concatParam
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 class MoviesListAdapter(
-
-    private val onClickItem: (TopRatedResultItem) -> Unit
+    private val onClickItem: (TopRatedResultItem) -> Unit,
 ) : PagingDataAdapter<TopRatedResultItem, MoviesListAdapter.MoviesListViewHolder>(
-    MoviesListDiffCallback()
+    MoviesListDiffCallback(),
 ) {
     inner class MoviesListViewHolder(
         private val binding: MovieItemBinding,
-
-        ) : RecyclerView.ViewHolder(binding.root) {
-
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: TopRatedResultItem) {
             binding.movieTitle.text =
                 binding.root.context.getString(R.string.movie_title, movie.title)
-            Picasso.get().load(BASE_POSTER_PATH + movie.posterPath).into(
+            Picasso.get().load(
+                BASE_POSTER_PATH.concatParam(movie.posterPath),
+            ).into(
                 binding.movieIv,
                 object : Callback {
                     override fun onSuccess() {
@@ -60,5 +60,4 @@ class MoviesListAdapter(
             holder.bind(movie)
         }
     }
-
 }

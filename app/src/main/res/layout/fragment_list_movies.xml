@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/AppScreenTheme"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -30,8 +31,18 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/movies_list_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/film_roll_left"
+                android:layout_width="24dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/movies_list_rv"
+                app:layout_constraintEnd_toStartOf="@id/movies_list_rv"
+                app:layout_constraintTop_toTopOf="@id/movies_list_rv"
+                app:srcCompat="@drawable/film_roll_piece" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/movies_list_rv"
@@ -44,16 +55,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <ImageView
-                android:id="@+id/film_roll_left"
-                android:layout_width="24dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="@id/movies_list_rv"
-                app:layout_constraintEnd_toStartOf="@id/movies_list_rv"
-                app:layout_constraintTop_toTopOf="@id/movies_list_rv"
-                app:srcCompat="@drawable/film_roll_piece" />
 
-            <ImageView
+
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/film_roll_right"
                 android:layout_width="24dp"
                 android:layout_height="0dp"
@@ -63,6 +67,22 @@
                 app:srcCompat="@drawable/film_roll_piece" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-
+    <ProgressBar
+        android:layout_gravity="center"
+        android:id="@+id/pb_loading_list"
+        tools:visibility="visible"
+        android:visibility="gone"
+        android:indeterminateTint="@color/white"
+        android:layout_width="60dp"
+        android:layout_height="60dp"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_error_loading"
+        android:text="@string/text_error_occurred_home"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textAppearance="@style/WhiteTextAppearanceHead"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_height="wrap_content"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

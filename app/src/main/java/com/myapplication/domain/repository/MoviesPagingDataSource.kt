@@ -9,7 +9,7 @@ import okio.IOException
 import retrofit2.HttpException
 
 class MoviesPagingDataSource(
-    private val tmdbService: TheMovieDbApiService
+    private val tmdbService: TheMovieDbApiService,
 ) : PagingSource<Int, TopRatedResultItem>() {
 
     override fun getRefreshKey(state: PagingState<Int, TopRatedResultItem>): Int? {
@@ -19,26 +19,26 @@ class MoviesPagingDataSource(
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TopRatedResultItem> {
+/*    override val jumpingSupported: Boolean
+        get() = true*/
 
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TopRatedResultItem> {
         return try {
             val pageIndex = params.key ?: 1
             val response = tmdbService.getTopRatedMovies(
                 apiKey = API_KEY,
-                page = pageIndex
+                page = pageIndex,
             )
 
             LoadResult.Page(
                 data = response.results,
-                prevKey = if (pageIndex == 1) null else pageIndex - 1,
-                nextKey = pageIndex + 1
+                prevKey = null,
+                nextKey = response.page + 1,
             )
         } catch (exception: IOException) {
             return LoadResult.Error(exception)
         } catch (exception: HttpException) {
             return LoadResult.Error(exception)
         }
-
     }
-
 }
