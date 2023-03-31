@@ -7,20 +7,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.myapplication.MoviesTunesApplication
 import com.myapplication.R
 import com.myapplication.data.entities.TopRatedResultItem
 import com.myapplication.databinding.FragmentListMoviesBinding
-import com.myapplication.ui.movies.adapter.ListMoviesAdapter
+import com.myapplication.ui.movies.adapter.MoviesListAdapter
+import com.myapplication.ui.movies.viewmodel.MoviesViewModel
+import com.myapplication.ui.movies.viewmodel.ViewModelFactory
 import com.myapplication.ui.util.TileDrawable
 
 class ListMoviesFragment : Fragment() {
 
     private var _binding: FragmentListMoviesBinding? = null
     private val binding get() = _binding!!
+    private lateinit var viewModel: MoviesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,44 +50,22 @@ class ListMoviesFragment : Fragment() {
             false,
         ).also { binding.moviesListRv.layoutManager = it }
 
-        ListMoviesAdapter(
-            mutableListOf(
-                TopRatedResultItem(
-                    id = 238,
-                    posterPath = "https://image.tmdb.org/t/p/w342/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
-                    title = "The Godfather",
-                ),
-                TopRatedResultItem(
-                    id = 278,
-                    posterPath = "https://image.tmdb.org/t/p/w342/6gIJuFHh5Lj4dNaPG3TzIMl7L68.jpg",
-                    title = "Cuando Sea Joven",
-                ),
-                TopRatedResultItem(
-                    id = 240,
-                    posterPath = "https://image.tmdb.org/t/p/w342/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
-                    title = "The Godfather Part II",
-                ),
-                TopRatedResultItem(
-                    id = 240,
-                    posterPath = "https://image.tmdb.org/t/p/w342/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
-                    title = "The Godfather Part II",
-                ),
-                TopRatedResultItem(
-                    id = 240,
-                    posterPath = "https://image.tmdb.org/t/p/w342/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
-                    title = "The Godfather Part II",
-                ),
-                TopRatedResultItem(
-                    id = 240,
-                    posterPath = "https://image.tmdb.org/t/p/w342/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
-                    title = "The Godfather Part II",
-                ),
-            ),
-        ) { topRated ->
+        val adapter = MoviesListAdapter { topRated: TopRatedResultItem ->
             val action =
                 ListMoviesFragmentDirections.actionListMoviesFragmentToMovieDetailFragment(topRated)
             findNavController().navigate(action)
-        }.also { binding.moviesListRv.adapter = it }
+        }
+
+        binding.moviesListRv.adapter = adapter
+        val repository = (requireActivity().application as MoviesTunesApplication).movieDatasource
+
+        viewModel =
+            ViewModelProvider(this, ViewModelFactory(repository))[MoviesViewModel::class.java]
+
+        viewModel.getMovieList().observe(viewLifecycleOwner) {
+            adapter.submitData(lifecycle, it)
+        }
+
         LinearSnapHelper().attachToRecyclerView(binding.moviesListRv)
         setBackgroundRecyclerView()
     }

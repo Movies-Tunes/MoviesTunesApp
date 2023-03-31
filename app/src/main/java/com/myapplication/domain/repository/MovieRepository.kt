@@ -1,7 +1,13 @@
 package com.myapplication.domain.repository
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.myapplication.core.Constants
+import com.myapplication.core.Constants.NETWORK_PAGE_SIZE
 import com.myapplication.core.Response
 import com.myapplication.core.error.CacheNotFoundException
 import com.myapplication.data.entities.MovieDetail
@@ -16,13 +22,14 @@ interface MovieRepository {
     suspend fun getMovieDetails(movieId: Int): Response<MovieDetail>
     suspend fun updateMovie(movie: TopRatedResult): Int
     suspend fun deleteMovie(movie: TopRatedResult): Int
+
+    fun getAllMovies(): LiveData<PagingData<TopRatedResultItem>>
 }
 
 class MovieDataSource(
     private val service: TheMovieDbApiService,
     private val moviesDao: MoviesDao,
 ) : MovieRepository {
-
 
     override suspend fun addMovie(movie: MovieDetail) {
         moviesDao.insertMovieDetails(movie)
@@ -51,6 +58,20 @@ class MovieDataSource(
             }
 
         }
+    }
+
+    override fun getAllMovies(): LiveData<PagingData<TopRatedResultItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = NETWORK_PAGE_SIZE,
+                enablePlaceholders = false,
+                initialLoadSize = 2
+            ),
+            pagingSourceFactory = {
+                MoviesPagingDataSource(service)
+            }, initialKey = 1
+        ).liveData
+
     }
 
     override suspend fun getMovieDetails(movieId: Int): Response<MovieDetail> {

@@ -19,8 +19,8 @@ import com.squareup.picasso.Picasso
  * create an instance of this fragment.
  */
 class MovieDetailFragment : Fragment() {
-    private lateinit var _binding: FragmentMovieDetailBinding
-    val binding: FragmentMovieDetailBinding get() = _binding
+    private var _binding: FragmentMovieDetailBinding? = null
+    private val binding get() = _binding!!
     private val args: MovieDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -29,8 +29,7 @@ class MovieDetailFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentMovieDetailBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
-        return _binding.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,6 +39,7 @@ class MovieDetailFragment : Fragment() {
         setInitialVisibleStates()
         setNavigationToolbar()
     }
+
 
     private fun setMovieDetailInView() {
         args.let { safeArguments ->
@@ -51,22 +51,27 @@ class MovieDetailFragment : Fragment() {
             posterPath?.let { safePath ->
                 Picasso.get()
                     .load(Constants.BASE_POSTER_PATH.concatParam(safePath))
-                    .into(_binding.ivPoster)
+                    .into(binding.ivPoster)
             }
-            _binding.detailToolbar.title = title
+            binding.detailToolbar.title = title
             /*TODO binding other fields*/
         }
     }
 
     private fun setInitialVisibleStates() {
-        _binding.tvDescriptionSinopse.visibility = View.GONE
-        _binding.pbLoadingDetails.visibility = View.VISIBLE
+        binding.tvDescriptionSinopse.visibility = View.GONE
+        binding.pbLoadingDetails.visibility = View.VISIBLE
     }
 
     private fun setNavigationToolbar() {
-        _binding.detailToolbar.setNavigationIcon(R.drawable.ic_back)
-        _binding.detailToolbar.setNavigationOnClickListener {
+        binding.detailToolbar.setNavigationIcon(R.drawable.ic_back)
+        binding.detailToolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
