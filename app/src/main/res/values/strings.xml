@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">MovieTunes</string>
+    <string name="message_success_default">Success</string>
 
     <!--OnBoarding (Splash) Screen-->
     <string name="text_welcome_to_movie_tunes">Welcome to \nMovieTunes</string>
@@ -22,4 +23,7 @@
     <string name="text_hint_name">e. John Doe</string>
     <string name="text_button_register">Register</string>
     <string name="create_your_account">Create your account</string>
+    <string name="text_not_found_favs">Not favorites films saved yet</string>
+    <string name="add_film_you_favorite">Add this movie in your favorites</string>
+    <string name="message_error_default">Error in delete</string>
 </resources>

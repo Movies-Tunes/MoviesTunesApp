@@ -7,12 +7,12 @@ import com.squareup.moshi.Json
 @Entity("movie_detail_tb")
 data class MovieDetail(
     @PrimaryKey
-    val id: Int,
+    open val id: Long,
     val overview: String,
     @Json(name = "poster_path")
-    val posterPath: String?,
+    open val posterPath: String?,
     @Json(name = "release_date")
     val releaseDate: String,
     val runtime: Int,
-    val genres: List<GenreItem>
+    val genres: List<GenreItem>,
 )

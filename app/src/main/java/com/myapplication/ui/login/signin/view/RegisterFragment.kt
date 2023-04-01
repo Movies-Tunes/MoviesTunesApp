@@ -44,6 +44,13 @@ class RegisterFragment : Fragment() {
             when (state) {
                 is Response.Error -> {
                     hideLoading()
+                    state.exception.message?.let {
+                        Snackbar.make(
+                            requireView(),
+                            it,
+                            Snackbar.LENGTH_SHORT,
+                        ).show()
+                    }
                     state.exception.printStackTrace()
                 }
                 is Response.Loading -> {
@@ -56,9 +63,10 @@ class RegisterFragment : Fragment() {
                         "Success register",
                         Snackbar.LENGTH_SHORT,
                     ).show()
+                    clearFields()
                     val action =
                         RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
-                    findNavController().navigate(action)
+                    findNavController().navigate(R.id.action_registerFragment_to_listMoviesFragment)
                 }
             }
         }
@@ -77,7 +85,6 @@ class RegisterFragment : Fragment() {
                     _binding.etEmail.text.toString(),
                     _binding.etPass.text.toString(),
                 )
-                clearFields()
             } else {
                 Snackbar.make(
                     requireView(),
@@ -95,9 +102,15 @@ class RegisterFragment : Fragment() {
     }
 
     private fun validateFields() = when {
-        _binding.etName.text.toString().validate().not() -> false
-        _binding.etEmail.text.toString().validate().not() -> false
-        _binding.etPass.text.toString().validate().not() -> false
+        _binding.etName.text.toString().validate().not() -> {
+            false
+        }
+        _binding.etEmail.text.toString().validate().not() -> {
+            false
+        }
+        _binding.etPass.text.toString().validate().not() -> {
+            false
+        }
         else -> true
     }
 

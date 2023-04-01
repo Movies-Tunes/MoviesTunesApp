@@ -69,7 +69,16 @@ class LoginFragment : Fragment() {
             when (state) {
                 is Response.Error -> {
                     hideLoading()
-                    state.exception.printStackTrace()
+                    state.exception.apply {
+                        message?.let {
+                            Snackbar.make(
+                                requireView(),
+                                it,
+                                Snackbar.LENGTH_SHORT,
+                            ).show()
+                        }
+                        printStackTrace()
+                    }
                 }
                 is Response.Loading -> {
                     showLoading()

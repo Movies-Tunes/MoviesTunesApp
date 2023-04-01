@@ -9,8 +9,8 @@ import androidx.navigation.fragment.findNavController
 import com.myapplication.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var _binding: FragmentHomeBinding
+    private val binding get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -18,17 +18,15 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.btnStart.setOnClickListener {
             findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToListMoviesFragment(),
             )
         }
-        return binding.root
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 }

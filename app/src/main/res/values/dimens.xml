@@ -26,4 +26,6 @@
     <dimen name="paddin_item_movie">5dp</dimen>
     <dimen name="text_item_movie_width">110dp</dimen>
     <dimen name="width_text_genre_detail">80dp</dimen>
+    <dimen name="width_card_poster_fav">110dp</dimen>
+    <dimen name="height_card_poster_fav">160dp</dimen>
 </resources>

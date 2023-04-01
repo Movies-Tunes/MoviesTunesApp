@@ -75,7 +75,7 @@ class MoviesViewModel(
         super.onCleared()
     }
 
-    fun getMovieList(query: String): Flow<PagingData<TopRatedResultItem>> {
+    private fun getMovieList(query: String): Flow<PagingData<TopRatedResultItem>> {
         return movieRepository.getAllMovies(query)
     }
 }

@@ -17,7 +17,7 @@ class MoviesDetailsViewModel(
         MutableLiveData(Response.Loading())
     val moviesDetails: LiveData<Response<MovieDetail>> get() = _moviesDetails
 
-    fun getMovieDetails(movieId: Int) {
+    fun getMovieDetails(movieId: Long) {
         _moviesDetails.postValue(Response.Loading())
         viewModelScope.launch {
             val movieDetails = movieRepository.getMovieDetails(movieId)

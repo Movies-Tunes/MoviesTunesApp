@@ -6,6 +6,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 const val FAVORITE_FILMS_COLLECTION = "favorite films"
+const val FAVORITE_FILMS_COLLECTION_FIELD = "userId"
 
 class FirebaseConfig {
     private val firestore: FirebaseFirestore = Firebase.firestore
