@@ -29,6 +29,7 @@ import com.myapplication.ui.moviesdetails.viewmodel.MoviesDetailsViewModel
 import com.myapplication.util.extension.concatParam
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MovieDetailFragment : Fragment() {
     private lateinit var _binding: FragmentMovieDetailBinding
@@ -96,10 +97,12 @@ class MovieDetailFragment : Fragment() {
 
     private fun getDetailsMovie(id: Long) {
         id.let {
-            moviesDetailsViewModel.getMovieDetails(it)
+            moviesDetailsViewModel.getMovieDetails(it, Locale.getDefault().toLanguageTag())
             lifecycleScope.launch {
                 _binding.ivStarFavorite.isEnabled =
-                    auth.currentUser?.uid?.let { uid -> favMovies.isFavMovie(uid,it).not() } == true
+                    auth.currentUser?.uid?.let { uid ->
+                        favMovies.isFavMovie(uid, it).not()
+                    } == true
             }
         }
     }
@@ -200,7 +203,7 @@ class MovieDetailFragment : Fragment() {
                         )
                         return@setOnClickListener
                     }
-                    auth.currentUser?.uid?.let { it1 -> favMovies.deleteFavMovie(it1,id) }
+                    auth.currentUser?.uid?.let { it1 -> favMovies.deleteFavMovie(it1, id) }
                 }
             } else {
                 Toast.makeText(

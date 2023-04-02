@@ -26,6 +26,7 @@ import com.myapplication.ui.movies.viewmodel.MoviesViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.*
 
 class ListMoviesFragment : Fragment() {
 
@@ -62,6 +63,12 @@ class ListMoviesFragment : Fragment() {
         setRecyclerView()
         initObserversOfView()
         setListeners()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val moviesListAdapter = _binding.moviesListRv.adapter as MoviesListAdapter
+        moviesListAdapter.retry()
     }
 
     private fun verifyAuth() {

@@ -8,6 +8,7 @@ import com.myapplication.core.Response
 import com.myapplication.data.entities.MovieDetail
 import com.myapplication.domain.repository.MovieRepository
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MoviesDetailsViewModel(
     private val movieRepository: MovieRepository,
@@ -17,10 +18,11 @@ class MoviesDetailsViewModel(
         MutableLiveData(Response.Loading())
     val moviesDetails: LiveData<Response<MovieDetail>> get() = _moviesDetails
 
-    fun getMovieDetails(movieId: Long) {
+    fun getMovieDetails(movieId: Long, query: String) {
         _moviesDetails.postValue(Response.Loading())
         viewModelScope.launch {
-            val movieDetails = movieRepository.getMovieDetails(movieId)
+            val movieDetails =
+                movieRepository.getMovieDetails(movieId, query)
             _moviesDetails.postValue(movieDetails)
         }
     }

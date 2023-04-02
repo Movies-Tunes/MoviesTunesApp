@@ -8,7 +8,7 @@ import com.myapplication.data.entities.TopRatedResultItem
 import com.myapplication.domain.repository.MovieRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import java.util.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MoviesViewModel(
@@ -16,13 +16,11 @@ class MoviesViewModel(
     private val movieRepository: MovieRepository,
 ) : ViewModel() {
 
-    private var statePaging: StateFlow<UiState> get() = MutableStateFlow(UiState())
-    private val _topRatedMovies: Flow<PagingData<TopRatedResultItem>>
+    private var _topRatedMovies: Flow<PagingData<TopRatedResultItem>> = emptyFlow()
     val topRatedMovies: Flow<PagingData<TopRatedResultItem>> get() = _topRatedMovies
-    private val accept: (UiAction) -> Unit
 
     init {
-        val initialQuery: String =
+      /*  val initialQuery: String =
             savedStateHandle[Constants.DEFAULT_QUERY] ?: Constants.DEFAULT_QUERY
         val lastQueryScrolled: String =
             savedStateHandle[Constants.DEFAULT_QUERY] ?: Constants.DEFAULT_QUERY
@@ -41,38 +39,16 @@ class MoviesViewModel(
                 started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
                 replay = 1,
             )
-            .onStart { emit(UiAction.Scroll(currentQuery = lastQueryScrolled)) }
-
-        _topRatedMovies = searches
-            .flatMapLatest { getMovieList(it.query) }
+            .onStart { emit(UiAction.Scroll(currentQuery = lastQueryScrolled)) }*/
+        _topRatedMovies = getMovieList(Locale.getDefault().toLanguageTag())
             .cachedIn(viewModelScope)
-
-        statePaging = combine(
-            searches,
-            queriesScrolled,
-            ::Pair,
-        ).map { (search, scroll) ->
-            UiState(
-                query = search.query,
-                lastQueryScrolled = scroll.currentQuery,
-                // If the search query matches the scroll query, the user has scrolled
-                hasNotScrolledForCurrentSearch = search.query != scroll.currentQuery,
-            )
-        }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
-                initialValue = UiState(),
-            )
-
-        accept = { action ->
-            viewModelScope.launch { actionStateFlow.emit(action) }
-        }
     }
 
     override fun onCleared() {
-        savedStateHandle[Constants.DEFAULT_QUERY] = statePaging.value.lastQueryScrolled
         super.onCleared()
+        _topRatedMovies = movieRepository
+            .getAllMovies(Locale.getDefault().toLanguageTag())
+            .cachedIn(viewModelScope)
     }
 
     private fun getMovieList(query: String): Flow<PagingData<TopRatedResultItem>> {
@@ -87,6 +63,6 @@ sealed class UiAction {
 
 data class UiState(
     val query: String = Constants.DEFAULT_QUERY,
-    val lastQueryScrolled: String = Constants.DEFAULT_QUERY,
+    val lastQueryScrolled: String = Locale.getDefault().country,
     val hasNotScrolledForCurrentSearch: Boolean = false,
 )

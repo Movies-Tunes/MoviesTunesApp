@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
@@ -46,6 +47,9 @@ class SignViewModel : ViewModel() {
                         _signIn.value = Response.Success(result.user)
                     }.await()
             } catch (e: FirebaseAuthInvalidCredentialsException) {
+                _signIn.value = Response.Error(e)
+                e.printStackTrace()
+            } catch (e: FirebaseAuthUserCollisionException) {
                 _signIn.value = Response.Error(e)
                 e.printStackTrace()
             }
