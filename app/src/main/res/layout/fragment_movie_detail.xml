@@ -99,6 +99,29 @@
                 tools:text="148"
                 />
         </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_favorite_movie"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:gravity="center_vertical"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_star_favorite"
+                android:layout_width="30dp"
+                app:srcCompat="@drawable/favorite_selector"
+                android:layout_height="30dp"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/space_10dp"
+                android:textAppearance="@style/WhiteTextAppearanceBody1"
+                android:gravity="center"
+                android:text="@string/add_film_you_favorite"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
@@ -108,6 +131,7 @@
             android:gravity="center"
             android:text="@string/text_sinopse_movie"
             />
+
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_description_sinopse"

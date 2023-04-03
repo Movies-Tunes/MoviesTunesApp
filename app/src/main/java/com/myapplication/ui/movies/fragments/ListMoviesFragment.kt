@@ -19,12 +19,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.myapplication.MoviesTunesApplication
+import com.myapplication.R
 import com.myapplication.databinding.FragmentListMoviesBinding
 import com.myapplication.ui.movies.adapter.MoviesListAdapter
 import com.myapplication.ui.movies.viewmodel.MoviesViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.*
 
 class ListMoviesFragment : Fragment() {
 
@@ -33,7 +35,6 @@ class ListMoviesFragment : Fragment() {
     private val auth: FirebaseAuth by lazy {
         Firebase.auth
     }
-
     private val movieViewModel: MoviesViewModel by viewModels {
         object : AbstractSavedStateViewModelFactory() {
             override fun <T : ViewModel> create(
@@ -62,6 +63,12 @@ class ListMoviesFragment : Fragment() {
         setRecyclerView()
         initObserversOfView()
         setListeners()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val moviesListAdapter = _binding.moviesListRv.adapter as MoviesListAdapter
+        moviesListAdapter.retry()
     }
 
     private fun verifyAuth() {
@@ -139,6 +146,9 @@ class ListMoviesFragment : Fragment() {
             val action =
                 ListMoviesFragmentDirections.actionListMoviesFragmentToLoginFragment()
             findNavController().navigate(action)
+        }
+        _binding.fabPickYourFavorites.setOnClickListener {
+            findNavController().navigate(R.id.action_listMoviesFragment_to_favMoviesFragment)
         }
     }
 }

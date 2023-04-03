@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 interface MovieRepository {
     suspend fun addMovie(movie: MovieDetail)
     suspend fun getAllMovies(page: Int, query: String): Response<List<TopRatedResultItem>>
-    suspend fun getMovieDetails(movieId: Int): Response<MovieDetail>
+    suspend fun getMovieDetails(movieId: Long,query: String): Response<MovieDetail>
     suspend fun updateMovie(movie: TopRatedResult): Int
     suspend fun deleteMovie(movie: TopRatedResult): Int
 
@@ -91,9 +91,9 @@ class MovieDataSource(
         moviesDao.insertMovie(topRatedMovies)
     }
 
-    override suspend fun getMovieDetails(movieId: Int): Response<MovieDetail> {
+    override suspend fun getMovieDetails(movieId: Long, query: String): Response<MovieDetail> {
         return try {
-            val movieDetail = service.getMovieDetails(movieId, Constants.API_KEY, DEFAULT_QUERY)
+            val movieDetail = service.getMovieDetails(movieId, Constants.API_KEY, query)
             CoroutineScope(Dispatchers.IO).launch {
                 addMovie(movieDetail)
                 moviesDao.getMovieDetail(movieId).collectLatest {

@@ -16,7 +16,7 @@ interface TheMovieDbApiService {
 
     @GET("movie/{movieId}")
     suspend fun getMovieDetails(
-        @Path("movieId") movieId: Int,
+        @Path("movieId") movieId: Long,
         @Query("api_key") apiKey: String,
         @Query("language") language: String,
     ): MovieDetail

@@ -20,7 +20,7 @@ interface MoviesDao {
     fun getAllMovies(): Flow<List<TopRatedResultItem>?>
 
     @Query("SELECT * FROM movie_detail_tb WHERE id = :id")
-    fun getMovieDetail(id: Int): Flow<MovieDetail?>
+    fun getMovieDetail(id: Long): Flow<MovieDetail?>
 
     @Update
     suspend fun updateMovie(movie: TopRatedResultItem): Int

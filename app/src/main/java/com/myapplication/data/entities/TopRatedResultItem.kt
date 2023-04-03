@@ -13,7 +13,7 @@ import kotlinx.parcelize.Parcelize
 @Keep
 data class TopRatedResultItem(
     @PrimaryKey
-    val id: Int,
+    val id: Long,
     @Json(name = "poster_path")
     @ColumnInfo("poster_path")
     val posterPath: String,

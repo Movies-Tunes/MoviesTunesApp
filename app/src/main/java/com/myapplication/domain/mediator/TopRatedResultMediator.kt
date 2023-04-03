@@ -41,7 +41,7 @@ class TopRatedResultMediator(
                         ?: return MediatorResult.Success(
                             endOfPaginationReached = true,
                         )
-                    lastItem.id
+                    1
                 }
             }
 

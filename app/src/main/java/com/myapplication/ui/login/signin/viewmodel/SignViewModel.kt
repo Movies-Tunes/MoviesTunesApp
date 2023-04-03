@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
@@ -21,25 +23,36 @@ class SignViewModel : ViewModel() {
     val auth = Firebase.auth
 
     fun signIn(email: String, password: String) {
-        _signIn.value = Response.Loading()
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = auth.signInWithEmailAndPassword(email, password).addOnSuccessListener { result ->
-                _signIn.value = Response.Success(result.user)
-            }.addOnFailureListener { exception ->
-                exception.printStackTrace()
-            }.await()
+        viewModelScope.launch {
+            _signIn.value = Response.Loading()
+            try {
+                val result = auth.signInWithEmailAndPassword(email, password)
+                    .addOnSuccessListener { result ->
+                        _signIn.value = Response.Success(result.user)
+                    }.await()
+            } catch (e: FirebaseAuthInvalidCredentialsException) {
+                _signIn.value = Response.Error(e)
+                e.printStackTrace()
+            }
         }
     }
 
     fun register(name: String, email: String, password: String) {
-        _signIn.value = Response.Loading()
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener { result ->
-                updateProfile(name, result)
-                _signIn.value = Response.Success(result.user)
-            }.addOnFailureListener { exception ->
-                exception.printStackTrace()
-            }.await()
+        viewModelScope.launch {
+            _signIn.value = Response.Loading()
+            try {
+                val result = auth.createUserWithEmailAndPassword(email, password)
+                    .addOnSuccessListener { result ->
+                        updateProfile(name, result)
+                        _signIn.value = Response.Success(result.user)
+                    }.await()
+            } catch (e: FirebaseAuthInvalidCredentialsException) {
+                _signIn.value = Response.Error(e)
+                e.printStackTrace()
+            } catch (e: FirebaseAuthUserCollisionException) {
+                _signIn.value = Response.Error(e)
+                e.printStackTrace()
+            }
         }
     }
 

@@ -44,6 +44,14 @@
             app:popUpToSaveState="true"
             app:exitAnim="@android:anim/slide_out_right"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_listMoviesFragment_to_favMoviesFragment"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popUpToSaveState="true"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:destination="@id/favMoviesFragment" />
     </fragment>
     <fragment
         android:id="@+id/movieDetailFragment"
@@ -56,6 +64,20 @@
             app:argType="com.myapplication.data.entities.TopRatedResultItem"
             app:nullable="true"
             android:defaultValue="@null" />
+        <argument
+            android:name="favMovie"
+            app:argType="com.myapplication.data.model.FavMovie"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_movieDetailFragment_to_loginFragment"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"
+            app:popUpToSaveState="true"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -89,6 +111,34 @@
             app:popUpToSaveState="true"
             app:exitAnim="@android:anim/slide_out_right"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_listMoviesFragment"
+            app:destination="@id/listMoviesFragment"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"
+            app:popUpToSaveState="true"
+            app:exitAnim="@android:anim/slide_out_right"
+            />
+
+    </fragment>
+    <fragment
+        android:id="@+id/favMoviesFragment"
+        android:name="com.myapplication.ui.favoritemovies.fragment.FavMoviesFragment"
+        android:label="fragment_fav_movies"
+        tools:layout="@layout/fragment_fav_movies" >
+
+        <action
+            android:id="@+id/action_favMoviesFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popUpToSaveState="true"
+            app:exitAnim="@android:anim/slide_out_right"
+            />
     </fragment>
 
 </navigation>
