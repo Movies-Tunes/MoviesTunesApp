@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.CollectionReference
+import com.myapplication.R
 import com.myapplication.core.Response
 import com.myapplication.core.config.firebase.FAVORITE_FILMS_COLLECTION_FIELD
 import com.myapplication.data.model.FavMovie
@@ -35,7 +36,7 @@ class FavMoviesViewModel(
                 .get().addOnSuccessListener { task ->
                     val favMovies = task.toObjects(FavMovie::class.java)
                     Log.e("data", favMovies.toString())
-                    _favMovies.value = Response.Success(favMovies)
+                    _favMovies.value = Response.Success(favMovies, R.string.message_add_favorite_movie)
                 }.addOnFailureListener {
                     _favMovies.value = Response.Error(it)
                 }
@@ -63,7 +64,7 @@ class FavMoviesViewModel(
                     task.documents.forEach {
                         collection.document(it.id).delete()
                     }
-                    _favMovies.value = Response.Success(listOf())
+                    _favMovies.value = Response.Success(listOf(),R.string.message_add_favorite_movie)
                 }.addOnFailureListener {
                     _favMovies.value = Response.Error(it)
                 }

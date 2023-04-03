@@ -87,7 +87,7 @@ class LoginFragment : Fragment() {
                     hideLoading()
                     Snackbar.make(
                         requireView(),
-                        "Success",
+                        state.message,
                         Snackbar.LENGTH_SHORT,
                     ).show()
                     findNavController().popBackStack()

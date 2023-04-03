@@ -60,7 +60,7 @@ class RegisterFragment : Fragment() {
                     hideLoading()
                     Snackbar.make(
                         requireView(),
-                        "Success register",
+                        state.message,
                         Snackbar.LENGTH_SHORT,
                     ).show()
                     clearFields()
