@@ -4,15 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.myapplication.core.Response
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -33,6 +28,9 @@ class SignViewModel : ViewModel() {
             } catch (e: FirebaseAuthInvalidCredentialsException) {
                 _signIn.value = Response.Error(e)
                 e.printStackTrace()
+            } catch (e: Exception) {
+                _signIn.value = Response.Error(e)
+                e.printStackTrace()
             }
         }
     }
@@ -50,6 +48,9 @@ class SignViewModel : ViewModel() {
                 _signIn.value = Response.Error(e)
                 e.printStackTrace()
             } catch (e: FirebaseAuthUserCollisionException) {
+                _signIn.value = Response.Error(e)
+                e.printStackTrace()
+            } catch (e: Exception) {
                 _signIn.value = Response.Error(e)
                 e.printStackTrace()
             }
