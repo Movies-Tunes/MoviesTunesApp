@@ -7,9 +7,8 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.AbstractSavedStateViewModelFactory
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -26,7 +25,6 @@ import com.myapplication.ui.movies.viewmodel.MoviesViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.util.*
 
 class ListMoviesFragment : Fragment() {
 
@@ -36,14 +34,12 @@ class ListMoviesFragment : Fragment() {
         Firebase.auth
     }
     private val movieViewModel: MoviesViewModel by viewModels {
-        object : AbstractSavedStateViewModelFactory() {
+        object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(
-                key: String,
                 modelClass: Class<T>,
-                handle: SavedStateHandle,
             ): T {
                 val application = (activity?.application as MoviesTunesApplication)
-                return MoviesViewModel(handle, application.movieDatasource) as T
+                return MoviesViewModel(application.movieDatasource) as T
             }
         }
     }

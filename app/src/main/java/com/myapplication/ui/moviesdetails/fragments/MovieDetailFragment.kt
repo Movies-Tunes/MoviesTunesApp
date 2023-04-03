@@ -208,7 +208,7 @@ class MovieDetailFragment : Fragment() {
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Add your favorites needs sign in",
+                    getString(R.string.message_favorite_not_sign),
                     Toast.LENGTH_LONG,
                 )
                     .show()
