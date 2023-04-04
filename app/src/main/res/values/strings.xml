@@ -12,11 +12,10 @@
     <string name="text_error_occurred_home">An error ocurred\nClick to try again</string>
     <!--Details About Movie Screen-->
     <string name="text_detail_movie">Detail</string>
-    <string name="text_sinopse_movie">Sinopse</string>
-    <string name="movie_title">\"%s\"</string>
+    <string name="text_sinopse_movie">Resume</string>
+    <string name="movie_title" translatable="false">\"%s\"</string>
     <string name="error_loading_movie_details">😔 Try again! Sorry…</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="text_button_login">Login</string>
+    <string name="text_button_login" translatable="false">Login</string>
     <string name="text_hint_email">\@organization.com</string>
     <string name="text_hint_password">Password</string>
     <string name="welcome_mr_mra_login">Welcome Mr/Mra…</string>
@@ -28,4 +27,5 @@
     <string name="add_film_you_favorite">Add this movie in your favorites</string>
     <string name="message_error_default">Error in delete</string>
     <string name="message_favorite_not_sign">Add your favorites needs sign in</string>
+    <string name="title_toolbar_fav_movies">Your favorite movies</string>
 </resources>
