@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_welcome_to_movie_tunes"
+        android:gravity="center"
         android:textAppearance="@style/WhiteTextAppearanceHead"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

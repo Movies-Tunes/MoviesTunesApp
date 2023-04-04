@@ -27,4 +27,5 @@
     <string name="add_film_you_favorite">Add this movie in your favorites</string>
     <string name="message_error_default">Error in delete</string>
     <string name="message_favorite_not_sign">Add your favorites needs sign in</string>
+    <string name="title_toolbar_fav_movies">Your favorite movies</string>
 </resources>

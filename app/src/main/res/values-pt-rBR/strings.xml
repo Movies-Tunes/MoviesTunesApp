@@ -4,10 +4,10 @@
     <string name="message_success_default">Sucesso</string>
     <string name="message_add_favorite_movie">O filme foi adicionado aos seus favoritos</string>
     <string name="message_remove_favorite_movie">O filme foi removido da lista de favoritos</string>
-    <string name="text_welcome_to_movie_tunes">Bem-vindo (a) ao\\n Movie Tunes</string>
+    <string name="text_welcome_to_movie_tunes">Bem-vindo (a) ao\n Movie Tunes</string>
     <string name="text_button_start">Começar</string>
-    <string name="text_what_do_you_want_to_watch">O que você quer assistir</string>
-    <string name="text_error_occurred_home">"Ocorreu um erro\\n clique para tentar novamente "</string>
+    <string name="text_what_do_you_want_to_watch">O que você quer assistir?</string>
+    <string name="text_error_occurred_home">Ocorreu um erro\n clique para tentar novamente</string>
     <string name="text_detail_movie">Detalhes</string>
     <string name="text_sinopse_movie">Sinopse</string>
     <string name="error_loading_movie_details">😔 Tente novamente!</string>
@@ -22,4 +22,5 @@
     <string name="add_film_you_favorite">Adicione esse filme ao seus favoritos</string>
     <string name="message_error_default">Erro ao deletar</string>
     <string name="message_favorite_not_sign">Adicionar aos favoritos necessita fazer login</string>
+    <string name="title_toolbar_fav_movies">Seus filmes favoritos</string>
 </resources>

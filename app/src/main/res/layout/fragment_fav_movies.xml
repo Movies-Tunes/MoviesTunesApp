@@ -9,7 +9,7 @@
     <androidx.appcompat.widget.Toolbar
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/toolbar_fav"
-        app:title="Your favorite movies"
+        app:title="@string/title_toolbar_fav_movies"
         app:titleTextColor="@color/white"
         app:titleTextAppearance="@style/WhiteTextAppearanceSubhead"
         android:background="@color/color_primary_brand"
