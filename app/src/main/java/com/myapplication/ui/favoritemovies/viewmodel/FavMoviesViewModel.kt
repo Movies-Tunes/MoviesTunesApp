@@ -64,7 +64,7 @@ class FavMoviesViewModel(
                     task.documents.forEach {
                         collection.document(it.id).delete()
                     }
-                    _favMovies.value = Response.Success(listOf(),R.string.message_add_favorite_movie)
+                    _favMovies.value = Response.Success(listOf(), R.string.message_add_favorite_movie)
                 }.addOnFailureListener {
                     _favMovies.value = Response.Error(it)
                 }
