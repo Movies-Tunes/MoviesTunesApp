@@ -8,7 +8,7 @@
     <string name="text_welcome_to_movie_tunes">Welcome to \nMovieTunes</string>
     <string name="text_button_start">Start</string>
     <!--Home Screen-->
-    <string name="text_what_do_you_want_to_watch">What do you want to watch?</string>
+    <string name="text_what_do_you_want_to_watch">Top rated</string>
     <string name="text_error_occurred_home">An error ocurred\nClick to try again</string>
     <!--Details About Movie Screen-->
     <string name="text_detail_movie">Detail</string>
