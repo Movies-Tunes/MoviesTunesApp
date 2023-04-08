@@ -27,6 +27,7 @@ import com.myapplication.databinding.FragmentMovieDetailBinding
 import com.myapplication.ui.favoritemovies.viewmodel.FavMoviesViewModel
 import com.myapplication.ui.moviesdetails.viewmodel.MoviesDetailsViewModel
 import com.myapplication.util.extension.concatParam
+import com.myapplication.util.extension.snackbar
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import java.util.*
@@ -60,7 +61,6 @@ class MovieDetailFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentMovieDetailBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
         return _binding.root
     }
 
@@ -154,7 +154,7 @@ class MovieDetailFragment : Fragment() {
                 }
                 is Response.Success -> {
                     setCompleteLoadingState()
-                    Snackbar.make(requireView(), response.message, Snackbar.LENGTH_LONG).show()
+                    snackbar( message = getString(response.message))
                 }
             }
         }
@@ -206,12 +206,9 @@ class MovieDetailFragment : Fragment() {
                     auth.currentUser?.uid?.let { it1 -> favMovies.deleteFavMovie(it1, id) }
                 }
             } else {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.message_favorite_not_sign),
-                    Toast.LENGTH_LONG,
+                snackbar(
+                    message = getString(R.string.message_favorite_not_sign),
                 )
-                    .show()
                 val action =
                     MovieDetailFragmentDirections.actionMovieDetailFragmentToLoginFragment()
                 findNavController().navigate(action)

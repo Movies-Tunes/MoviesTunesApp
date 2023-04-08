@@ -15,27 +15,27 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 class FavMoviesAdapter(
-    private val onClickItem: (FavMovie) -> Unit
+    private val onClickItem: (FavMovie) -> Unit,
 ) :
     ListAdapter<FavMovie, FavMoviesAdapter.FavMovieViewHolder>(DiffUtilCallback) {
     inner class FavMovieViewHolder(private val binding: ItemMovieFavBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: FavMovie) {
-                Picasso.get()
-                    .load(Constants.BASE_POSTER_PATH.concatParam(movie.posterPath))
-                    .placeholder(R.drawable.rotate_loading)
-                    .into(
-                        binding.ivPosterFav,
-                        object : Callback {
-                            override fun onSuccess() {
-                                Log.d("Picasso", "Success")
-                            }
+            Picasso.get()
+                .load(Constants.BASE_POSTER_PATH.concatParam(movie.posterPath))
+                .placeholder(R.drawable.rotate_loading)
+                .into(
+                    binding.ivPosterFav,
+                    object : Callback {
+                        override fun onSuccess() {
+                            Log.d("Picasso", "Success")
+                        }
 
-                            override fun onError(e: Exception?) {
-                                Log.e("Picasso", "Error")
-                            }
-                        },
-                    )
+                        override fun onError(e: Exception?) {
+                            Log.e("Picasso", "Error")
+                        }
+                    },
+                )
             setListeners(movie)
         }
 

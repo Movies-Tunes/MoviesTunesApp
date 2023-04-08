@@ -23,6 +23,7 @@ import com.myapplication.data.model.FavMovie
 import com.myapplication.databinding.FragmentFavMoviesBinding
 import com.myapplication.ui.favoritemovies.adapter.FavMoviesAdapter
 import com.myapplication.ui.favoritemovies.viewmodel.FavMoviesViewModel
+import com.myapplication.util.extension.snackbar
 
 class FavMoviesFragment : Fragment() {
 
@@ -63,11 +64,7 @@ class FavMoviesFragment : Fragment() {
                     hideLoading()
                     state.exception.apply {
                         message?.let {
-                            Snackbar.make(
-                                requireView(),
-                                it,
-                                Snackbar.LENGTH_SHORT,
-                            ).show()
+                            snackbar(message = it)
                         }
                         printStackTrace()
                     }

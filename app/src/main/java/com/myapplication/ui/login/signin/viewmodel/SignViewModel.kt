@@ -15,7 +15,7 @@ class SignViewModel : ViewModel() {
 
     private val _signIn: MutableLiveData<Response<FirebaseUser?>> = MutableLiveData()
     val signIn: LiveData<Response<FirebaseUser?>> = _signIn
-    val auth = Firebase.auth
+    private val auth = Firebase.auth
 
     fun signIn(email: String, password: String) {
         viewModelScope.launch {

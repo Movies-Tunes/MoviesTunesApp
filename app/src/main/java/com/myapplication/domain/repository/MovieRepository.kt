@@ -6,7 +6,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.myapplication.MoviesTunesApplication
 import com.myapplication.core.Constants
-import com.myapplication.core.Constants.DEFAULT_QUERY
 import com.myapplication.core.Constants.NETWORK_PAGE_SIZE
 import com.myapplication.core.Response
 import com.myapplication.core.error.CacheNotFoundException
@@ -19,7 +18,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
 
 interface MovieRepository {

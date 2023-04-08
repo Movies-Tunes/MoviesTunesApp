@@ -4,7 +4,6 @@ import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.myapplication.data.entities.GenreItem
 import com.myapplication.data.entities.TopRatedResultItem
-import com.squareup.moshi.Json
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -51,7 +50,7 @@ class TypeConverter {
     }
 
     @TypeConverter
-    fun fromListTopRated(movies: List<TopRatedResultItem>) : String {
+    fun fromListTopRated(movies: List<TopRatedResultItem>): String {
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         val type =
             Types.newParameterizedType(List::class.java, TopRatedResultItem::class.java)
@@ -60,7 +59,7 @@ class TypeConverter {
     }
 
     @TypeConverter
-    fun toListTopRated(json: String) : List<TopRatedResultItem> {
+    fun toListTopRated(json: String): List<TopRatedResultItem> {
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         val type =
             Types.newParameterizedType(List::class.java, TopRatedResultItem::class.java)

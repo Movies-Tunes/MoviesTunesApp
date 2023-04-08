@@ -13,6 +13,7 @@ import com.myapplication.R
 import com.myapplication.core.Response
 import com.myapplication.databinding.FragmentLoginBinding
 import com.myapplication.ui.login.signin.viewmodel.SignViewModel
+import com.myapplication.util.extension.snackbar
 import com.myapplication.util.extension.validate
 
 class LoginFragment : Fragment() {
@@ -55,11 +56,9 @@ class LoginFragment : Fragment() {
                     _binding.etPass.text.toString(),
                 )
             } else {
-                Snackbar.make(
-                    it,
-                    "The Fields can't be null",
-                    Snackbar.LENGTH_SHORT,
-                ).show()
+                snackbar(
+                    message = getString(R.string.message_error_field),
+                )
             }
         }
     }
@@ -71,11 +70,9 @@ class LoginFragment : Fragment() {
                     hideLoading()
                     state.exception.apply {
                         message?.let {
-                            Snackbar.make(
-                                requireView(),
-                                it,
-                                Snackbar.LENGTH_SHORT,
-                            ).show()
+                            snackbar(
+                                message = it,
+                            )
                         }
                         printStackTrace()
                     }
@@ -85,11 +82,9 @@ class LoginFragment : Fragment() {
                 }
                 is Response.Success -> {
                     hideLoading()
-                    Snackbar.make(
-                        requireView(),
-                        state.message,
-                        Snackbar.LENGTH_SHORT,
-                    ).show()
+                    snackbar(
+                        message = getString(state.message),
+                    )
                     findNavController().popBackStack()
                 }
             }

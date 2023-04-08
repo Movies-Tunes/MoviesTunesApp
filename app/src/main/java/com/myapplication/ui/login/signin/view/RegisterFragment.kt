@@ -13,6 +13,7 @@ import com.myapplication.R
 import com.myapplication.core.Response
 import com.myapplication.databinding.FragmentRegisterBinding
 import com.myapplication.ui.login.signin.viewmodel.SignViewModel
+import com.myapplication.util.extension.snackbar
 import com.myapplication.util.extension.validate
 
 class RegisterFragment : Fragment() {
@@ -45,11 +46,9 @@ class RegisterFragment : Fragment() {
                 is Response.Error -> {
                     hideLoading()
                     state.exception.message?.let {
-                        Snackbar.make(
-                            requireView(),
-                            it,
-                            Snackbar.LENGTH_SHORT,
-                        ).show()
+                        snackbar(
+                            message = it
+                        )
                     }
                     state.exception.printStackTrace()
                 }
@@ -58,11 +57,9 @@ class RegisterFragment : Fragment() {
                 }
                 is Response.Success -> {
                     hideLoading()
-                    Snackbar.make(
-                        requireView(),
-                        state.message,
-                        Snackbar.LENGTH_SHORT,
-                    ).show()
+                    snackbar(
+                        message = getString(state.message),
+                    )
                     clearFields()
                     val action =
                         RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
@@ -86,11 +83,9 @@ class RegisterFragment : Fragment() {
                     _binding.etPass.text.toString(),
                 )
             } else {
-                Snackbar.make(
-                    requireView(),
-                    "Fields can't be null",
-                    Snackbar.LENGTH_SHORT,
-                ).show()
+                snackbar(
+                    message = getString(R.string.message_error_field)
+                )
             }
         }
     }
