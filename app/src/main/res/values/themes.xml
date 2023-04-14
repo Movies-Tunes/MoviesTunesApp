@@ -14,7 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
     <style name="AppScreenTheme">
-        <item name="android:background">@color/color_primary_brand</item>
+        <item name="android:background">@drawable/bg_screen_gradient</item>
     </style>
     <style name="AppFontStyle" parent="@android:style/TextAppearance.Medium">
         <item name="android:fontFamily">@font/poppins_family</item>

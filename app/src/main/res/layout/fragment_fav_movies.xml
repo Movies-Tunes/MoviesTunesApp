@@ -12,7 +12,6 @@
         app:title="@string/title_toolbar_fav_movies"
         app:titleTextColor="@color/white"
         app:titleTextAppearance="@style/WhiteTextAppearanceSubhead"
-        android:background="@color/color_primary_brand"
         app:navigationIcon="@drawable/ic_close_x"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

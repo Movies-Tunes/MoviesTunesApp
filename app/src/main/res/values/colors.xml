@@ -10,6 +10,8 @@
     <color name="white">#FFFFFFFF</color>
     <!--Movie Tunes colors brand-->
     <color name="color_primary_brand">#242E57</color>
+    <color name="color_primary_brand_variant">#324388</color>
+    <color name="color_primary_brand_contrast">#4E62B8</color>
     <color name="color_secondary_brand">#B2261E</color>
     <color name="text_color_primary">#FFFFFF</color>
     <color name="text_color_secondary">#B0BAC9</color>

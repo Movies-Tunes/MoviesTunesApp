@@ -24,15 +24,15 @@
             app:title="@string/text_detail_movie"
             />
         <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="40dp"
+            android:layout_width="@dimen/width_card_movie_detail"
+            android:layout_height="@dimen/height_card_movie_detail"
+            android:layout_gravity="center_horizontal"
             >
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_poster"
                 android:layout_width="match_parent"
                 android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_launcher_background"
                 android:layout_height="match_parent"/>
         </androidx.cardview.widget.CardView>
@@ -57,7 +57,7 @@
                 tools:text="2021"
                 />
             <com.google.android.material.divider.MaterialDivider
-                android:layout_width="1dp"
+                android:layout_width="@dimen/width_divider_columns"
                 android:foreground="@color/white"
                 android:layout_height="match_parent"/>
             <androidx.appcompat.widget.AppCompatImageView
@@ -75,7 +75,7 @@
                 tools:text="148"
                 />
             <com.google.android.material.divider.MaterialDivider
-                android:layout_width="1dp"
+                android:layout_width="@dimen/width_divider_columns"
                 android:tint="@color/white"
                 android:foreground="@color/white"
                 android:background="@color/white"

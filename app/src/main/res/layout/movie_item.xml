@@ -15,7 +15,7 @@
         android:scaleType="center" />
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/film_roll_left"
-        android:layout_width="24dp"
+        android:layout_width="@dimen/width_film_roll_item_movie"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/movie_iv"
@@ -33,12 +33,12 @@
         app:layout_constraintStart_toEndOf="@id/film_roll_left"
         app:layout_constraintEnd_toStartOf="@id/film_roll_right"
         android:textColor="@color/white"
-        android:textAppearance="@style/WhiteTextAppearanceBody2"
+        android:textAppearance="@style/WhiteTextAppearanceBody1"
         android:textStyle="bold"
         />
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/film_roll_right"
-        android:layout_width="24dp"
+        android:layout_width="@dimen/width_film_roll_item_movie"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/movie_iv"

@@ -8,21 +8,27 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:background="@color/color_primary_brand"
         app:elevation="0dp"
+        android:background="@android:color/transparent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/list_movies_tv"
-            style="@style/AppFontStyle"
+        <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_screens_text"
-            android:gravity="center"
-            android:text="@string/text_what_do_you_want_to_watch"
-            android:textAppearance="@style/WhiteTextAppearanceHead"
-            android:textStyle="bold"
-            app:layout_scrollFlags="scroll|enterAlways" />
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:background="@android:color/transparent"
+            app:menu="@menu/menu_toolbar"
+            >
+            <TextView
+                android:id="@+id/list_movies_tv"
+                style="@style/AppFontStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_what_do_you_want_to_watch"
+                android:textAppearance="@style/WhiteTextAppearanceHead"
+                android:textStyle="bold"
+                 />
+        </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

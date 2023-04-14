@@ -16,7 +16,7 @@
         <item name="android:windowSplashScreenBackground">@color/color_primary_brand</item>
     </style>
     <style name="AppScreenTheme">
-        <item name="android:background">@color/color_primary_brand</item>
+        <item name="android:background">@drawable/bg_screen_gradient</item>
     </style>
     <style name="AppFontStyle">
         <item name="android:fontFamily">@font/poppins_family</item>
