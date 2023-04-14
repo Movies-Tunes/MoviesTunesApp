@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface RegisterUseCase {
-    suspend operator fun invoke(name: String, email: String, password: String): Response<AuthResult>
+    suspend operator fun invoke(name: String, email: String, password: String): Response<FirebaseUser?>
 }
 
 class RegisterUseCaseImpl @Inject constructor(
@@ -20,14 +20,14 @@ class RegisterUseCaseImpl @Inject constructor(
         name: String,
         email: String,
         password: String,
-    ): Response<AuthResult> =
+    ): Response<FirebaseUser?> =
         withContext(dispatcher) {
             try {
                 Response.Success(
                     auth.createUserWithEmailAndPassword(email, password)
                         .addOnSuccessListener { result ->
                             updateProfile(name, result)
-                        }.await(),
+                        }.await().user,
                 )
             } catch (e: FirebaseAuthInvalidCredentialsException) {
                 e.printStackTrace()

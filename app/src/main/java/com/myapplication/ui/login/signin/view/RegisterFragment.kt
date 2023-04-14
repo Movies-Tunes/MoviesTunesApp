@@ -43,28 +43,30 @@ class RegisterFragment : Fragment() {
 
     private fun initObservers() {
         signViewModel.signIn.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is Response.Error -> {
-                    hideLoading()
-                    state.exception.message?.let {
-                        snackbar(
-                            message = it,
-                        )
+            state?.let {
+                when (state) {
+                    is Response.Error -> {
+                        hideLoading()
+                        state.exception.message?.let {
+                            snackbar(
+                                message = it,
+                            )
+                        }
+                        state.exception.printStackTrace()
                     }
-                    state.exception.printStackTrace()
-                }
-                is Response.Loading -> {
-                    showLoading()
-                }
-                is Response.Success -> {
-                    hideLoading()
-                    snackbar(
-                        message = getString(state.message),
-                    )
-                    clearFields()
-                    val action =
-                        RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
-                    findNavController().navigate(R.id.action_registerFragment_to_listMoviesFragment)
+                    is Response.Loading -> {
+                        showLoading()
+                    }
+                    is Response.Success -> {
+                        hideLoading()
+                        snackbar(
+                            message = getString(state.message),
+                        )
+                        clearFields()
+                        val action =
+                            RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+                        findNavController().navigate(R.id.action_registerFragment_to_listMoviesFragment)
+                    }
                 }
             }
         }

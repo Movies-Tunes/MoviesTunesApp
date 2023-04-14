@@ -4,7 +4,6 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.myapplication.MoviesTunesApplication
 import com.myapplication.core.Constants
 import com.myapplication.core.Constants.NETWORK_PAGE_SIZE
 import com.myapplication.core.Response
@@ -24,7 +23,7 @@ import javax.inject.Inject
 interface MovieRepository {
     suspend fun addMovie(movie: MovieDetail)
     suspend fun getAllMovies(page: Int, query: String): Response<List<TopRatedResultItem>>
-    suspend fun getMovieDetails(movieId: Long,query: String): Response<MovieDetail>
+    suspend fun getMovieDetails(movieId: Long, query: String): Response<MovieDetail>
     suspend fun updateMovie(movie: TopRatedResult): Int
     suspend fun deleteMovie(movie: TopRatedResult): Int
 
@@ -80,7 +79,7 @@ class MovieDataSource @Inject constructor(
                 pageSize = NETWORK_PAGE_SIZE,
             ),
             initialKey = 1,
-          /*  remoteMediator = MoviesTunesApplication.instanceMediatorPaging,*/
+            /*  remoteMediator = MoviesTunesApplication.instanceMediatorPaging,*/
         ) {
             MoviesPagingDataSource(query, service)
         }.flow

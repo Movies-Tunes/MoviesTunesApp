@@ -5,14 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.myapplication.R
 import com.myapplication.core.Constants
 import com.myapplication.core.Response
@@ -22,10 +19,11 @@ import com.myapplication.databinding.FragmentMovieDetailBinding
 import com.myapplication.ui.favoritemovies.viewmodel.FavMoviesViewModel
 import com.myapplication.ui.moviesdetails.viewmodel.MoviesDetailsViewModel
 import com.myapplication.util.extension.concatParam
+import com.myapplication.util.extension.gone
 import com.myapplication.util.extension.snackbar
+import com.myapplication.util.extension.visible
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
@@ -84,11 +82,8 @@ class MovieDetailFragment : Fragment() {
     private fun getDetailsMovie(id: Long) {
         id.let {
             moviesDetailsViewModel.getMovieDetails(it, Locale.getDefault().toLanguageTag())
-            lifecycleScope.launch {
-                _binding.ivStarFavorite.isEnabled =
-                    auth.currentUser?.uid?.let { uid ->
-                        favMovies.isFavMovie(uid, it).not()
-                    } == true
+            auth.currentUser?.uid?.let { uid ->
+                favMovies.isFavMovie(uid, it)
             }
         }
     }
@@ -116,7 +111,7 @@ class MovieDetailFragment : Fragment() {
         moviesDetailsViewModel.moviesDetails.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Response.Error -> {
-                    _binding.pbLoadingDetails.isVisible = false
+                    _binding.pbLoadingDetails.gone()
                     _binding.tvDescriptionSinopse.text = getString(R.string.error_loading_movie_details)
                 }
                 is Response.Loading -> {
@@ -128,19 +123,38 @@ class MovieDetailFragment : Fragment() {
                 }
             }
         }
-        favMovies.favMovies.observe(viewLifecycleOwner) { response ->
-            when (response) {
-                is Response.Error -> {
-                    _binding.pbLoadingDetails.isVisible = false
-                    _binding.tvDescriptionSinopse.text =
-                        getString(R.string.error_loading_movie_details)
+        favMovies.isFavMovie.observe(viewLifecycleOwner) { response ->
+            response?.let {
+                when (response) {
+                    is Response.Error -> {
+                        _binding.pbLoadingDetails.gone()
+                        _binding.tvDescriptionSinopse.text =
+                            getString(R.string.error_loading_movie_details)
+                    }
+                    is Response.Loading -> {
+                        setInitialVisibleStates()
+                    }
+                    is Response.Success -> {
+                        setCompleteLoadingState()
+                        binding.ivStarFavorite.isEnabled = !response.data
+                    }
                 }
-                is Response.Loading -> {
-                    setInitialVisibleStates()
-                }
-                is Response.Success -> {
-                    setCompleteLoadingState()
-                    snackbar(message = getString(response.message))
+            }
+        }
+        favMovies.isSuccessfullTask.observe(viewLifecycleOwner) { response ->
+            response?.let {
+                when (response) {
+                    is Response.Error -> {
+                        _binding.pbLoadingDetails.gone()
+                        _binding.tvDescriptionSinopse.text =
+                            getString(R.string.error_loading_movie_details)
+                    }
+                    is Response.Loading -> {
+                        setInitialVisibleStates()
+                    }
+                    is Response.Success -> {
+                        snackbar(message = getString(response.message))
+                    }
                 }
             }
         }
@@ -153,7 +167,7 @@ class MovieDetailFragment : Fragment() {
         _binding.tvGenre.text = movie.genres.joinToString(limit = 3) { genreItem ->
             genreItem.name
         }
-        _binding.tvDuration.text = movie.runtime.toString()
+        _binding.tvDuration.text = getString(R.string.text_runtime_movie_detail, movie.runtime)
     }
 
     private fun setInitialVisibleStates() {
@@ -162,9 +176,9 @@ class MovieDetailFragment : Fragment() {
     }
 
     private fun setCompleteLoadingState() {
-        _binding.tvDescriptionSinopse.isVisible = true
-        _binding.pbLoadingDetails.isVisible = false
-        _binding.llFavoriteMovie.isVisible = true
+        _binding.tvDescriptionSinopse.visible()
+        _binding.pbLoadingDetails.gone()
+        _binding.llFavoriteMovie.visible()
     }
 
     private fun setListeners() {

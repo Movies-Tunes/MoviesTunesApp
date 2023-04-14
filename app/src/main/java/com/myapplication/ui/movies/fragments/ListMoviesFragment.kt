@@ -52,8 +52,7 @@ class ListMoviesFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        val moviesListAdapter = _binding.moviesListRv.adapter as MoviesListAdapter
-        moviesListAdapter.retry()
+        collectTopRatedMovies()
     }
 
     private fun verifyAuth() {
@@ -91,7 +90,6 @@ class ListMoviesFragment : Fragment() {
     }
 
     private fun initObserversOfView() {
-        collectTopRatedMovies()
         lifecycleScope.launch {
             val moviesListAdapter = _binding.moviesListRv.adapter as MoviesListAdapter
             moviesListAdapter.loadStateFlow.collect { states ->
@@ -105,7 +103,7 @@ class ListMoviesFragment : Fragment() {
     }
 
     private fun collectTopRatedMovies() {
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             movieViewModel.topRatedMovies.collectLatest {
                 val moviesListAdapter = _binding.moviesListRv.adapter as MoviesListAdapter
                 moviesListAdapter.submitData(it)

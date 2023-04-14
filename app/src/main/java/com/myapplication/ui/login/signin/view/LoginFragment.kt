@@ -66,27 +66,29 @@ class LoginFragment : Fragment() {
 
     private fun initObservers() {
         signViewModel.signIn.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is Response.Error -> {
-                    hideLoading()
-                    state.exception.apply {
-                        message?.let {
-                            snackbar(
-                                message = it,
-                            )
+            state?.let {
+                when (state) {
+                    is Response.Error -> {
+                        hideLoading()
+                        state.exception.apply {
+                            message?.let {
+                                snackbar(
+                                    message = it,
+                                )
+                            }
+                            printStackTrace()
                         }
-                        printStackTrace()
                     }
-                }
-                is Response.Loading -> {
-                    showLoading()
-                }
-                is Response.Success -> {
-                    hideLoading()
-                    snackbar(
-                        message = getString(state.message),
-                    )
-                    findNavController().popBackStack()
+                    is Response.Loading -> {
+                        showLoading()
+                    }
+                    is Response.Success -> {
+                        hideLoading()
+                        snackbar(
+                            message = getString(state.message),
+                        )
+                        findNavController().popBackStack()
+                    }
                 }
             }
         }

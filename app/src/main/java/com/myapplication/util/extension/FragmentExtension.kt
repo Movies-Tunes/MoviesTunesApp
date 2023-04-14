@@ -1,5 +1,6 @@
 package com.myapplication.util.extension
 
+import android.app.Dialog
 import android.content.Context
 import android.view.View
 import android.widget.Toast
@@ -24,4 +25,10 @@ fun Fragment.toast(
     length: Int = Toast.LENGTH_SHORT,
 ) {
     Toast.makeText(context, message, length).show()
+}
+
+fun Fragment.createLoadingDialog(): Dialog {
+    val loadingDialog = Dialog(requireContext())
+    loadingDialog.setContentView(R.layout.progress_dialog)
+    return loadingDialog
 }

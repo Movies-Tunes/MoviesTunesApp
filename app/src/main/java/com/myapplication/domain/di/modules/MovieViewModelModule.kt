@@ -1,5 +1,7 @@
 package com.myapplication.domain.di.modules
 
+import com.myapplication.domain.repository.FavMovieDatasource
+import com.myapplication.domain.repository.FavMovieRepository
 import com.myapplication.domain.repository.MovieDataSource
 import com.myapplication.domain.repository.MovieRepository
 import dagger.Binds
@@ -13,7 +15,13 @@ import dagger.hilt.android.scopes.ViewModelScoped
 interface MovieViewModelModule {
     @Binds
     @ViewModelScoped
-    fun bindsRepository(
+    fun bindsMovieRepository(
         movieDataSource: MovieDataSource,
     ): MovieRepository
+
+    @Binds
+    @ViewModelScoped
+    fun bindsFavMovieRepository(
+        favMovieDatasource: FavMovieDatasource,
+    ): FavMovieRepository
 }

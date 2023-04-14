@@ -1,9 +1,7 @@
 package com.myapplication.domain.di.modules
 
-import com.myapplication.domain.usecases.RegisterUseCase
-import com.myapplication.domain.usecases.RegisterUseCaseImpl
-import com.myapplication.domain.usecases.SignInUseCase
-import com.myapplication.domain.usecases.SignInUseCaseImpl
+import com.myapplication.domain.usecases.*
+import com.myapplication.domain.usecases.favmovies.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,4 +19,24 @@ abstract class DomainModule {
     abstract fun bindRegisterUseCase(
         registerUseCase: RegisterUseCaseImpl,
     ): RegisterUseCase
+
+    @Binds
+    abstract fun bindGetFavMoviesUseCase(
+        getFavMoviesUseCase: GetFavMoviesUseCaseImpl,
+    ): GetFavMoviesUseCase
+
+    @Binds
+    abstract fun bindIsFavMoviesUseCase(
+        isFavMovieUseCase: IsFavMovieUseCaseImpl,
+    ): IsFavMovieUseCase
+
+    @Binds
+    abstract fun bindSaveFavMovieUseCase(
+        saveFavMoviesUseCase: SaveFavMoviesUseCaseImpl,
+    ): SaveFavMoviesUseCase
+
+    @Binds
+    abstract fun bindDeleteFavMovieUseCase(
+        deleteFavUseCase: DeleteFavUseCaseImpl,
+    ): DeleteFavUseCase
 }
