@@ -6,6 +6,7 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id "kotlin-parcelize"
     id 'com.google.gms.google-services'
+    id("com.google.dagger.hilt.android")
 }
 Properties properties = new Properties()
 properties.load(project.rootProject.file("api-key.properties").newDataInputStream())
@@ -88,13 +89,16 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
 
     // paging
-    implementation("androidx.paging:paging-runtime:$paging_version")
+    implementation("androidx.paging:paging-runtime-ktx:$paging_version")
 
     // Import the Firebase BoM
     implementation platform("com.google.firebase:firebase-bom:$firebase_version")
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
+//  DI - Hilt
+    implementation("com.google.dagger:hilt-android:$hilt_version")
+    kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
 
 
     implementation 'androidx.core:core-ktx:1.9.0'

@@ -7,42 +7,31 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.myapplication.MoviesTunesApplication
 import com.myapplication.R
 import com.myapplication.databinding.FragmentListMoviesBinding
 import com.myapplication.ui.movies.adapter.MoviesListAdapter
 import com.myapplication.ui.movies.viewmodel.MoviesViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ListMoviesFragment : Fragment() {
 
     private lateinit var _binding: FragmentListMoviesBinding
     private val binding get() = _binding
-    private val auth: FirebaseAuth by lazy {
-        Firebase.auth
-    }
-    private val movieViewModel: MoviesViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(
-                modelClass: Class<T>,
-            ): T {
-                val application = (activity?.application as MoviesTunesApplication)
-                return MoviesViewModel(application.movieDatasource) as T
-            }
-        }
-    }
+
+    @Inject
+    lateinit var auth: FirebaseAuth
+    private val movieViewModel: MoviesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,8 +52,7 @@ class ListMoviesFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        val moviesListAdapter = _binding.moviesListRv.adapter as MoviesListAdapter
-        moviesListAdapter.retry()
+        collectTopRatedMovies()
     }
 
     private fun verifyAuth() {
@@ -102,7 +90,6 @@ class ListMoviesFragment : Fragment() {
     }
 
     private fun initObserversOfView() {
-        collectTopRatedMovies()
         lifecycleScope.launch {
             val moviesListAdapter = _binding.moviesListRv.adapter as MoviesListAdapter
             moviesListAdapter.loadStateFlow.collect { states ->
@@ -116,7 +103,7 @@ class ListMoviesFragment : Fragment() {
     }
 
     private fun collectTopRatedMovies() {
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             movieViewModel.topRatedMovies.collectLatest {
                 val moviesListAdapter = _binding.moviesListRv.adapter as MoviesListAdapter
                 moviesListAdapter.submitData(it)

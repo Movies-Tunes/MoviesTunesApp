@@ -4,7 +4,6 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.myapplication.MoviesTunesApplication
 import com.myapplication.core.Constants
 import com.myapplication.core.Constants.NETWORK_PAGE_SIZE
 import com.myapplication.core.Response
@@ -19,18 +18,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 interface MovieRepository {
     suspend fun addMovie(movie: MovieDetail)
     suspend fun getAllMovies(page: Int, query: String): Response<List<TopRatedResultItem>>
-    suspend fun getMovieDetails(movieId: Long,query: String): Response<MovieDetail>
+    suspend fun getMovieDetails(movieId: Long, query: String): Response<MovieDetail>
     suspend fun updateMovie(movie: TopRatedResult): Int
     suspend fun deleteMovie(movie: TopRatedResult): Int
 
     fun getAllMovies(query: String): Flow<PagingData<TopRatedResultItem>>
 }
 
-class MovieDataSource(
+class MovieDataSource @Inject constructor(
     private val service: TheMovieDbApiService,
     private val moviesDao: MoviesDao,
 ) : MovieRepository {
@@ -79,7 +79,7 @@ class MovieDataSource(
                 pageSize = NETWORK_PAGE_SIZE,
             ),
             initialKey = 1,
-            remoteMediator = MoviesTunesApplication.instanceMediatorPaging,
+            /*  remoteMediator = MoviesTunesApplication.instanceMediatorPaging,*/
         ) {
             MoviesPagingDataSource(query, service)
         }.flow

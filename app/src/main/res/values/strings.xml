@@ -30,4 +30,6 @@
     <string name="title_toolbar_fav_movies">Your favorite movies</string>
     <string name="message_error_field">The Fields can\'t be null</string>
     <string name="text_search_item">Search...</string>
+    <string name="message_dismiss_snackbar">Dismiss</string>
+    <string name="text_runtime_movie_detail">%d min</string>
 </resources>

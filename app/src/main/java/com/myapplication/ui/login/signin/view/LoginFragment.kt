@@ -8,14 +8,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.myapplication.R
 import com.myapplication.core.Response
 import com.myapplication.databinding.FragmentLoginBinding
 import com.myapplication.ui.login.signin.viewmodel.SignViewModel
 import com.myapplication.util.extension.snackbar
 import com.myapplication.util.extension.validate
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
     private lateinit var _binding: FragmentLoginBinding
     val binding: FragmentLoginBinding get() = _binding
@@ -65,27 +66,29 @@ class LoginFragment : Fragment() {
 
     private fun initObservers() {
         signViewModel.signIn.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is Response.Error -> {
-                    hideLoading()
-                    state.exception.apply {
-                        message?.let {
-                            snackbar(
-                                message = it,
-                            )
+            state?.let {
+                when (state) {
+                    is Response.Error -> {
+                        hideLoading()
+                        state.exception.apply {
+                            message?.let {
+                                snackbar(
+                                    message = it,
+                                )
+                            }
+                            printStackTrace()
                         }
-                        printStackTrace()
                     }
-                }
-                is Response.Loading -> {
-                    showLoading()
-                }
-                is Response.Success -> {
-                    hideLoading()
-                    snackbar(
-                        message = getString(state.message),
-                    )
-                    findNavController().popBackStack()
+                    is Response.Loading -> {
+                        showLoading()
+                    }
+                    is Response.Success -> {
+                        hideLoading()
+                        snackbar(
+                            message = getString(state.message),
+                        )
+                        findNavController().popBackStack()
+                    }
                 }
             }
         }

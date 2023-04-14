@@ -9,38 +9,31 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.myapplication.MoviesTunesApplication
-import com.myapplication.R
 import com.myapplication.core.Response
 import com.myapplication.data.model.FavMovie
 import com.myapplication.databinding.FragmentFavMoviesBinding
 import com.myapplication.ui.favoritemovies.adapter.FavMoviesAdapter
 import com.myapplication.ui.favoritemovies.viewmodel.FavMoviesViewModel
+import com.myapplication.util.extension.createLoadingDialog
+import com.myapplication.util.extension.gone
 import com.myapplication.util.extension.snackbar
+import com.myapplication.util.extension.visible
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class FavMoviesFragment : Fragment() {
 
     private lateinit var _binding: FragmentFavMoviesBinding
     val binding: FragmentFavMoviesBinding get() = _binding
-    val auth: FirebaseAuth = Firebase.auth
-    private var loadingDialog: Dialog? = null
 
-    private val favViewModel: FavMoviesViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                val firestoreCollection =
-                    (activity?.application as MoviesTunesApplication).firestoreCollection
-                return FavMoviesViewModel(firestoreCollection) as T
-            }
-        }
-    }
+    @Inject
+    lateinit var auth: FirebaseAuth
+    private val loadingDialog: Dialog by lazy { createLoadingDialog() }
+
+    private val favViewModel: FavMoviesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,23 +52,48 @@ class FavMoviesFragment : Fragment() {
 
     private fun initObservers() {
         favViewModel.favMovies.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is Response.Error -> {
-                    hideLoading()
-                    state.exception.apply {
-                        message?.let {
-                            snackbar(message = it)
+            state?.let { safeState ->
+                when (safeState) {
+                    is Response.Error -> {
+                        loadingDialog.hide()
+                        safeState.exception.apply {
+                            message?.let {
+                                snackbar(message = it)
+                            }
+                            printStackTrace()
                         }
-                        printStackTrace()
+                    }
+                    is Response.Loading -> {
+                        loadingDialog.show()
+                    }
+                    is Response.Success -> {
+                        loadingDialog.hide()
+                        Log.e("data", safeState.data.toString())
+                        setFavMoviesInView(safeState.data)
                     }
                 }
-                is Response.Loading -> {
-                    showLoading()
-                }
-                is Response.Success -> {
-                    hideLoading()
-                    Log.e("data", state.data.toString())
-                    setFavMoviesInView(state.data)
+            }
+        }
+        favViewModel.isSuccessfullTask.observe(viewLifecycleOwner){ state ->
+            state?.let { safeState ->
+                when (safeState) {
+                    is Response.Error -> {
+                        loadingDialog.hide()
+                        safeState.exception.apply {
+                            message?.let {
+                                snackbar(message = it)
+                            }
+                            printStackTrace()
+                        }
+                    }
+                    is Response.Loading -> {
+                        loadingDialog.show()
+                    }
+                    is Response.Success -> {
+                        loadingDialog.hide()
+                        Log.e("data", safeState.data.toString())
+                        snackbar(message = getString(safeState.message))
+                    }
                 }
             }
         }
@@ -84,13 +102,6 @@ class FavMoviesFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         auth.currentUser?.uid?.let { favViewModel.getFavMovies(it) }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (loadingDialog != null) {
-            loadingDialog = null
-        }
     }
 
     private fun setView() {
@@ -107,22 +118,12 @@ class FavMoviesFragment : Fragment() {
         }
     }
 
-    private fun showLoading() {
-        loadingDialog = Dialog(requireContext())
-        loadingDialog?.setContentView(R.layout.progress_dialog)
-        loadingDialog?.show()
-    }
-
-    private fun hideLoading() {
-        loadingDialog?.hide()
-    }
-
     private fun setFavMoviesInView(movies: List<FavMovie?>) {
         val favMoviesAdapter = _binding.rvFavFilms.adapter as FavMoviesAdapter
         if (movies.isNotEmpty()) {
             favMoviesAdapter.submitList(movies)
-            _binding.tvNotFoundFav.isVisible = false
-            _binding.rvFavFilms.isVisible = true
+            _binding.tvNotFoundFav.gone()
+            _binding.rvFavFilms.visible()
         }
     }
 }

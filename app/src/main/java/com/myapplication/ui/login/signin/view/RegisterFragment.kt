@@ -8,14 +8,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.myapplication.R
 import com.myapplication.core.Response
 import com.myapplication.databinding.FragmentRegisterBinding
 import com.myapplication.ui.login.signin.viewmodel.SignViewModel
 import com.myapplication.util.extension.snackbar
 import com.myapplication.util.extension.validate
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private lateinit var _binding: FragmentRegisterBinding
@@ -42,28 +43,30 @@ class RegisterFragment : Fragment() {
 
     private fun initObservers() {
         signViewModel.signIn.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is Response.Error -> {
-                    hideLoading()
-                    state.exception.message?.let {
-                        snackbar(
-                            message = it
-                        )
+            state?.let {
+                when (state) {
+                    is Response.Error -> {
+                        hideLoading()
+                        state.exception.message?.let {
+                            snackbar(
+                                message = it,
+                            )
+                        }
+                        state.exception.printStackTrace()
                     }
-                    state.exception.printStackTrace()
-                }
-                is Response.Loading -> {
-                    showLoading()
-                }
-                is Response.Success -> {
-                    hideLoading()
-                    snackbar(
-                        message = getString(state.message),
-                    )
-                    clearFields()
-                    val action =
-                        RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
-                    findNavController().navigate(R.id.action_registerFragment_to_listMoviesFragment)
+                    is Response.Loading -> {
+                        showLoading()
+                    }
+                    is Response.Success -> {
+                        hideLoading()
+                        snackbar(
+                            message = getString(state.message),
+                        )
+                        clearFields()
+                        val action =
+                            RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+                        findNavController().navigate(R.id.action_registerFragment_to_listMoviesFragment)
+                    }
                 }
             }
         }
@@ -84,7 +87,7 @@ class RegisterFragment : Fragment() {
                 )
             } else {
                 snackbar(
-                    message = getString(R.string.message_error_field)
+                    message = getString(R.string.message_error_field),
                 )
             }
         }
