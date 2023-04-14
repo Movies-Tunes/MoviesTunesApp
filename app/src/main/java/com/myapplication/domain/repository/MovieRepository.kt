@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 interface MovieRepository {
     suspend fun addMovie(movie: MovieDetail)
@@ -30,7 +31,7 @@ interface MovieRepository {
     fun getAllMovies(query: String): Flow<PagingData<TopRatedResultItem>>
 }
 
-class MovieDataSource(
+class MovieDataSource @Inject constructor(
     private val service: TheMovieDbApiService,
     private val moviesDao: MoviesDao,
 ) : MovieRepository {
@@ -79,7 +80,7 @@ class MovieDataSource(
                 pageSize = NETWORK_PAGE_SIZE,
             ),
             initialKey = 1,
-            remoteMediator = MoviesTunesApplication.instanceMediatorPaging,
+          /*  remoteMediator = MoviesTunesApplication.instanceMediatorPaging,*/
         ) {
             MoviesPagingDataSource(query, service)
         }.flow
