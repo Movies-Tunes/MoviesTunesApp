@@ -10,10 +10,13 @@ import com.myapplication.R
 import com.myapplication.core.Response
 import com.myapplication.core.config.firebase.FAVORITE_FILMS_COLLECTION_FIELD
 import com.myapplication.data.model.FavMovie
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-class FavMoviesViewModel(
+@HiltViewModel
+class FavMoviesViewModel @Inject constructor(
     private val collection: CollectionReference,
 ) : ViewModel() {
 
@@ -36,7 +39,7 @@ class FavMoviesViewModel(
                 .get().addOnSuccessListener { task ->
                     val favMovies = task.toObjects(FavMovie::class.java)
                     Log.e("data", favMovies.toString())
-                    _favMovies.value = Response.Success(favMovies, R.string.message_add_favorite_movie)
+                    _favMovies.value = Response.Success(favMovies)
                 }.addOnFailureListener {
                     _favMovies.value = Response.Error(it)
                 }
@@ -47,7 +50,7 @@ class FavMoviesViewModel(
         viewModelScope.launch {
             _favMovies.value = Response.Loading()
             collection.add(favMovie).addOnCompleteListener {
-                _favMovies.value = Response.Success(listOf())
+                _favMovies.value = Response.Success(listOf(), R.string.message_add_favorite_movie)
             }.addOnFailureListener {
                 _favMovies.value = Response.Error(it)
             }
@@ -64,7 +67,7 @@ class FavMoviesViewModel(
                     task.documents.forEach {
                         collection.document(it.id).delete()
                     }
-                    _favMovies.value = Response.Success(listOf(), R.string.message_add_favorite_movie)
+                    _favMovies.value = Response.Success(listOf(), R.string.message_remove_favorite_movie)
                 }.addOnFailureListener {
                     _favMovies.value = Response.Error(it)
                 }

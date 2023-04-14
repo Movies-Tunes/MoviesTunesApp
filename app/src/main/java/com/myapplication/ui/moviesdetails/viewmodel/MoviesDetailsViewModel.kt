@@ -7,10 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.myapplication.core.Response
 import com.myapplication.data.entities.MovieDetail
 import com.myapplication.domain.repository.MovieRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class MoviesDetailsViewModel(
+@HiltViewModel
+class MoviesDetailsViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
 ) : ViewModel() {
 
