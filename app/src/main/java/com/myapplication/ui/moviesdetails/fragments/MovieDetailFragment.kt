@@ -85,6 +85,8 @@ class MovieDetailFragment : Fragment() {
             auth.currentUser?.uid?.let { uid ->
                 favMovies.isFavMovie(uid, it)
             }
+        }.also {
+            binding.ivStarFavorite.isEnabled = false
         }
     }
 

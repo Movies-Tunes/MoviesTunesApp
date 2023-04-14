@@ -19,17 +19,19 @@ class SignViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _signIn: MutableLiveData<Response<FirebaseUser?>?> =
-        MutableLiveData(Response.Loading())
+        MutableLiveData()
     val signIn: LiveData<Response<FirebaseUser?>?> = _signIn
 
     fun signIn(email: String, password: String) {
         viewModelScope.launch {
+            _signIn.value = Response.Loading()
             _signIn.value = signInUseCase(email, password)
         }
     }
 
     fun register(name: String, email: String, password: String) {
         viewModelScope.launch {
+            _signIn.value = Response.Loading()
             _signIn.value = registerUseCase(name, email, password)
         }
     }
