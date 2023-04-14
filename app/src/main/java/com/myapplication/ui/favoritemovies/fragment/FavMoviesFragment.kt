@@ -78,7 +78,7 @@ class FavMoviesFragment : Fragment() {
             state?.let { safeState ->
                 when (safeState) {
                     is Response.Error -> {
-                        loadingDialog.hide()
+                        loadingDialog.dismiss()
                         safeState.exception.apply {
                             message?.let {
                                 snackbar(message = it)
@@ -90,13 +90,18 @@ class FavMoviesFragment : Fragment() {
                         loadingDialog.show()
                     }
                     is Response.Success -> {
-                        loadingDialog.hide()
+                        loadingDialog.dismiss()
                         Log.e("data", safeState.data.toString())
                         snackbar(message = getString(safeState.message))
                     }
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        loadingDialog.dismiss()
     }
 
     override fun onStart() {

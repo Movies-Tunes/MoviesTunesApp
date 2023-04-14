@@ -12,6 +12,7 @@ import com.myapplication.R
 import com.myapplication.core.Response
 import com.myapplication.databinding.FragmentLoginBinding
 import com.myapplication.ui.login.signin.viewmodel.SignViewModel
+import com.myapplication.util.extension.createLoadingDialog
 import com.myapplication.util.extension.snackbar
 import com.myapplication.util.extension.validate
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +22,7 @@ class LoginFragment : Fragment() {
     private lateinit var _binding: FragmentLoginBinding
     val binding: FragmentLoginBinding get() = _binding
     private val signViewModel: SignViewModel by viewModels()
-    private var loadingDialog: Dialog? = null
+    private val loadingDialog: Dialog by lazy { createLoadingDialog() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,7 +70,7 @@ class LoginFragment : Fragment() {
             state?.let {
                 when (state) {
                     is Response.Error -> {
-                        hideLoading()
+                        loadingDialog.dismiss()
                         state.exception.apply {
                             message?.let {
                                 snackbar(
@@ -80,10 +81,10 @@ class LoginFragment : Fragment() {
                         }
                     }
                     is Response.Loading -> {
-                        showLoading()
+                        loadingDialog.show()
                     }
                     is Response.Success -> {
-                        hideLoading()
+                        loadingDialog.dismiss()
                         snackbar(
                             message = getString(state.message),
                         )
@@ -98,15 +99,5 @@ class LoginFragment : Fragment() {
         _binding.etEmail.text.toString().validate().not() -> false
         _binding.etPass.text.toString().validate().not() -> false
         else -> true
-    }
-
-    private fun showLoading() {
-        loadingDialog = Dialog(requireContext())
-        loadingDialog?.setContentView(R.layout.progress_dialog)
-        loadingDialog?.show()
-    }
-
-    private fun hideLoading() {
-        loadingDialog?.hide()
     }
 }
