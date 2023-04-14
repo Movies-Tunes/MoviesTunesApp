@@ -30,11 +30,7 @@
         <action
             android:id="@+id/action_listMoviesFragment_to_movieDetailFragment"
             app:destination="@id/movieDetailFragment"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"
-            app:enterAnim="@android:anim/slide_in_left"
             app:popUpToSaveState="true"
-            app:exitAnim="@android:anim/slide_out_right"
             />
         <action
             android:id="@+id/action_listMoviesFragment_to_loginFragment"
@@ -133,11 +129,7 @@
         <action
             android:id="@+id/action_favMoviesFragment_to_movieDetailFragment"
             app:destination="@id/movieDetailFragment"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"
-            app:enterAnim="@android:anim/slide_in_left"
             app:popUpToSaveState="true"
-            app:exitAnim="@android:anim/slide_out_right"
             />
     </fragment>
 
