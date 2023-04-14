@@ -5,19 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.myapplication.MoviesTunesApplication
 import com.myapplication.R
 import com.myapplication.core.Constants
 import com.myapplication.core.Response
@@ -29,31 +24,22 @@ import com.myapplication.ui.moviesdetails.viewmodel.MoviesDetailsViewModel
 import com.myapplication.util.extension.concatParam
 import com.myapplication.util.extension.snackbar
 import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MovieDetailFragment : Fragment() {
     private lateinit var _binding: FragmentMovieDetailBinding
     val binding: FragmentMovieDetailBinding get() = _binding
     private val args: MovieDetailFragmentArgs by navArgs()
     private var movieDetail: MovieDetail? = null
-    private val moviesDetailsViewModel: MoviesDetailsViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                val application = activity?.application as MoviesTunesApplication
-                return MoviesDetailsViewModel(application.movieDatasource) as T
-            }
-        }
-    }
-    private val favMovies: FavMoviesViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                val application = activity?.application as MoviesTunesApplication
-                return FavMoviesViewModel(application.firestoreCollection) as T
-            }
-        }
-    }
-    private val auth = Firebase.auth
+    private val moviesDetailsViewModel: MoviesDetailsViewModel by viewModels()
+    private val favMovies: FavMoviesViewModel by viewModels()
+
+    @Inject
+    lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -154,7 +140,7 @@ class MovieDetailFragment : Fragment() {
                 }
                 is Response.Success -> {
                     setCompleteLoadingState()
-                    snackbar( message = getString(response.message))
+                    snackbar(message = getString(response.message))
                 }
             }
         }

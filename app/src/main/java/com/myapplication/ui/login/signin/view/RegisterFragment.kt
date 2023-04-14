@@ -8,14 +8,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.myapplication.R
 import com.myapplication.core.Response
 import com.myapplication.databinding.FragmentRegisterBinding
 import com.myapplication.ui.login.signin.viewmodel.SignViewModel
 import com.myapplication.util.extension.snackbar
 import com.myapplication.util.extension.validate
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private lateinit var _binding: FragmentRegisterBinding
@@ -47,7 +48,7 @@ class RegisterFragment : Fragment() {
                     hideLoading()
                     state.exception.message?.let {
                         snackbar(
-                            message = it
+                            message = it,
                         )
                     }
                     state.exception.printStackTrace()
@@ -84,7 +85,7 @@ class RegisterFragment : Fragment() {
                 )
             } else {
                 snackbar(
-                    message = getString(R.string.message_error_field)
+                    message = getString(R.string.message_error_field),
                 )
             }
         }

@@ -12,10 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.myapplication.MoviesTunesApplication
 import com.myapplication.R
 import com.myapplication.core.Response
@@ -24,23 +21,20 @@ import com.myapplication.databinding.FragmentFavMoviesBinding
 import com.myapplication.ui.favoritemovies.adapter.FavMoviesAdapter
 import com.myapplication.ui.favoritemovies.viewmodel.FavMoviesViewModel
 import com.myapplication.util.extension.snackbar
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class FavMoviesFragment : Fragment() {
 
     private lateinit var _binding: FragmentFavMoviesBinding
     val binding: FragmentFavMoviesBinding get() = _binding
-    val auth: FirebaseAuth = Firebase.auth
+
+    @Inject
+    lateinit var auth: FirebaseAuth
     private var loadingDialog: Dialog? = null
 
-    private val favViewModel: FavMoviesViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                val firestoreCollection =
-                    (activity?.application as MoviesTunesApplication).firestoreCollection
-                return FavMoviesViewModel(firestoreCollection) as T
-            }
-        }
-    }
+    private val favViewModel: FavMoviesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
