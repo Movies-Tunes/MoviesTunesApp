@@ -35,4 +35,7 @@
     <dimen name="width_card_movie_detail">270dp</dimen>
     <dimen name="width_divider_columns">1dp</dimen>
     <dimen name="width_text_genre_detail">80dp</dimen>
+    <dimen name="size_star_add_favorite_image">30dp</dimen>
+    <dimen name="size_sign_and_sign_out_button">45dp</dimen>
+    <dimen name="size_circular_progress_bar__inderteminate">60dp</dimen>
 </resources>

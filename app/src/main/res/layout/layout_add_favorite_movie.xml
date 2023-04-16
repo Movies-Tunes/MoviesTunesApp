@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.myapplication.ui.favoritemovies.viewmodel.FavMoviesViewModel" />
+    </data>
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/ll_favorite_movie"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:gravity="center_vertical"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:layout_height="wrap_content"
+        tools:showIn="@layout/fragment_movie_detail">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_star_favorite"
+            android:layout_width="@dimen/size_star_add_favorite_image"
+            app:fav_state="@{viewModel.isSuccessfullTask}"
+            app:is_fav_movie="@{viewModel.isFavMovie}"
+            app:srcCompat="@drawable/favorite_selector"
+            android:layout_height="@dimen/size_star_add_favorite_image" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/space_10dp"
+            android:textAppearance="@style/WhiteTextAppearanceBody1"
+            android:gravity="center"
+            android:text="@string/add_film_you_favorite" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

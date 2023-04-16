@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.myapplication.R
 import com.myapplication.core.Response
-import com.myapplication.core.config.firebase.FAVORITE_FILMS_COLLECTION_FIELD
 import com.myapplication.data.model.FavMovie
-import com.myapplication.domain.usecases.favmovies.*
+import com.myapplication.domain.usecases.favmovies.DeleteFavUseCase
+import com.myapplication.domain.usecases.favmovies.GetFavMoviesUseCase
+import com.myapplication.domain.usecases.favmovies.IsFavMovieUseCase
+import com.myapplication.domain.usecases.favmovies.SaveFavMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +19,7 @@ class FavMoviesViewModel @Inject constructor(
     private val getFavMoviesUseCase: GetFavMoviesUseCase,
     private val isFavMovieUseCase: IsFavMovieUseCase,
     private val saveFavMoviesUseCase: SaveFavMoviesUseCase,
-    private val deleteFavUseCase: DeleteFavUseCase
+    private val deleteFavUseCase: DeleteFavUseCase,
 ) : ViewModel() {
     private val _favMovies: MutableLiveData<Response<List<FavMovie>>?> =
         MutableLiveData(Response.Loading())
@@ -29,7 +30,6 @@ class FavMoviesViewModel @Inject constructor(
     private val _isSuccessfullTask: MutableLiveData<Response<Boolean>?> =
         MutableLiveData(Response.Loading())
     val isSuccessfullTask: LiveData<Response<Boolean>?> = _isSuccessfullTask
-
 
     fun isFavMovie(userId: String, movieId: Long) {
         viewModelScope.launch {

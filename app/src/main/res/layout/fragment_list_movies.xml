@@ -9,14 +9,14 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         app:elevation="0dp"
-        android:background="@android:color/transparent"
+        style="@style/ToolbarStyle"
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways"
-            android:background="@android:color/transparent"
+            style="@style/ToolbarStyle"
             app:menu="@menu/menu_toolbar"
             >
             <TextView
@@ -36,16 +36,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-           <!-- <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/film_roll_left"
-                android:layout_width="24dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="@id/movies_list_rv"
-                app:layout_constraintEnd_toStartOf="@id/movies_list_rv"
-                app:layout_constraintTop_toTopOf="@id/movies_list_rv"
-                app:srcCompat="@drawable/film_roll_piece" />-->
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/movies_list_rv"
                 android:layout_width="match_parent"
@@ -56,21 +46,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
-
-
-
-           <!-- <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/film_roll_right"
-                android:layout_width="24dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="@id/movies_list_rv"
-                app:layout_constraintStart_toEndOf="@id/movies_list_rv"
-                app:layout_constraintTop_toTopOf="@id/movies_list_rv"
-                app:srcCompat="@drawable/film_roll_piece" />-->
         </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.core.widget.NestedScrollView
         android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"/>
     <ProgressBar
         android:layout_gravity="center"
@@ -78,8 +56,8 @@
         tools:visibility="visible"
         android:visibility="gone"
         android:indeterminateTint="@color/white"
-        android:layout_width="60dp"
-        android:layout_height="60dp"/>
+        android:layout_width="@dimen/size_circular_progress_bar__inderteminate"
+        android:layout_height="@dimen/size_circular_progress_bar__inderteminate"/>
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_error_loading"
         android:text="@string/text_error_occurred_home"
@@ -107,7 +85,7 @@
             android:tint="@color/white"
             android:src="@drawable/ic_arrow_top"
             android:layout_margin="@dimen/space_20dp"
-            />
+            android:contentDescription="@string/content_description_button_turn_to_top" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_pick_your_favorites"
@@ -118,7 +96,8 @@
             android:tint="@color/white"
             android:visibility="gone"
             app:layout_anchorGravity="top|center"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            android:contentDescription="@string/content_description_button_see_your_favorites" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -129,8 +108,8 @@
         >
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_sign_out"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="@dimen/size_sign_and_sign_out_button"
+            android:layout_height="@dimen/size_sign_and_sign_out_button"
             android:tint="@color/white"
             android:foreground="?android:attr/selectableItemBackgroundBorderless"
             android:visibility="gone"
@@ -140,8 +119,8 @@
             />
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_login"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="@dimen/size_sign_and_sign_out_button"
+            android:layout_height="@dimen/size_sign_and_sign_out_button"
             android:tint="@color/white"
             android:foreground="?android:attr/selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/ic_login"
