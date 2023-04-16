@@ -24,7 +24,7 @@
     <string name="message_favorite_not_sign">Adicionar aos favoritos necessita fazer login</string>
     <string name="title_toolbar_fav_movies">Seus filmes favoritos</string>
     <string name="message_error_field">Os campos não podem ser nulos</string>
-    <string name="text_search_item">Buscar...</string>
+    <string name="text_search_item">Buscar…</string>
     <string name="message_dismiss_snackbar">Minimizar</string>
     <string name="text_runtime_movie_detail">%d min</string>
 </resources>

@@ -14,7 +14,7 @@ interface SaveFavMoviesUseCase {
 class SaveFavMoviesUseCaseImpl @Inject constructor(
     private val favMovieRepository: FavMovieRepository,
     private val dispatcher: CoroutineDispatcher
-): SaveFavMoviesUseCase {
+) : SaveFavMoviesUseCase {
     override suspend fun invoke(favMovie: FavMovie): Response<Boolean> =
         withContext(dispatcher) {
             favMovieRepository.saveMovies(favMovie)

@@ -29,7 +29,10 @@
     <string name="message_favorite_not_sign">Add your favorites needs sign in</string>
     <string name="title_toolbar_fav_movies">Your favorite movies</string>
     <string name="message_error_field">The Fields can\'t be null</string>
-    <string name="text_search_item">Search...</string>
+    <string name="text_search_item">Search…</string>
     <string name="message_dismiss_snackbar">Dismiss</string>
     <string name="text_runtime_movie_detail">%d min</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="content_description_button_turn_to_top">Button turn to top</string>
+    <string name="content_description_button_see_your_favorites">Button see your favorites</string>
 </resources>

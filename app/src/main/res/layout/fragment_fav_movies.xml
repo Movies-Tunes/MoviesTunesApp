@@ -6,13 +6,14 @@
     style="@style/AppScreenTheme"
     android:layout_height="match_parent"
     tools:context=".ui.favoritemovies.fragment.FavMoviesFragment">
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/toolbar_fav"
         app:title="@string/title_toolbar_fav_movies"
         app:titleTextColor="@color/white"
         app:titleTextAppearance="@style/WhiteTextAppearanceSubhead"
         app:navigationIcon="@drawable/ic_close_x"
+        style="@style/ToolbarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

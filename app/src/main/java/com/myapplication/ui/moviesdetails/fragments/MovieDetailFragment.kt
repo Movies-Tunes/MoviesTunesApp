@@ -1,7 +1,6 @@
 package com.myapplication.ui.moviesdetails.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,20 +10,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
 import com.myapplication.R
-import com.myapplication.core.Constants
 import com.myapplication.core.Response
 import com.myapplication.data.entities.MovieDetail
 import com.myapplication.data.model.FavMovie
 import com.myapplication.databinding.FragmentMovieDetailBinding
 import com.myapplication.ui.favoritemovies.viewmodel.FavMoviesViewModel
 import com.myapplication.ui.moviesdetails.viewmodel.MoviesDetailsViewModel
-import com.myapplication.util.extension.concatParam
 import com.myapplication.util.extension.gone
 import com.myapplication.util.extension.snackbar
 import com.myapplication.util.extension.visible
-import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -34,7 +30,7 @@ class MovieDetailFragment : Fragment() {
     private val args: MovieDetailFragmentArgs by navArgs()
     private var movieDetail: MovieDetail? = null
     private val moviesDetailsViewModel: MoviesDetailsViewModel by viewModels()
-    private val favMovies: FavMoviesViewModel by viewModels()
+    private val favMoviesViewModel: FavMoviesViewModel by viewModels()
 
     @Inject
     lateinit var auth: FirebaseAuth
@@ -45,6 +41,8 @@ class MovieDetailFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentMovieDetailBinding.inflate(inflater, container, false)
+        _binding.lifecycleOwner = viewLifecycleOwner
+        _binding.favViewModel = favMoviesViewModel
         return _binding.root
     }
 
@@ -66,15 +64,7 @@ class MovieDetailFragment : Fragment() {
 
     private fun getDataFromTopRated(safeArguments: MovieDetailFragmentArgs) {
         safeArguments.topRated?.apply {
-            val id = id
-            val posterPath = posterPath
-            val title = title
-            posterPath.let { safePath ->
-                Picasso.get()
-                    .load(Constants.BASE_POSTER_PATH.concatParam(safePath))
-                    .into(_binding.ivPoster)
-            }
-            _binding.detailToolbar.title = title
+            _binding.topRatedMovie = this
             getDetailsMovie(id)
         }
     }
@@ -83,27 +73,21 @@ class MovieDetailFragment : Fragment() {
         id.let {
             moviesDetailsViewModel.getMovieDetails(it, Locale.getDefault().toLanguageTag())
             auth.currentUser?.uid?.let { uid ->
-                favMovies.isFavMovie(uid, it)
+                favMoviesViewModel.isFavMovie(uid, it)
             }
         }.also {
-            binding.ivStarFavorite.isEnabled = false
+            binding.layoutAddFavoriteMovie.ivStarFavorite.isEnabled = false
         }
     }
 
     private fun getDataFromFavMovie(favMovie: FavMovie?) {
         favMovie?.let {
-            _binding.detailToolbar.title = it.title
-            it.posterPath.let { safePath ->
-                Picasso.get()
-                    .load(Constants.BASE_POSTER_PATH.concatParam(safePath))
-                    .into(_binding.ivPoster)
-            }
+            _binding.favMovie = it
             getDetailsMovie(it.id)
         }
     }
 
     private fun setNavigationToolbar() {
-        _binding.detailToolbar.setNavigationIcon(R.drawable.ic_back)
         _binding.detailToolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
@@ -116,47 +100,15 @@ class MovieDetailFragment : Fragment() {
                     _binding.pbLoadingDetails.gone()
                     _binding.tvDescriptionSinopse.text = getString(R.string.error_loading_movie_details)
                 }
+
                 is Response.Loading -> {
-                    setInitialVisibleStates()
+                    _binding.tvDescriptionSinopse.gone()
+                    _binding.pbLoadingDetails.visible()
                 }
+
                 is Response.Success -> {
                     setCompleteLoadingState()
                     setDetailsInView(response.data)
-                }
-            }
-        }
-        favMovies.isFavMovie.observe(viewLifecycleOwner) { response ->
-            response?.let {
-                when (response) {
-                    is Response.Error -> {
-                        _binding.pbLoadingDetails.gone()
-                        _binding.tvDescriptionSinopse.text =
-                            getString(R.string.error_loading_movie_details)
-                    }
-                    is Response.Loading -> {
-                        setInitialVisibleStates()
-                    }
-                    is Response.Success -> {
-                        setCompleteLoadingState()
-                        binding.ivStarFavorite.isEnabled = !response.data
-                    }
-                }
-            }
-        }
-        favMovies.isSuccessfullTask.observe(viewLifecycleOwner) { response ->
-            response?.let {
-                when (response) {
-                    is Response.Error -> {
-                        _binding.pbLoadingDetails.gone()
-                        _binding.tvDescriptionSinopse.text =
-                            getString(R.string.error_loading_movie_details)
-                    }
-                    is Response.Loading -> {
-                        setInitialVisibleStates()
-                    }
-                    is Response.Success -> {
-                        snackbar(message = getString(response.message))
-                    }
                 }
             }
         }
@@ -164,57 +116,51 @@ class MovieDetailFragment : Fragment() {
 
     private fun setDetailsInView(movie: MovieDetail) {
         movieDetail = movie
-        _binding.tvDescriptionSinopse.text = movie.overview
-        _binding.tvYear.text = movie.releaseDate
-        _binding.tvGenre.text = movie.genres.joinToString(limit = 3) { genreItem ->
-            genreItem.name
-        }
-        _binding.tvDuration.text = getString(R.string.text_runtime_movie_detail, movie.runtime)
-    }
-
-    private fun setInitialVisibleStates() {
-        _binding.tvDescriptionSinopse.visibility = View.GONE
-        _binding.pbLoadingDetails.visibility = View.VISIBLE
+        _binding.movieDetail = movie
     }
 
     private fun setCompleteLoadingState() {
         _binding.tvDescriptionSinopse.visible()
         _binding.pbLoadingDetails.gone()
-        _binding.llFavoriteMovie.visible()
+        _binding.layoutAddFavoriteMovie.llFavoriteMovie.visible()
     }
 
     private fun setListeners() {
-        _binding.tvGenre.setOnClickListener {
-            when (_binding.tvGenre.lineCount) {
-                1 -> _binding.tvGenre.maxLines = Int.MAX_VALUE
-                else -> _binding.tvGenre.maxLines = 1
+        _binding.layoutContentDetailMovie.tvGenre.setOnClickListener {
+            when (_binding.layoutContentDetailMovie.tvGenre.lineCount) {
+                1 -> _binding.layoutContentDetailMovie.tvGenre.maxLines = Int.MAX_VALUE
+                else -> _binding.layoutContentDetailMovie.tvGenre.maxLines = 1
             }
         }
-        _binding.llFavoriteMovie.setOnClickListener {
-            _binding.ivStarFavorite.isEnabled = !_binding.ivStarFavorite.isEnabled
-            Log.e("enabled", _binding.ivStarFavorite.isEnabled.toString())
+        _binding.layoutAddFavoriteMovie.llFavoriteMovie.setOnClickListener {
+            val ivStarFavorite = _binding.layoutAddFavoriteMovie.ivStarFavorite
+            ivStarFavorite.isEnabled = !ivStarFavorite.isEnabled
             if (auth.currentUser != null) {
                 movieDetail?.let {
                     val id = it.id
                     val path = it.posterPath!!
                     val userId = auth.currentUser!!.uid
                     val title = _binding.detailToolbar.title.toString()
-                    if (_binding.ivStarFavorite.isEnabled) {
-                        favMovies.saveFavMovie(
+                    if (ivStarFavorite.isEnabled) {
+                        favMoviesViewModel.saveFavMovie(
                             FavMovie(id, path, title, userId),
                         )
                         return@setOnClickListener
                     }
-                    auth.currentUser?.uid?.let { it1 -> favMovies.deleteFavMovie(it1, id) }
+                    auth.currentUser?.uid?.let { it1 -> favMoviesViewModel.deleteFavMovie(it1, id) }
                 }
             } else {
                 snackbar(
                     message = getString(R.string.message_favorite_not_sign),
                 )
-                val action =
-                    MovieDetailFragmentDirections.actionMovieDetailFragmentToLoginFragment()
-                findNavController().navigate(action)
+                navigateToLoginFragmennt()
             }
         }
+    }
+
+    private fun navigateToLoginFragmennt() {
+        val action =
+            MovieDetailFragmentDirections.actionMovieDetailFragmentToLoginFragment()
+        findNavController().navigate(action)
     }
 }
