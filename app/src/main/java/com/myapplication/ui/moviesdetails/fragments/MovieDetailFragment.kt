@@ -66,7 +66,7 @@ class MovieDetailFragment : Fragment() {
 
     private fun getDetailsMovie(id: Long) {
         id.let {
-            moviesDetailsViewModel.getMovieDetails(it, Locale.getDefault().toLanguageTag())
+            moviesDetailsViewModel.getMovieDetails(it)
             auth.currentUser?.uid?.let { uid ->
                 favMoviesViewModel.isFavMovie(uid, it)
             }

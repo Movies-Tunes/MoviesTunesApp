@@ -2,6 +2,8 @@ package com.myapplication.domain.di.modules
 
 import com.myapplication.domain.usecases.*
 import com.myapplication.domain.usecases.favmovies.*
+import com.myapplication.domain.usecases.moviedetails.GetMovieDetailsUseCase
+import com.myapplication.domain.usecases.moviedetails.GetMovieDetailsUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -39,4 +41,9 @@ abstract class DomainModule {
     abstract fun bindDeleteFavMovieUseCase(
         deleteFavUseCase: DeleteFavUseCaseImpl,
     ): DeleteFavUseCase
+
+    @Binds
+    abstract fun bindDeleteFavMovieUseCase(
+        getMovieDetailsUseCase: GetMovieDetailsUseCaseImpl,
+    ): GetMovieDetailsUseCase
 }

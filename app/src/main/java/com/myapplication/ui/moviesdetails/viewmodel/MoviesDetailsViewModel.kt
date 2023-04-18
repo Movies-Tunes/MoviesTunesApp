@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.myapplication.core.Response
 import com.myapplication.data.entities.MovieDetail
-import com.myapplication.domain.repository.MovieRepository
+import com.myapplication.domain.usecases.moviedetails.GetMovieDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MoviesDetailsViewModel @Inject constructor(
-    private val movieRepository: MovieRepository,
+    private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
 ) : ViewModel() {
 
     private val _moviesDetails: MutableLiveData<Response<MovieDetail>> =
@@ -22,12 +22,14 @@ class MoviesDetailsViewModel @Inject constructor(
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    fun getMovieDetails(movieId: Long, query: String) {
+    fun getMovieDetails(movieId: Long) {
         _isLoading.postValue(true)
         viewModelScope.launch {
-            _moviesDetails.postValue(
-                movieRepository.getMovieDetails(movieId, query),
-            )
+            getMovieDetailsUseCase(movieId).let {
+                _moviesDetails.postValue(
+                    it,
+                )
+            }
             _isLoading.postValue(false)
         }
     }
