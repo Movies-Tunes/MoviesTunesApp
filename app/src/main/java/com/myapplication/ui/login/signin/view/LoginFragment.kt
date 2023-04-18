@@ -35,9 +35,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         _binding.toolbarLogin.setNavigationIcon(R.drawable.ic_close_x)
-
         setListeners()
         initObservers()
     }
@@ -54,8 +52,8 @@ class LoginFragment : Fragment() {
         _binding.btnLogin.setOnClickListener {
             if (validateFields()) {
                 signViewModel.signIn(
-                    _binding.etEmail.text.toString(),
-                    _binding.etPass.text.toString(),
+                    _binding.etEmail.text.toString().trim(),
+                    _binding.etPass.text.toString().trim(),
                 )
             } else {
                 snackbar(
@@ -70,29 +68,28 @@ class LoginFragment : Fragment() {
             state?.let {
                 when (state) {
                     is Response.Error -> {
-                        loadingDialog.dismiss()
                         state.exception.apply {
                             message?.let {
-                                snackbar(
-                                    message = it,
-                                )
+                                snackbar(message = it)
                             }
                             printStackTrace()
                         }
                     }
-                    is Response.Loading -> {
-                        loadingDialog.show()
-                    }
                     is Response.Success -> {
-                        loadingDialog.dismiss()
-                        snackbar(
-                            message = getString(state.message),
-                        )
+                        snackbar(message = getString(state.message))
                         findNavController().popBackStack()
                     }
                 }
             }
         }
+        signViewModel.isLoading.observe(viewLifecycleOwner) {
+            if (it) loadingDialog.show() else loadingDialog.dismiss()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        loadingDialog.dismiss()
     }
 
     private fun validateFields() = when {

@@ -11,8 +11,9 @@ import com.myapplication.core.error.CacheNotFoundException
 import com.myapplication.data.entities.MovieDetail
 import com.myapplication.data.entities.TopRatedResult
 import com.myapplication.data.entities.TopRatedResultItem
-import com.myapplication.data.localdatasource.MoviesDao
+import com.myapplication.data.localdatasource.MoviesTunesDatabase
 import com.myapplication.data.remotedatasource.data.api.TheMovieDbApiService
+import com.myapplication.domain.mediator.TopRatedResultMediator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -22,54 +23,22 @@ import javax.inject.Inject
 
 interface MovieRepository {
     suspend fun addMovie(movie: MovieDetail)
-    suspend fun getAllMovies(page: Int, query: String): Response<List<TopRatedResultItem>>
     suspend fun getMovieDetails(movieId: Long, query: String): Response<MovieDetail>
-    suspend fun updateMovie(movie: TopRatedResult): Int
-    suspend fun deleteMovie(movie: TopRatedResult): Int
+    suspend fun updateMovie(movie: TopRatedResult): Long
+    suspend fun deleteMovie(movie: TopRatedResult): Long
 
     fun getAllMovies(query: String): Flow<PagingData<TopRatedResultItem>>
 }
 
 class MovieDataSource @Inject constructor(
     private val service: TheMovieDbApiService,
-    private val moviesDao: MoviesDao,
+    private val moviesTunesDatabase: MoviesTunesDatabase,
 ) : MovieRepository {
 
-    private var topRatedMovies: List<TopRatedResultItem>? = null
     private var movieDetailDb: MovieDetail? = null
 
     override suspend fun addMovie(movie: MovieDetail) {
-        moviesDao.insertMovieDetails(movie)
-    }
-
-    override suspend fun getAllMovies(
-        page: Int,
-        query: String,
-    ): Response<List<TopRatedResultItem>> {
-        return try {
-            val movies = service.getTopRatedMovies(Constants.API_KEY, page, query)
-            CoroutineScope(Dispatchers.IO).launch {
-                movies.results.map { it }.onEach { topRatedResultItem ->
-                    saveTopRatedMoviesInCache(topRatedResultItem)
-                }
-                moviesDao.getAllMovies().collect { moviesCache ->
-                    moviesCache?.let {
-                        topRatedMovies = it
-                    }
-                }
-            }
-            Response.Success(topRatedMovies ?: movies.results.sortedBy { it.id })
-        } catch (e: Exception) {
-            try {
-                var movies: List<TopRatedResultItem>? = null
-                moviesDao.getAllMovies().collect {
-                    movies = it
-                }
-                Response.Success(movies ?: mutableListOf())
-            } catch (e: Exception) {
-                Response.Error(CacheNotFoundException())
-            }
-        }
+        moviesTunesDatabase.movieDao().insertMovieDetails(movie)
     }
 
     @OptIn(ExperimentalPagingApi::class)
@@ -79,14 +48,19 @@ class MovieDataSource @Inject constructor(
                 pageSize = NETWORK_PAGE_SIZE,
             ),
             initialKey = 1,
-            /*  remoteMediator = MoviesTunesApplication.instanceMediatorPaging,*/
+            remoteMediator = TopRatedResultMediator(
+                query,
+                moviesTunesDatabase,
+                service,
+            ),
         ) {
+            /*moviesTunesDatabase.movieDao().getAllMovies()*/
             MoviesPagingDataSource(query, service)
         }.flow
     }
 
     private suspend fun saveTopRatedMoviesInCache(topRatedMovies: TopRatedResultItem) {
-        moviesDao.insertMovie(topRatedMovies)
+        moviesTunesDatabase.movieDao().insertMovie(topRatedMovies)
     }
 
     override suspend fun getMovieDetails(movieId: Long, query: String): Response<MovieDetail> {
@@ -94,14 +68,14 @@ class MovieDataSource @Inject constructor(
             val movieDetail = service.getMovieDetails(movieId, Constants.API_KEY, query)
             CoroutineScope(Dispatchers.IO).launch {
                 addMovie(movieDetail)
-                moviesDao.getMovieDetail(movieId).collectLatest {
+                moviesTunesDatabase.movieDao().getMovieDetail(movieId).collectLatest {
                     movieDetailDb = it
                 }
             }
             Response.Success(movieDetail)
         } catch (e: Exception) {
             try {
-                moviesDao.getMovieDetail(movieId).collectLatest {
+                moviesTunesDatabase.movieDao().getMovieDetail(movieId).collectLatest {
                     movieDetailDb = it
                 }
                 Response.Success(movieDetailDb!!)
@@ -111,7 +85,7 @@ class MovieDataSource @Inject constructor(
         }
     }
 
-    override suspend fun updateMovie(movie: TopRatedResult): Int = 0
+    override suspend fun updateMovie(movie: TopRatedResult): Long = 0
 
-    override suspend fun deleteMovie(movie: TopRatedResult): Int = 0
+    override suspend fun deleteMovie(movie: TopRatedResult): Long = 0
 }

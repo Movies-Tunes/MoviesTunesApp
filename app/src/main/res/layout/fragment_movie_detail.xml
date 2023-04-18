@@ -1,157 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    >
-    <LinearLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        style="@style/AppScreenTheme"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
-        tools:context=".ui.moviesdetails.fragments.MovieDetailFragment">
+<layout>
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/detail_toolbar"
+    <data>
+
+        <variable
+            name="movieDetail"
+            type="com.myapplication.data.entities.MovieDetail" />
+        <variable
+            name="favViewModel"
+            type="com.myapplication.ui.favoritemovies.viewmodel.FavMoviesViewModel" />
+        <variable
+            name="topRatedMovie"
+            type="com.myapplication.data.entities.TopRatedResultItem" />
+        <variable
+            name="favMovie"
+            type="com.myapplication.data.model.FavMovie" />
+
+        <import type="com.myapplication.core.Constants" />
+        <import type="android.view.View" />
+    </data>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            style="@style/AppScreenTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:titleTextColor="@color/white"
-            app:titleTextAppearance="@style/WhiteTextAppearanceSubhead"
-            app:titleCentered="true"
-            android:gravity="center"
-            app:title="@string/text_detail_movie"
-            />
-        <androidx.cardview.widget.CardView
-            android:layout_width="@dimen/width_card_movie_detail"
-            android:layout_height="@dimen/height_card_movie_detail"
-            android:layout_gravity="center_horizontal"
-            >
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_poster"
-                android:layout_width="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_launcher_background"
-                android:layout_height="match_parent"/>
-        </androidx.cardview.widget.CardView>
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:padding="@dimen/space_20dp"
-            >
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                app:srcCompat="@drawable/ic_calendar"
-                android:tint="@color/white"
-                android:layout_height="wrap_content"/>
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_year"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:textAppearance="@style/WhiteTextAppearanceBody1"
-                tools:text="2021"
-                />
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="@dimen/width_divider_columns"
-                android:foreground="@color/white"
-                android:layout_height="match_parent"/>
-            <androidx.appcompat.widget.AppCompatImageView
-                android:tint="@color/white"
-                android:layout_width="wrap_content"
-                app:srcCompat="@drawable/ic_clock"
-                android:layout_marginHorizontal="5dp"
-                android:layout_height="wrap_content"/>
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/WhiteTextAppearanceBody1"
-                android:layout_marginHorizontal="5dp"
-                tools:text="148"
-                />
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="@dimen/width_divider_columns"
-                android:tint="@color/white"
-                android:foreground="@color/white"
-                android:background="@color/white"
-                android:layout_height="match_parent"/>
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:tint="@color/white"
-                app:srcCompat="@drawable/ic_ticket"
-                android:layout_marginHorizontal="5dp"
+            android:orientation="vertical"
+            tools:context=".ui.moviesdetails.fragments.MovieDetailFragment">
 
-                android:layout_height="wrap_content"/>
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_genre"
-                android:lines="1"
-                android:ellipsize="end"
-                android:layout_width="wrap_content"
-                android:maxWidth="@dimen/width_text_genre_detail"
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/detail_toolbar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:textAppearance="@style/WhiteTextAppearanceBody1"
-                tools:text="148"
+                android:gravity="center"
+                app:navigationIcon="@drawable/ic_back"
+                app:navigationIconTint="@color/white"
+                app:title="@{topRatedMovie.title ?? favMovie.title ??@string/text_detail_movie}"
+                app:titleCentered="true"
+                app:titleTextAppearance="@style/WhiteTextAppearanceSubhead"
+                app:titleTextColor="@color/white" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/width_card_movie_detail"
+                android:layout_height="@dimen/height_card_movie_detail"
+                android:layout_gravity="center_horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_poster"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    app:load_image="@{Constants.BASE_POSTER_PATH + movieDetail.posterPath}"
+                    app:srcCompat="@drawable/ic_launcher_background" />
+            </androidx.cardview.widget.CardView>
+
+            <include
+                android:id="@+id/layout_content_detail_movie"
+                layout="@layout/layout_content_details_movie"
+                bind:movieDetails="@{movieDetail}" />
+
+            <include
+                android:id="@+id/layout_add_favorite_movie"
+                layout="@layout/layout_add_favorite_movie"
+                bind:viewModel="@{favViewModel}"
+                app:visisibility_view="@{!favViewModel.isLoading()}"
                 />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/ll_favorite_movie"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:gravity="center_vertical"
-            android:foreground="?android:attr/selectableItemBackgroundBorderless"
-            android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_star_favorite"
-                android:layout_width="30dp"
-                app:srcCompat="@drawable/favorite_selector"
-                android:layout_height="30dp"/>
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/space_10dp"
                 android:textAppearance="@style/WhiteTextAppearanceBody1"
                 android:gravity="center"
-                android:text="@string/add_film_you_favorite"
-                />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/space_10dp"
-            android:textAppearance="@style/WhiteTextAppearanceBody1"
-            android:gravity="center"
-            android:text="@string/text_sinopse_movie"
-            />
+                android:text="@string/text_sinopse_movie" />
 
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_description_sinopse"
-            android:layout_width="match_parent"
-            android:ellipsize="end"
-            android:layout_marginHorizontal="@dimen/space_10dp"
-            android:textAlignment="textStart"
-            tools:text="Id disputationi reprehendunt similique dolor. Reprehendunt cetero docendi nisl consectetur etiam. Aliquet veritus tota mediocrem dolorum inani impetus natum eum. Est partiendo ancillae sumo proin alterum tritani novum audire senectus. Theophrastus definiebas tota dicam tortor moderatius aliquid condimentum prodesset. Sea habeo libero falli malorum contentiones. Penatibus has iisque gubergren eu. Ullamcorper viverra saperet quas metus efficitur ea. Tellus facilis constituto electram appareat deterruisset eu commodo dolore libero. Movet faucibus fabellas primis has."
-            android:layout_height="wrap_content"
-            android:padding="@dimen/space_10dp"
-            android:textAppearance="@style/WhiteTextAppearanceBody1"
-            />
-        <ProgressBar
-            android:id="@+id/pb_loading_details"
-            android:layout_width="50dp"
-            android:progressTint="@color/white"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:layout_margin="@dimen/space_10dp"
-            android:layout_height="50dp"/>
-    </LinearLayout>
-</ScrollView>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_description_sinopse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/space_10dp"
+                android:ellipsize="end"
+                android:padding="@dimen/space_10dp"
+                android:text="@{movieDetail.overview}"
+                app:visisibility_view="@{!favViewModel.isLoading()}"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/WhiteTextAppearanceBody1"
+                tools:text="Id disputationi reprehendunt similique dolor. Reprehendunt cetero docendi nisl consectetur etiam. Aliquet veritus tota mediocrem dolorum inani impetus natum eum. Est partiendo ancillae sumo proin alterum tritani novum audire senectus. Theophrastus definiebas tota dicam tortor moderatius aliquid condimentum prodesset. Sea habeo libero falli malorum contentiones. Penatibus has iisque gubergren eu. Ullamcorper viverra saperet quas metus efficitur ea. Tellus facilis constituto electram appareat deterruisset eu commodo dolore libero. Movet faucibus fabellas primis has." />
+
+            <ProgressBar
+                android:id="@+id/pb_loading_details"
+                android:layout_width="@dimen/size_progress_bar_50dp"
+                android:layout_height="@dimen/size_progress_bar_50dp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/space_10dp"
+                android:progressTint="@color/white"
+                app:visisibility_view="@{favViewModel.isLoading()}"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

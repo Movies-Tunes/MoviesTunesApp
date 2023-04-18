@@ -43,4 +43,7 @@
         <item name="android:textSize">@dimen/text_buttons</item>
         <item name="fontWeight">700</item>
     </style>
+    <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:backgroundTint">@color/color_transparent</item>
+    </style>
 </resources>

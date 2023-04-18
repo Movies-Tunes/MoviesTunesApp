@@ -29,12 +29,9 @@ class MoviesPagingDataSource(
                 page = pageIndex,
                 query,
             )
-
             val nextKey = if (response.results.isEmpty()) {
                 null
             } else {
-                // initial load size = 3 * NETWORK_PAGE_SIZE
-                // ensure we're not requesting duplicating items, at the 2nd request
                 pageIndex + (params.loadSize / NETWORK_PAGE_SIZE)
             }
 

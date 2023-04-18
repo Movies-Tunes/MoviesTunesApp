@@ -1,151 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/AppScreenTheme"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.google.android.material.appbar.AppBarLayout
+<!--TODO refactor layout for databinding in list movies-->
+<layout>
+    <data>
+        <variable
+            name="movieListViewModel"
+            type="com.myapplication.ui.movies.viewmodel.MoviesViewModel" />
+        <variable
+            name="auth"
+            type="com.google.firebase.auth.FirebaseAuth" />
+        <import type="android.view.View"/>
+    </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        style="@style/AppScreenTheme"
         android:layout_width="match_parent"
-        app:elevation="0dp"
-        android:background="@android:color/transparent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.MaterialToolbar
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways"
-            android:background="@android:color/transparent"
-            app:menu="@menu/menu_toolbar"
-            >
-            <TextView
-                android:id="@+id/list_movies_tv"
-                style="@style/AppFontStyle"
-                android:layout_width="wrap_content"
+            app:elevation="0dp"
+            style="@style/ToolbarStyle"
+            android:layout_height="wrap_content">
+            <com.google.android.material.appbar.MaterialToolbar
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_what_do_you_want_to_watch"
-                android:textAppearance="@style/WhiteTextAppearanceHead"
-                android:textStyle="bold"
-                 />
-        </com.google.android.material.appbar.MaterialToolbar>
-    </com.google.android.material.appbar.AppBarLayout>
+                app:layout_scrollFlags="scroll|enterAlways"
+                style="@style/ToolbarStyle"
+                app:menu="@menu/menu_toolbar"
+                >
+                <TextView
+                    android:id="@+id/list_movies_tv"
+                    style="@style/AppFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_what_do_you_want_to_watch"
+                    android:textAppearance="@style/WhiteTextAppearanceHead"
+                    android:textStyle="bold"
+                    />
+            </com.google.android.material.appbar.MaterialToolbar>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/movies_list_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-           <!-- <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/film_roll_left"
-                android:layout_width="24dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="@id/movies_list_rv"
-                app:layout_constraintEnd_toStartOf="@id/movies_list_rv"
-                app:layout_constraintTop_toTopOf="@id/movies_list_rv"
-                app:srcCompat="@drawable/film_roll_piece" />-->
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/movies_list_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:scrollbars="vertical"
+                app:list_data="@{movieListViewModel.topRatedMovies}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:reverseLayout="false"
                 app:layout_constraintStart_toStartOf="parent" />
-
-
-
-           <!-- <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/film_roll_right"
-                android:layout_width="24dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="@id/movies_list_rv"
-                app:layout_constraintStart_toEndOf="@id/movies_list_rv"
-                app:layout_constraintTop_toTopOf="@id/movies_list_rv"
-                app:srcCompat="@drawable/film_roll_piece" />-->
         </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="wrap_content"
-
-        android:layout_height="wrap_content"/>
-    <ProgressBar
-        android:layout_gravity="center"
-        android:id="@+id/pb_loading_list"
-        tools:visibility="visible"
-        android:visibility="gone"
-        android:indeterminateTint="@color/white"
-        android:layout_width="60dp"
-        android:layout_height="60dp"/>
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_error_loading"
-        android:text="@string/text_error_occurred_home"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textAppearance="@style/WhiteTextAppearanceHead"
-        android:layout_width="wrap_content"
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:layout_height="wrap_content"/>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="bottom|end"
-        >
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_turn_to_top"
+        <ProgressBar
+            android:layout_gravity="center"
+            android:id="@+id/pb_loading_list"
+            tools:visibility="visible"
+            android:visibility="gone"
+            android:indeterminateTint="@color/white"
+            android:layout_width="@dimen/size_circular_progress_bar__inderteminate"
+            android:layout_height="@dimen/size_circular_progress_bar__inderteminate"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_error_loading"
+            android:text="@string/text_error_occurred_home"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAppearance="@style/WhiteTextAppearanceHead"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:visibility="gone"
             tools:visibility="visible"
-            android:tint="@color/white"
-            android:src="@drawable/ic_arrow_top"
-            android:layout_margin="@dimen/space_20dp"
-            />
+            android:layout_height="wrap_content"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_pick_your_favorites"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space_20dp"
-            android:src="@drawable/ic_favorite_films"
-            android:tint="@color/white"
-            android:visibility="gone"
-            app:layout_anchorGravity="top|center"
-            tools:visibility="visible" />
+            android:orientation="vertical"
+            android:layout_gravity="bottom|end"
+            >
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_turn_to_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:tint="@color/white"
+                android:src="@drawable/ic_arrow_top"
+                android:layout_margin="@dimen/space_20dp"
+                android:contentDescription="@string/content_description_button_turn_to_top" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="bottom|start"
-        >
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_sign_out"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:tint="@color/white"
-            android:foreground="?android:attr/selectableItemBackgroundBorderless"
-            android:visibility="gone"
-            tools:visibility="visible"
-            app:srcCompat="@drawable/ic_sign_out"
-            android:layout_margin="@dimen/space_20dp"
-            />
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_login"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:tint="@color/white"
-            android:foreground="?android:attr/selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/ic_login"
-            android:layout_margin="@dimen/space_20dp"
-            />
-    </androidx.appcompat.widget.LinearLayoutCompat>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_pick_your_favorites"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_20dp"
+                android:src="@drawable/ic_favorite_films"
+                android:tint="@color/white"
+                android:visibility="@{auth.currentUser != null ? View.VISIBLE : View.GONE}"
+                app:layout_anchorGravity="top|center"
+                tools:visibility="visible"
+                android:contentDescription="@string/content_description_button_see_your_favorites" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="bottom|start"
+            >
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_sign_out"
+                android:layout_width="@dimen/size_sign_and_sign_out_button"
+                android:layout_height="@dimen/size_sign_and_sign_out_button"
+                android:tint="@color/white"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:visibility="@{auth.currentUser != null ? View.VISIBLE : View.GONE}"
+                tools:visibility="visible"
+                app:srcCompat="@drawable/ic_sign_out"
+                android:layout_margin="@dimen/space_20dp"
+                />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_login"
+                android:layout_width="@dimen/size_sign_and_sign_out_button"
+                android:layout_height="@dimen/size_sign_and_sign_out_button"
+                android:tint="@color/white"
+                android:visibility="@{auth.currentUser == null ? View.VISIBLE : View.GONE}"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                app:srcCompat="@drawable/ic_login"
+                android:layout_margin="@dimen/space_20dp"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

@@ -1,15 +1,17 @@
 package com.myapplication.domain.mediator
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.myapplication.core.Constants
-import com.myapplication.data.entities.TopRatedResult
 import com.myapplication.data.entities.TopRatedResultItem
 import com.myapplication.data.localdatasource.MoviesTunesDatabase
 import com.myapplication.data.remotedatasource.data.api.TheMovieDbApiService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -19,54 +21,44 @@ class TopRatedResultMediator(
     private val database: MoviesTunesDatabase,
     private val networkService: TheMovieDbApiService,
 ) : RemoteMediator<Int, TopRatedResultItem>() {
-    val moviesDao = database.movieDao()
-
+    private val moviesDao = database.movieDao()
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, TopRatedResultItem>,
     ): MediatorResult {
         return try {
-            // The network load method takes an optional after=<user.id>
-            // parameter. For every page after the first, pass the last user
-            // ID to let it continue from where it left off. For REFRESH,
-            // pass null to load the first page.
             val loadKey = when (loadType) {
                 LoadType.REFRESH -> {
-                    state.anchorPosition?.minus(1) ?: 1
-                }
-                LoadType.PREPEND ->
-                    return MediatorResult.Success(endOfPaginationReached = true)
-                LoadType.APPEND -> {
-                    val lastItem = state.lastItemOrNull()
-                        ?: return MediatorResult.Success(
-                            endOfPaginationReached = true,
-                        )
                     1
                 }
-            }
 
-            // Suspending network load via Retrofit. This doesn't need to be
-            // wrapped in a withContext(Dispatcher.IO) { ... } block since
-            // Retrofit's Coroutine CallAdapter dispatches on a worker
-            // thread.
-            val response = loadKey.let {
+                LoadType.PREPEND ->
+                    return MediatorResult.Success(endOfPaginationReached = true)
+
+                LoadType.APPEND -> {
+                    val lastItem = state.lastItemOrNull()
+                    (lastItem?.id ?: 1).toInt()
+                }
+            }
+            val response = withContext(Dispatchers.IO) {
                 networkService.getTopRatedMovies(
                     Constants.API_KEY,
-                    it,
+                    loadKey,
                     query,
                 )
             }
-
             database.withTransaction {
-                // Insert new users into database, which invalidates the
-                // current PagingData, allowing Paging to present the updates
-                // in the DB.
-            moviesDao.insertAll(response.results)
-
+                if (loadType == LoadType.REFRESH) {
+                    moviesDao.deleteAllTopRatedMovie()
+                }
+                response.let {
+                    moviesDao.insertAll(it.results)
+                    Log.e("data", it.results.toString())
+                }
             }
 
             MediatorResult.Success(
-                endOfPaginationReached = response.page == null,
+                endOfPaginationReached = response.results.isEmpty(),
             )
         } catch (e: IOException) {
             MediatorResult.Error(e)

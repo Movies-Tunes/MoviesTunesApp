@@ -9,7 +9,6 @@ import com.myapplication.data.entities.MovieDetail
 import com.myapplication.domain.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,15 +17,18 @@ class MoviesDetailsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _moviesDetails: MutableLiveData<Response<MovieDetail>> =
-        MutableLiveData(Response.Loading())
+        MutableLiveData()
     val moviesDetails: LiveData<Response<MovieDetail>> get() = _moviesDetails
+    private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
+    val isLoading: LiveData<Boolean> = _isLoading
 
     fun getMovieDetails(movieId: Long, query: String) {
-        _moviesDetails.postValue(Response.Loading())
+        _isLoading.postValue(true)
         viewModelScope.launch {
-            val movieDetails =
-                movieRepository.getMovieDetails(movieId, query)
-            _moviesDetails.postValue(movieDetails)
+            _moviesDetails.postValue(
+                movieRepository.getMovieDetails(movieId, query),
+            )
+            _isLoading.postValue(false)
         }
     }
 }
