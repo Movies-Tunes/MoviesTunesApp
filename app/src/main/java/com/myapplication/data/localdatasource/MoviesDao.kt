@@ -1,5 +1,6 @@
 package com.myapplication.data.localdatasource
 
+import androidx.paging.PagingSource
 import androidx.room.*
 import com.myapplication.data.entities.MovieDetail
 import com.myapplication.data.entities.TopRatedResultItem
@@ -17,7 +18,7 @@ interface MoviesDao {
     suspend fun insertMovieDetails(movie: MovieDetail)
 
     @Query("SELECT * FROM top_rated_tb")
-    fun getAllMovies(): Flow<List<TopRatedResultItem>?>
+    fun getAllMovies(): PagingSource<Int, TopRatedResultItem>
 
     @Query("SELECT * FROM movie_detail_tb WHERE id = :id")
     fun getMovieDetail(id: Long): Flow<MovieDetail?>
@@ -27,4 +28,7 @@ interface MoviesDao {
 
     @Delete
     suspend fun deleteMovie(movie: TopRatedResultItem): Int
+
+    @Query("DELETE FROM top_rated_tb")
+    suspend fun deleteAllTopRatedMovie(): Int
 }

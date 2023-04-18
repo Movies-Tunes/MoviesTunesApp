@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/width_card_poster_fav"
-    android:layout_height="@dimen/height_card_poster_fav"
-    android:layout_margin="@dimen/space_8dp"
-    app:cardCornerRadius="0dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_poster_fav"
-        android:layout_width="match_parent"
-        android:scaleType="centerCrop"
-        android:layout_height="match_parent"/>
-</androidx.cardview.widget.CardView>
+<layout>
+    <data>
+        <variable
+            name="favMovie"
+            type="com.myapplication.data.model.FavMovie" />
+        <import type="com.myapplication.core.Constants"/>
+    </data>
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="@dimen/width_card_poster_fav"
+        android:layout_height="@dimen/height_card_poster_fav"
+        android:layout_margin="@dimen/space_8dp"
+        app:cardCornerRadius="0dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_poster_fav"
+            android:layout_width="match_parent"
+            app:load_image="@{Constants.BASE_POSTER_PATH + favMovie.posterPath}"
+            android:scaleType="centerCrop"
+            android:layout_height="match_parent"/>
+    </androidx.cardview.widget.CardView>
+</layout>

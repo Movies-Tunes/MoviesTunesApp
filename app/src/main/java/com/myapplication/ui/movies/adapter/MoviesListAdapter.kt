@@ -28,22 +28,7 @@ class MoviesListAdapter(
         private val binding: MovieItemBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: TopRatedResultItem) {
-            binding.movieTitle.text =
-                binding.root.context.getString(R.string.movie_title, movie.title)
-            Picasso.get().load(
-                BASE_POSTER_PATH.concatParam(movie.posterPath),
-            ).placeholder(R.drawable.rotate_loading).into(
-                binding.movieIv,
-                object : Callback {
-                    override fun onSuccess() {
-                        println("sucess Picasso")
-                    }
-
-                    override fun onError(e: Exception?) {
-                        println("erro Picasso: $e")
-                    }
-                },
-            )
+            binding.topRated = movie
             binding.filmRollLeft.setImageDrawable(
                 TileDrawable(
                     ContextCompat.getDrawable(
@@ -63,6 +48,7 @@ class MoviesListAdapter(
                 ),
             )
             setListeners(movie)
+            binding.executePendingBindings()
         }
 
         private fun setListeners(movie: TopRatedResultItem) {

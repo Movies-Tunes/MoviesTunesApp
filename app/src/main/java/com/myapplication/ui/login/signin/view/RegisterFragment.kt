@@ -47,7 +47,6 @@ class RegisterFragment : Fragment() {
             state?.let {
                 when (state) {
                     is Response.Error -> {
-                        loadingDialog.dismiss()
                         state.exception.message?.let {
                             snackbar(
                                 message = it,
@@ -55,14 +54,9 @@ class RegisterFragment : Fragment() {
                         }
                         state.exception.printStackTrace()
                     }
-                    is Response.Loading -> {
-                        loadingDialog.show()
-                    }
+
                     is Response.Success -> {
-                        loadingDialog.dismiss()
-                        snackbar(
-                            message = getString(state.message),
-                        )
+                        snackbar(message = getString(state.message))
                         clearFields()
                         val action =
                             RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
@@ -71,13 +65,16 @@ class RegisterFragment : Fragment() {
                 }
             }
         }
+        signViewModel.isLoading.observe(viewLifecycleOwner) {
+            if (it) loadingDialog.show() else loadingDialog.dismiss()
+        }
     }
 
     private fun setListeners() {
         _binding.toolbarLogin.setNavigationOnClickListener {
-            val action =
-                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
-            findNavController().navigate(action)
+            findNavController().navigate(
+                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment(),
+            )
         }
         _binding.btnLogin.setOnClickListener {
             if (validateFields()) {
@@ -92,6 +89,11 @@ class RegisterFragment : Fragment() {
                 )
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        loadingDialog.dismiss()
     }
 
     private fun clearFields() {

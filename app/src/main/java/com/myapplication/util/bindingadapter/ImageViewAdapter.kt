@@ -3,13 +3,14 @@ package com.myapplication.util.bindingadapter
 import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import com.myapplication.R
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 @BindingAdapter("load_image")
 fun loadImage(imageView: ImageView?, url: String?) {
     url?.let {
-        Picasso.get().load(url).into(
+        Picasso.get().load(url).placeholder(R.drawable.rotate_loading).into(
             imageView,
             object : Callback {
                 override fun onSuccess() {

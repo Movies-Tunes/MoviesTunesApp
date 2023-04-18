@@ -2,22 +2,18 @@ package com.myapplication.ui.favoritemovies.fragment
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.myapplication.core.Response
-import com.myapplication.data.model.FavMovie
 import com.myapplication.databinding.FragmentFavMoviesBinding
 import com.myapplication.ui.favoritemovies.adapter.FavMoviesAdapter
 import com.myapplication.ui.favoritemovies.viewmodel.FavMoviesViewModel
 import com.myapplication.util.extension.createLoadingDialog
-import com.myapplication.util.extension.gone
 import com.myapplication.util.extension.snackbar
 import com.myapplication.util.extension.visible
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,6 +37,8 @@ class FavMoviesFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentFavMoviesBinding.inflate(inflater, container, false)
+        _binding.viewModel = favViewModel
+        _binding.lifecycleOwner = viewLifecycleOwner
         return _binding.root
     }
 
@@ -51,57 +49,25 @@ class FavMoviesFragment : Fragment() {
     }
 
     private fun initObservers() {
-        favViewModel.favMovies.observe(viewLifecycleOwner) { state ->
-            state?.let { safeState ->
-                when (safeState) {
+        favViewModel.isLoading.observe(viewLifecycleOwner) {
+            if (it) loadingDialog.show() else loadingDialog.dismiss()
+        }
+        favViewModel.favMovies.observe(viewLifecycleOwner) {
+            it?.let { response ->
+                when (response) {
                     is Response.Error -> {
-                        loadingDialog.hide()
-                        safeState.exception.apply {
-                            message?.let {
-                                snackbar(message = it)
-                            }
-                            printStackTrace()
+                        response.exception.printStackTrace()
+                        response.exception.message?.let { message ->
+                            snackbar(message = message)
                         }
                     }
-                    is Response.Loading -> {
-                        loadingDialog.show()
-                    }
-                    is Response.Success -> {
-                        loadingDialog.hide()
-                        Log.e("data", safeState.data.toString())
-                        setFavMoviesInView(safeState.data)
-                    }
-                }
-            }
-        }
-        favViewModel.isSuccessfullTask.observe(viewLifecycleOwner){ state ->
-            state?.let { safeState ->
-                when (safeState) {
-                    is Response.Error -> {
-                        loadingDialog.dismiss()
-                        safeState.exception.apply {
-                            message?.let {
-                                snackbar(message = it)
-                            }
-                            printStackTrace()
-                        }
-                    }
-                    is Response.Loading -> {
-                        loadingDialog.show()
-                    }
-                    is Response.Success -> {
-                        loadingDialog.dismiss()
-                        Log.e("data", safeState.data.toString())
-                        snackbar(message = getString(safeState.message))
-                    }
-                }
-            }
-        }
-    }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        loadingDialog.dismiss()
+                    is Response.Success -> {
+                        if (response.data.isEmpty()) binding.tvNotFoundFav.visible()
+                    }
+                }
+            }
+        }
     }
 
     override fun onStart() {
@@ -120,15 +86,6 @@ class FavMoviesFragment : Fragment() {
         _binding.rvFavFilms.setHasFixedSize(true)
         _binding.toolbarFav.setNavigationOnClickListener {
             findNavController().popBackStack()
-        }
-    }
-
-    private fun setFavMoviesInView(movies: List<FavMovie?>) {
-        val favMoviesAdapter = _binding.rvFavFilms.adapter as FavMoviesAdapter
-        if (movies.isNotEmpty()) {
-            favMoviesAdapter.submitList(movies)
-            _binding.tvNotFoundFav.gone()
-            _binding.rvFavFilms.visible()
         }
     }
 }
