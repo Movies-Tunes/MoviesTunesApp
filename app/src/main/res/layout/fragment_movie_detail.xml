@@ -11,7 +11,7 @@
             type="com.myapplication.ui.favoritemovies.viewmodel.FavMoviesViewModel" />
         <variable
             name="topRatedMovie"
-            type="com.myapplication.data.entities.TopRatedResultItem" />
+            type="com.myapplication.domain.model.TopRatedMovie" />
         <variable
             name="favMovie"
             type="com.myapplication.data.model.FavMovie" />

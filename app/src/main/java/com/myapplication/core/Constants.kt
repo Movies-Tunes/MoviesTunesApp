@@ -7,5 +7,6 @@ object Constants {
     const val BASE_POSTER_PATH = "https://image.tmdb.org/t/p/w342"
     const val API_KEY = BuildConfig.API_KEY
     const val NETWORK_PAGE_SIZE = 50
+    const val INITIAL_LOAD_PAGE = 1
     const val DEFAULT_QUERY = "pt-BR"
 }

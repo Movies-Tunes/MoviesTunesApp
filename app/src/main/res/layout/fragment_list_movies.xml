@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--TODO refactor layout for databinding in list movies-->
 <layout>
     <data>
         <variable
@@ -52,7 +51,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:scrollbars="vertical"
-                app:list_data="@{movieListViewModel.topRatedMovies}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

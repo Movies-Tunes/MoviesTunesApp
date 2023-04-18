@@ -54,7 +54,10 @@ class ListMoviesFragment : Fragment() {
             val action =
                 ListMoviesFragmentDirections.actionListMoviesFragmentToMovieDetailFragment(topRated)
             findNavController().navigate(action)
-        }.also { binding.moviesListRv.adapter = it }
+        }.also {
+            binding.moviesListRv.adapter = it
+            moviesListAdapter = it
+        }
 
         binding.moviesListRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -66,7 +69,6 @@ class ListMoviesFragment : Fragment() {
 
     private fun initObserversOfView() {
         lifecycleScope.launch {
-            moviesListAdapter = _binding.moviesListRv.adapter as MoviesListAdapter
             moviesListAdapter.loadStateFlow.collect { states ->
                 binding.moviesListRv.isVisible =
                     states.refresh !is LoadState.Loading ||

@@ -60,7 +60,7 @@ class MovieDetailFragment : Fragment() {
     private fun getDataFromTopRated(safeArguments: MovieDetailFragmentArgs) {
         safeArguments.topRated?.apply {
             _binding.topRatedMovie = this
-            getDetailsMovie(id)
+            getDetailsMovie(id.toLong())
         }
     }
 

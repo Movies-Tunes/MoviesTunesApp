@@ -10,7 +10,7 @@ import com.squareup.picasso.Picasso
 @BindingAdapter("load_image")
 fun loadImage(imageView: ImageView?, url: String?) {
     url?.let {
-        Picasso.get().load(url).placeholder(R.drawable.rotate_loading).into(
+        Picasso.get().load(url).into(
             imageView,
             object : Callback {
                 override fun onSuccess() {

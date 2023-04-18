@@ -57,7 +57,7 @@
         >
         <argument
             android:name="topRated"
-            app:argType="com.myapplication.data.entities.TopRatedResultItem"
+            app:argType="com.myapplication.domain.model.TopRatedMovie"
             app:nullable="true"
             android:defaultValue="@null" />
         <argument

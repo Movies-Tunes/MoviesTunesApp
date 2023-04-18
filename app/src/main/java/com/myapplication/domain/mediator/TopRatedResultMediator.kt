@@ -10,8 +10,6 @@ import com.myapplication.core.Constants
 import com.myapplication.data.entities.TopRatedResultItem
 import com.myapplication.data.localdatasource.MoviesTunesDatabase
 import com.myapplication.data.remotedatasource.data.api.TheMovieDbApiService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -22,6 +20,11 @@ class TopRatedResultMediator(
     private val networkService: TheMovieDbApiService,
 ) : RemoteMediator<Int, TopRatedResultItem>() {
     private val moviesDao = database.movieDao()
+    private var key = 1
+
+    override suspend fun initialize(): InitializeAction {
+        return InitializeAction.LAUNCH_INITIAL_REFRESH
+    }
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, TopRatedResultItem>,
@@ -36,17 +39,21 @@ class TopRatedResultMediator(
                     return MediatorResult.Success(endOfPaginationReached = true)
 
                 LoadType.APPEND -> {
-                    val lastItem = state.lastItemOrNull()
-                    (lastItem?.id ?: 1).toInt()
+                    state.config.pageSize
+                    val remoteKey = state.lastItemOrNull()
+                        ?: return MediatorResult.Success(
+                            endOfPaginationReached = true,
+                        )
+                    remoteKey.id + 1
                 }
             }
-            val response = withContext(Dispatchers.IO) {
-                networkService.getTopRatedMovies(
-                    Constants.API_KEY,
-                    loadKey,
-                    query,
-                )
-            }
+
+            val response = networkService.getTopRatedMovies(
+                Constants.API_KEY,
+                loadKey,
+                query,
+            )
+
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     moviesDao.deleteAllTopRatedMovie()

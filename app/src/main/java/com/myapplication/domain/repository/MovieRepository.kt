@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
 interface MovieRepository {
@@ -47,16 +48,16 @@ class MovieDataSource @Inject constructor(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
             ),
-            initialKey = 1,
             remoteMediator = TopRatedResultMediator(
                 query,
                 moviesTunesDatabase,
                 service,
             ),
-        ) {
-            /*moviesTunesDatabase.movieDao().getAllMovies()*/
-            MoviesPagingDataSource(query, service)
-        }.flow
+            pagingSourceFactory = {
+                /*moviesTunesDatabase.movieDao().getAllMovies()*/
+                MoviesPagingDataSource(Locale.getDefault().toLanguageTag(), service)
+            },
+        ).flow
     }
 
     private suspend fun saveTopRatedMoviesInCache(topRatedMovies: TopRatedResultItem) {

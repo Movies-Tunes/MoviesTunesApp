@@ -1,16 +1,16 @@
 package com.myapplication.util
 
 import androidx.recyclerview.widget.DiffUtil
-import com.myapplication.data.entities.TopRatedResultItem
+import com.myapplication.domain.model.TopRatedMovie
 
-class MoviesListDiffCallback : DiffUtil.ItemCallback<TopRatedResultItem>() {
+class MoviesListDiffCallback : DiffUtil.ItemCallback<TopRatedMovie>() {
     override fun areItemsTheSame(
-        oldItem: TopRatedResultItem,
-        newItem: TopRatedResultItem,
+        oldItem: TopRatedMovie,
+        newItem: TopRatedMovie,
     ) = oldItem.id == newItem.id
 
     override fun areContentsTheSame(
-        oldItem: TopRatedResultItem,
-        newItem: TopRatedResultItem,
+        oldItem: TopRatedMovie,
+        newItem: TopRatedMovie,
     ) = oldItem == newItem
 }

@@ -3,7 +3,7 @@
     <data>
         <variable
             name="topRated"
-            type="com.myapplication.data.entities.TopRatedResultItem" />
+            type="com.myapplication.domain.model.TopRatedMovie" />
         <import type="com.myapplication.core.Constants"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

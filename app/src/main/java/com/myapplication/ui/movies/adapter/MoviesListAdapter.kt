@@ -4,30 +4,25 @@ import android.content.Context
 import android.graphics.Shader
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.myapplication.R
-import com.myapplication.core.Constants.BASE_POSTER_PATH
-import com.myapplication.data.entities.TopRatedResultItem
 import com.myapplication.databinding.MovieItemBinding
+import com.myapplication.domain.model.TopRatedMovie
 import com.myapplication.ui.util.TileDrawable
 import com.myapplication.util.MoviesListDiffCallback
-import com.myapplication.util.extension.concatParam
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
 
 class MoviesListAdapter(
     private val context: Context,
-    private val onClickItem: (TopRatedResultItem) -> Unit,
-) : PagingDataAdapter<TopRatedResultItem, MoviesListAdapter.MoviesListViewHolder>(
+    private val onClickItem: (TopRatedMovie) -> Unit,
+) : PagingDataAdapter<TopRatedMovie, MoviesListAdapter.MoviesListViewHolder>(
     MoviesListDiffCallback(),
 ) {
     inner class MoviesListViewHolder(
         private val binding: MovieItemBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie: TopRatedResultItem) {
+        fun bind(movie: TopRatedMovie) {
             binding.topRated = movie
             binding.filmRollLeft.setImageDrawable(
                 TileDrawable(
@@ -51,7 +46,7 @@ class MoviesListAdapter(
             binding.executePendingBindings()
         }
 
-        private fun setListeners(movie: TopRatedResultItem) {
+        private fun setListeners(movie: TopRatedMovie) {
             binding.root.setOnClickListener {
                 onClickItem(movie)
             }
