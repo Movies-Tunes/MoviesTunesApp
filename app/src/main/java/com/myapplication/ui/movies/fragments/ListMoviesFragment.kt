@@ -51,9 +51,10 @@ class ListMoviesFragment : Fragment() {
     }
     private fun setRecyclerView() {
         MoviesListAdapter(requireContext()) { topRated ->
-            val action =
-                ListMoviesFragmentDirections.actionListMoviesFragmentToMovieDetailFragment(topRated)
-            findNavController().navigate(action)
+            findNavController().navigate(
+                ListMoviesFragmentDirections
+                    .actionListMoviesFragmentToMovieDetailFragment(topRated)
+            )
         }.also {
             binding.moviesListRv.adapter = it
             moviesListAdapter = it
@@ -91,15 +92,15 @@ class ListMoviesFragment : Fragment() {
             _binding.moviesListRv.scrollToPosition(0)
         }
         _binding.ivLogin.setOnClickListener {
-            val action =
+            findNavController().navigate(
                 ListMoviesFragmentDirections.actionListMoviesFragmentToLoginFragment()
-            findNavController().navigate(action)
+            )
         }
         _binding.ivSignOut.setOnClickListener {
             auth.signOut()
-            val action =
+            findNavController().navigate(
                 ListMoviesFragmentDirections.actionListMoviesFragmentToLoginFragment()
-            findNavController().navigate(action)
+            )
         }
         _binding.fabPickYourFavorites.setOnClickListener {
             findNavController().navigate(
