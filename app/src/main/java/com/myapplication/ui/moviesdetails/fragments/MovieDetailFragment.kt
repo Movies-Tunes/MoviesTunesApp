@@ -16,9 +16,7 @@ import com.myapplication.data.model.FavMovie
 import com.myapplication.databinding.FragmentMovieDetailBinding
 import com.myapplication.ui.favoritemovies.viewmodel.FavMoviesViewModel
 import com.myapplication.ui.moviesdetails.viewmodel.MoviesDetailsViewModel
-import com.myapplication.util.extension.gone
 import com.myapplication.util.extension.snackbar
-import com.myapplication.util.extension.visible
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 import javax.inject.Inject
@@ -28,12 +26,10 @@ class MovieDetailFragment : Fragment() {
     private lateinit var _binding: FragmentMovieDetailBinding
     val binding: FragmentMovieDetailBinding get() = _binding
     private val args: MovieDetailFragmentArgs by navArgs()
-    private var movieDetail: MovieDetail? = null
     private val moviesDetailsViewModel: MoviesDetailsViewModel by viewModels()
     private val favMoviesViewModel: FavMoviesViewModel by viewModels()
 
-    @Inject
-    lateinit var auth: FirebaseAuth
+    @Inject lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,7 +44,6 @@ class MovieDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initViews()
         setNavigationToolbar()
         initObservers()
@@ -97,17 +92,10 @@ class MovieDetailFragment : Fragment() {
         moviesDetailsViewModel.moviesDetails.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Response.Error -> {
-                    _binding.pbLoadingDetails.gone()
-                    _binding.tvDescriptionSinopse.text = getString(R.string.error_loading_movie_details)
+                    _binding.tvDescriptionSinopse.text =
+                        getString(R.string.error_loading_movie_details)
                 }
-
-                is Response.Loading -> {
-                    _binding.tvDescriptionSinopse.gone()
-                    _binding.pbLoadingDetails.visible()
-                }
-
                 is Response.Success -> {
-                    setCompleteLoadingState()
                     setDetailsInView(response.data)
                 }
             }
@@ -115,14 +103,7 @@ class MovieDetailFragment : Fragment() {
     }
 
     private fun setDetailsInView(movie: MovieDetail) {
-        movieDetail = movie
         _binding.movieDetail = movie
-    }
-
-    private fun setCompleteLoadingState() {
-        _binding.tvDescriptionSinopse.visible()
-        _binding.pbLoadingDetails.gone()
-        _binding.layoutAddFavoriteMovie.llFavoriteMovie.visible()
     }
 
     private fun setListeners() {
@@ -136,23 +117,19 @@ class MovieDetailFragment : Fragment() {
             val ivStarFavorite = _binding.layoutAddFavoriteMovie.ivStarFavorite
             ivStarFavorite.isEnabled = !ivStarFavorite.isEnabled
             if (auth.currentUser != null) {
-                movieDetail?.let {
+                _binding.movieDetail?.let {
                     val id = it.id
                     val path = it.posterPath!!
                     val userId = auth.currentUser!!.uid
                     val title = _binding.detailToolbar.title.toString()
                     if (ivStarFavorite.isEnabled) {
-                        favMoviesViewModel.saveFavMovie(
-                            FavMovie(id, path, title, userId),
-                        )
+                        favMoviesViewModel.saveFavMovie(FavMovie(id, path, title, userId))
                         return@setOnClickListener
                     }
-                    auth.currentUser?.uid?.let { it1 -> favMoviesViewModel.deleteFavMovie(it1, id) }
+                    auth.currentUser?.uid?.let { uid -> favMoviesViewModel.deleteFavMovie(uid, id) }
                 }
             } else {
-                snackbar(
-                    message = getString(R.string.message_favorite_not_sign),
-                )
+                snackbar(message = getString(R.string.message_favorite_not_sign))
                 navigateToLoginFragmennt()
             }
         }

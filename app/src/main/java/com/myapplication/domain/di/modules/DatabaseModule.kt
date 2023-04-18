@@ -3,7 +3,6 @@ package com.myapplication.domain.di.modules
 import android.content.Context
 import com.myapplication.data.localdatasource.MoviesDao
 import com.myapplication.data.localdatasource.MoviesTunesDatabase
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +18,13 @@ abstract class DatabaseModule {
         @Provides
         @Singleton
         fun providesMovieDao(
+            moviesTunesDatabase: MoviesTunesDatabase,
+        ): MoviesDao = moviesTunesDatabase.movieDao()
+
+        @Provides
+        @Singleton
+        fun providesAppDatabase(
             @ApplicationContext context: Context,
-        ): MoviesDao = MoviesTunesDatabase.getInstance(context).movieDao()
+        ): MoviesTunesDatabase = MoviesTunesDatabase.getInstance(context)
     }
 }

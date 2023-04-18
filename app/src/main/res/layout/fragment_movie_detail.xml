@@ -17,6 +17,7 @@
             type="com.myapplication.data.model.FavMovie" />
 
         <import type="com.myapplication.core.Constants" />
+        <import type="android.view.View" />
     </data>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -69,6 +70,7 @@
                 android:id="@+id/layout_add_favorite_movie"
                 layout="@layout/layout_add_favorite_movie"
                 bind:viewModel="@{favViewModel}"
+                app:visisibility_view="@{!favViewModel.isLoading()}"
                 />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -88,18 +90,19 @@
                 android:ellipsize="end"
                 android:padding="@dimen/space_10dp"
                 android:text="@{movieDetail.overview}"
+                app:visisibility_view="@{!favViewModel.isLoading()}"
                 android:textAlignment="textStart"
                 android:textAppearance="@style/WhiteTextAppearanceBody1"
                 tools:text="Id disputationi reprehendunt similique dolor. Reprehendunt cetero docendi nisl consectetur etiam. Aliquet veritus tota mediocrem dolorum inani impetus natum eum. Est partiendo ancillae sumo proin alterum tritani novum audire senectus. Theophrastus definiebas tota dicam tortor moderatius aliquid condimentum prodesset. Sea habeo libero falli malorum contentiones. Penatibus has iisque gubergren eu. Ullamcorper viverra saperet quas metus efficitur ea. Tellus facilis constituto electram appareat deterruisset eu commodo dolore libero. Movet faucibus fabellas primis has." />
 
             <ProgressBar
                 android:id="@+id/pb_loading_details"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/size_progress_bar_50dp"
+                android:layout_height="@dimen/size_progress_bar_50dp"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/space_10dp"
                 android:progressTint="@color/white"
-                android:visibility="gone"
+                app:visisibility_view="@{favViewModel.isLoading()}"
                 tools:visibility="visible" />
         </LinearLayout>
     </ScrollView>

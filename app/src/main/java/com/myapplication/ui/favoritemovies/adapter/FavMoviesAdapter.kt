@@ -21,22 +21,9 @@ class FavMoviesAdapter(
     inner class FavMovieViewHolder(private val binding: ItemMovieFavBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: FavMovie) {
-            Picasso.get()
-                .load(Constants.BASE_POSTER_PATH.concatParam(movie.posterPath))
-                .placeholder(R.drawable.rotate_loading)
-                .into(
-                    binding.ivPosterFav,
-                    object : Callback {
-                        override fun onSuccess() {
-                            Log.d("Picasso", "Success")
-                        }
-
-                        override fun onError(e: Exception?) {
-                            Log.e("Picasso", "Error")
-                        }
-                    },
-                )
+            binding.favMovie = movie
             setListeners(movie)
+            binding.executePendingBindings()
         }
 
         private fun setListeners(movie: FavMovie) {

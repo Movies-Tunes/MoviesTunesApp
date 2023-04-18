@@ -38,4 +38,5 @@
     <dimen name="size_star_add_favorite_image">30dp</dimen>
     <dimen name="size_sign_and_sign_out_button">45dp</dimen>
     <dimen name="size_circular_progress_bar__inderteminate">60dp</dimen>
+    <dimen name="size_progress_bar_50dp">50dp</dimen>
 </resources>

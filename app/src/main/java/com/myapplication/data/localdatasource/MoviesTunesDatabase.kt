@@ -10,7 +10,7 @@ import com.myapplication.data.entities.MovieDetail
 import com.myapplication.data.entities.TopRatedResultItem
 import com.myapplication.util.converters.TypeConverter
 
-@Database([TopRatedResultItem::class, MovieDetail::class, GenreItem::class], version = 2)
+@Database([TopRatedResultItem::class, MovieDetail::class, GenreItem::class], version = 1)
 @TypeConverters(TypeConverter::class)
 abstract class MoviesTunesDatabase : RoomDatabase() {
     abstract fun movieDao(): MoviesDao

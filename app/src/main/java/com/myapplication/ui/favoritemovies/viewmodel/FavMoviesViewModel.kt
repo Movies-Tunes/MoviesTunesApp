@@ -22,25 +22,31 @@ class FavMoviesViewModel @Inject constructor(
     private val deleteFavUseCase: DeleteFavUseCase,
 ) : ViewModel() {
     private val _favMovies: MutableLiveData<Response<List<FavMovie>>?> =
-        MutableLiveData(Response.Loading())
+        MutableLiveData()
     val favMovies: LiveData<Response<List<FavMovie>>?> = _favMovies
     private val _isFavMovie: MutableLiveData<Response<Boolean>?> =
-        MutableLiveData(Response.Loading())
+        MutableLiveData()
     val isFavMovie: LiveData<Response<Boolean>?> = _isFavMovie
     private val _isSuccessfullTask: MutableLiveData<Response<Boolean>?> =
-        MutableLiveData(Response.Loading())
+        MutableLiveData()
     val isSuccessfullTask: LiveData<Response<Boolean>?> = _isSuccessfullTask
+    private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
+    val isLoading: LiveData<Boolean> = _isLoading
 
     fun isFavMovie(userId: String, movieId: Long) {
+        _isLoading.postValue(true)
         viewModelScope.launch {
-            _isFavMovie.value = Response.Loading()
             _isFavMovie.value = isFavMovieUseCase(userId, movieId)
+            _isLoading.postValue(false)
         }
     }
 
     fun getFavMovies(userId: String) {
+        _isLoading.postValue(true)
         viewModelScope.launch {
-            _favMovies.value = getFavMoviesUseCase(userId)
+            val movies = getFavMoviesUseCase(userId)
+            _favMovies.value = movies
+            _isLoading.postValue(false)
         }
     }
 
