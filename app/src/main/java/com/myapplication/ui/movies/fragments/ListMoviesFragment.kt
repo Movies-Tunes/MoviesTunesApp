@@ -53,7 +53,7 @@ class ListMoviesFragment : Fragment() {
         MoviesListAdapter(requireContext()) { topRated ->
             findNavController().navigate(
                 ListMoviesFragmentDirections
-                    .actionListMoviesFragmentToMovieDetailFragment(topRated)
+                    .actionListMoviesFragmentToMovieDetailFragment(topRated),
             )
         }.also {
             binding.moviesListRv.adapter = it
@@ -93,13 +93,13 @@ class ListMoviesFragment : Fragment() {
         }
         _binding.ivLogin.setOnClickListener {
             findNavController().navigate(
-                ListMoviesFragmentDirections.actionListMoviesFragmentToLoginFragment()
+                ListMoviesFragmentDirections.actionListMoviesFragmentToLoginFragment(),
             )
         }
         _binding.ivSignOut.setOnClickListener {
             auth.signOut()
             findNavController().navigate(
-                ListMoviesFragmentDirections.actionListMoviesFragmentToLoginFragment()
+                ListMoviesFragmentDirections.actionListMoviesFragmentToLoginFragment(),
             )
         }
         _binding.fabPickYourFavorites.setOnClickListener {
